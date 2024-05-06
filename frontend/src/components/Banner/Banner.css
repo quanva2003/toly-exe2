@@ -1,0 +1,149 @@
+.banner-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px 250px;
+  background-color: rgba(255, 255, 255, 0.7);
+  height: 95vh;
+  background-image: url("../../assets/wp481083-wallpaper-gradient.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.left-part {
+  flex: 1;
+  padding-right: 20px;
+  padding-left: 100px;
+}
+
+.banner-title {
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.banner-des {
+  font-size: 48px;
+  color: #666;
+}
+
+.cta-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.right-part {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.chat-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 300px;
+}
+
+.chat-bubble {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.bot {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.user {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.avatar {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.ironman-image {
+  max-width: 100%;
+  margin-top: 10px;
+}
+/* Chat.css */
+
+/* Chat container */
+.chat-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  background: linear-gradient(to bottom right, #b3d9ff, #003366);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat header */
+.chat-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+
+/* Individual chat messages */
+.message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+/* User message */
+.user-message {
+  justify-content: flex-end;
+}
+
+.user-message .message-content {
+  background-color: #4caf50;
+  color: white;
+  border-radius: 15px 0 15px 15px;
+  padding: 10px;
+  max-width: 70%;
+}
+
+/* Other message (incoming) */
+.other-message .message-content {
+  background-color: white;
+  color: #333;
+  border-radius: 0 15px 15px 15px;
+  padding: 10px;
+  max-width: 70%;
+}
+
+/* Timestamp */
+.timestamp {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+/* User avatar */
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border: 2px solid red;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Unread message indicator */
+.unread-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 5px;
+}
