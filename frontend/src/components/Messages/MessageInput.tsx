@@ -99,7 +99,7 @@ const MessageInput = () => {
 
   return (
     <form
-      style={{ padding: "0.5rem", marginTop: "0.75rem" }}
+      // style={{ padding: "0.5rem", marginTop: "0.75rem" }}
       onSubmit={handleSubmit}
     >
       <div style={{ position: "relative", width: "100%" }}>

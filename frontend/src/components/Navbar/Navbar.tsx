@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
         </div>
       </Link>
       <div className="menu">
-        <Link to="/home" style={{ textDecoration: "none", color: "unset" }}>
+        <Link to="/" style={{ textDecoration: "none", color: "unset" }}>
           <div className="menu-link">HOME</div>
         </Link>
         <Link to="/friends" style={{ textDecoration: "none", color: "unset" }}>

@@ -10,10 +10,10 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "Passwords don't match" });
     }
 
-    const user = await User.findOne({ name });
+    const user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ error: "name already exists" });
+      return res.status(400).json({ error: "A user with this email address already exists" });
     }
 
     // HASH PASSWORD HERE
@@ -64,8 +64,6 @@ export const login = async (req, res) => {
     }
 
     generateTokenAndSetCookie(user._id, res);
-
-    const { token } = generateTokenAndSetCookie(user._id, res);
 
     res.status(200).json({
       _id: user._id,

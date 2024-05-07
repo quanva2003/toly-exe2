@@ -13,7 +13,14 @@ const MessageContainer: React.FC = () => {
   }, [setSelectedConversation]);
 
   return (
-    <div style={{ width: "100vw", display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        width: "100vw",
+        display: "flex",
+        flexDirection: "column",
+        padding: "0.5rem",
+      }}
+    >
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
@@ -22,7 +29,7 @@ const MessageContainer: React.FC = () => {
           <div
             style={{
               padding: "4px",
-              marginBottom: "2px",
+              marginBottom: "25px",
               borderBottom: "1px solid gray",
             }}
           >
