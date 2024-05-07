@@ -31,17 +31,17 @@ const Navbar: React.FC = () => {
       </Link>
       <div className="menu">
         <Link to="/home" style={{ textDecoration: "none", color: "unset" }}>
-          <div className="menu-link">HOME</div>
+          <div className="menu-link">Home</div>
         </Link>
-        <div className="menu-link">FRIENDS</div>
-        <div className="menu-link">CONTACT</div>
+        <div className="menu-link">Friends</div>
+        <div className="menu-link">Contact</div>
       </div>
       <div className="login">
-        <Link to="/signup" className="login-link">
-          SIGNIN
+        <Link to="/login" className="login-link">
+          Login
         </Link>
-        <Link to="/login">
-          <button className="login-btn">LOGIN</button>
+        <Link to="/signup">
+          <button className="sign-btn">Try Toly for Free</button>
         </Link>
       </div>
     </nav>
