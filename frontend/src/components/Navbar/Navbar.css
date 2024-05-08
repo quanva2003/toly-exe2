@@ -43,16 +43,13 @@ nav {
   color: #00c0c1;
 }
 
-.sign-btn {
+.login-btn {
   border-radius: 10px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 16px;
   background-color: #00c0c1;
   padding: 12px 32px;
   cursor: pointer;
-}
-.sign-btn:hover {
-  border-radius: 50px;
 }
 .login-btn:hover {
   opacity: 0.8;

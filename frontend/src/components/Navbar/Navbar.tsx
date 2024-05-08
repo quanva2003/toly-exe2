@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/LOGO-TOLY.png";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { authUser } = useAuthContext();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,20 +32,24 @@ const Navbar: React.FC = () => {
         </div>
       </Link>
       <div className="menu">
-        <Link to="/home" style={{ textDecoration: "none", color: "unset" }}>
-          <div className="menu-link">Home</div>
+        <Link to="/" style={{ textDecoration: "none", color: "unset" }}>
+          <div className="menu-link">HOME</div>
         </Link>
-        <div className="menu-link">Friends</div>
-        <div className="menu-link">Contact</div>
+        <Link to="/friends" style={{ textDecoration: "none", color: "unset" }}>
+          <div className="menu-link">FRIENDS</div>
+        </Link>
+        <div className="menu-link">CONTACT</div>
       </div>
-      <div className="login">
-        <Link to="/login" className="login-link">
-          Login
-        </Link>
-        <Link to="/signup">
-          <button className="sign-btn">Try Toly for Free</button>
-        </Link>
-      </div>
+      {!authUser && (
+        <div className="login">
+          <Link to="/signup" className="login-link">
+            SIGNIN
+          </Link>
+          <Link to="/login">
+            <button className="login-btn">LOGIN</button>
+          </Link>
+        </div>
+      )}
     </nav>
   );
 };

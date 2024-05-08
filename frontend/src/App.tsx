@@ -16,18 +16,18 @@ function App() {
     <div className="h-screen flex items-center justify-center">
       <Routes>
         <Route
-          path="/"
+          path="/friends"
           element={authUser ? <ChatPage /> : <Navigate to={"/login"} />}
         />
         <Route
           path="/login"
-          element={authUser ? <Navigate to="/" /> : <Login />}
+          element={authUser ? <Navigate to="/friends" /> : <Login />}
         />
         <Route
           path="/signup"
-          element={authUser ? <Navigate to="/" /> : <SignUp />}
+          element={authUser ? <Navigate to="/friends" /> : <SignUp />}
         />
-        <Route path="/home" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} />
       </Routes>
       <Toaster />
     </div>
