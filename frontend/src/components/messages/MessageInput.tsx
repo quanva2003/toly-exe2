@@ -95,12 +95,11 @@ const MessageInput = () => {
     bottom: 0,
     display: "flex",
     alignItems: "center",
-    paddingRight: "0.75rem",
   };
 
   return (
     <form
-      style={{ padding: "0 1rem", marginTop: "0.75rem" }}
+      // style={{ padding: "0.5rem", marginTop: "0.75rem" }}
       onSubmit={handleSubmit}
     >
       <div style={{ position: "relative", width: "100%" }}>

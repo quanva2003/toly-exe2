@@ -3,10 +3,37 @@ import "./Navbar.css";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/LOGO-TOLY.png";
 import { useAuthContext } from "../../context/AuthContext";
+import LogoutButton from "../Sidebar/LogoutButton";
+import { Dropdown, MenuProps, Space } from "antd";
+import { MessageFilled } from "@ant-design/icons";
+const items: MenuProps["items"] = [
+  {
+    label: (
+      <Link to="/profile" className="login-link">
+        Profile
+      </Link>
+    ),
+    key: "0",
+  },
 
+  {
+    type: "divider",
+  },
+  {
+    label: (
+      <Space>
+        <LogoutButton /> Logout
+      </Space>
+    ),
+    key: "1",
+  },
+];
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { authUser } = useAuthContext();
+  const profileData = JSON.parse(localStorage.getItem("chat-user") || "{}");
+  const profilePic = profileData.profilePic;
+  console.log(profilePic);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,14 +60,21 @@ const Navbar: React.FC = () => {
       </Link>
       <div className="menu">
         <Link to="/" style={{ textDecoration: "none", color: "unset" }}>
-          <div className="menu-link">HOME</div>
+          <div className="menu-link">Home</div>
         </Link>
-        <Link to="/friends" style={{ textDecoration: "none", color: "unset" }}>
-          <div className="menu-link">FRIENDS</div>
+        <div className="divider">|</div>{" "}
+        {/* Divider between Home and Explore */}
+        <Link to="/explore" style={{ textDecoration: "none", color: "unset" }}>
+          <div className="menu-link">Explore</div>
         </Link>
-        <div className="menu-link">CONTACT</div>
+        <div className="divider">|</div>{" "}
+        {/* Divider between Explore and Contact */}
+        <Link to="/contact" style={{ textDecoration: "none", color: "unset" }}>
+          <div className="menu-link">Contact</div>
+        </Link>
       </div>
-      {!authUser && (
+
+      {!authUser ? (
         <div className="login">
           <Link to="/signup" className="login-link">
             SIGNIN
@@ -48,6 +82,30 @@ const Navbar: React.FC = () => {
           <Link to="/login">
             <button className="login-btn">LOGIN</button>
           </Link>
+        </div>
+      ) : (
+        <div className="login">
+          {/* <LogoutButton />
+          <Link to="/profile" className="login-link">
+            Profile
+          </Link> */}
+          <Link
+            to="/friends"
+            style={{ textDecoration: "none", color: "unset" }}
+          >
+            <MessageFilled className="mess-icon" />
+          </Link>
+
+          <Dropdown menu={{ items }} trigger={["click"]}>
+            <a onClick={(e) => e.preventDefault()}>
+              {/* <Space className="login-link">Click me</Space> */}
+              <img
+                src={profilePic}
+                alt="Profile"
+                style={{ width: "40px", height: "40px" }}
+              />
+            </a>
+          </Dropdown>
         </div>
       )}
     </nav>

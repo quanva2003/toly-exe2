@@ -36,7 +36,7 @@ const SearchInput: React.FC = () => {
       style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
     >
       <input
-        type="text"
+        type="search"
         placeholder="Search…"
         style={{
           padding: "0.5rem",
@@ -47,7 +47,7 @@ const SearchInput: React.FC = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <button
+      {/* <button
         type="submit"
         style={{
           backgroundColor: "#38BDF8",
@@ -60,7 +60,7 @@ const SearchInput: React.FC = () => {
         <IoSearchSharp
           style={{ width: "1.5rem", height: "1.5rem", outline: "none" }}
         />
-      </button>
+      </button> */}
     </form>
   );
 };

@@ -9,6 +9,10 @@ import { useAuthContext } from "./context/AuthContext";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import LandingPage from "./pages/Landingpage";
+import NotFound from "./pages/NotFound404Page";
+import ContactForm from "./pages/ContactForm";
+import UserProfilePage from "./pages/Profile/UserProfile";
+import ExplorePage from "./pages/Explore/ExplorePage";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -28,6 +32,10 @@ function App() {
           element={authUser ? <Navigate to="/friends" /> : <SignUp />}
         />
         <Route path="/" element={<LandingPage />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/contact" element={<ContactForm />} />
+        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/explore" element={<ExplorePage />} />
       </Routes>
       <Toaster />
     </div>

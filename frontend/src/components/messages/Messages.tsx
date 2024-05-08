@@ -36,10 +36,10 @@
 
 import React from "react";
 import { useEffect, useRef } from "react";
-import useGetMessages from "../../hooks/useGetMessages";
+import useGetMessages from "../../hooks/useGetMessages.js";
 import MessageSkeleton from "../skeletons/MessageSkeleton.tsx";
-import Message from "./Message";
-import useListenMessages from "../../hooks/useListenMessages";
+import Message from "./Message.tsx";
+import useListenMessages from "../../hooks/useListenMessages.js";
 
 const Messages: React.FC = () => {
   const { messages, loading } = useGetMessages();

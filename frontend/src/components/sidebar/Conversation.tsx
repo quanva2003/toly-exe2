@@ -89,7 +89,7 @@ const Conversation: React.FC<ConversationProps> = ({
       <div
         style={{
           display: "flex",
-          gap: "2rem",
+          // gap: "2rem",
           alignItems: "center",
           padding: "0.5rem 1rem",
           cursor: "pointer",
@@ -123,7 +123,7 @@ const Conversation: React.FC<ConversationProps> = ({
 
         <div style={{ flex: 1 }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <p style={{ fontWeight: "bold", color: "black" }}>
+            <p style={{ fontWeight: "bold", color: "black", fontSize: "14px" }}>
               {conversation.name}{" "}
               {/* Assuming conversation is accessible here */}
             </p>

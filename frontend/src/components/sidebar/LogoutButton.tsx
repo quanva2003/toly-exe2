@@ -9,7 +9,12 @@ const LogoutButton: React.FC = () => {
     <div className="mt-auto">
       {!loading ? (
         <BiLogOut
-          className="w-6 h-6 text-white cursor-pointer"
+          style={{
+            width: "24px",
+            height: "24px",
+            color: "black",
+            cursor: "pointer",
+          }}
           onClick={logout}
         />
       ) : (
