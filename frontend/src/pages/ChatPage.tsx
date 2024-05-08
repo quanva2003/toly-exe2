@@ -2,6 +2,7 @@ import React from "react";
 import MessageContainer from "../components/Messages/MessageContainer";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Navbar from "../components/Navbar/Navbar";
+import SideMenu from "../components/SideMenu/SideMenu";
 
 const ChatPage: React.FC = () => {
   const containerStyle: React.CSSProperties = {
@@ -20,6 +21,7 @@ const ChatPage: React.FC = () => {
     <>
       <Navbar />
       <div style={containerStyle}>
+        <SideMenu />
         <Sidebar />
         <MessageContainer />
       </div>

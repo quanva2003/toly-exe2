@@ -1,9 +1,28 @@
 import React from "react";
 import Conversations from "./Conversations";
-import LogoutButton from "./LogoutButton";
 import SearchInput from "./SearchInput";
+import useSidebar from "../../zustand/useSidebar";
+import Test from "./test";
 
 const Sidebar: React.FC = () => {
+  const { selectedSidebar } = useSidebar();
+
+  let content: JSX.Element;
+
+  switch (selectedSidebar) {
+    case "Conversations":
+      content = <Conversations />;
+      break;
+    case "FriendList":
+      content = <Test />;
+      break;
+    case "Explore":
+      content = <Conversations />;
+      break;
+    default:
+      content = <Conversations />;
+  }
+
   return (
     <div
       style={{
@@ -22,8 +41,8 @@ const Sidebar: React.FC = () => {
           margin: "0.5rem 0",
         }}
       ></div>
-      <Conversations />
-      <LogoutButton />
+      {/* <Conversations /> */}
+      {content}
     </div>
   );
 };
