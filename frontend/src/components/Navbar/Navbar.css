@@ -51,8 +51,17 @@ nav {
   padding: 12px 32px;
   cursor: pointer;
 }
-
 .login-btn:hover {
   opacity: 0.8;
   /* color: #ffffff; */
+}
+.mess-icon {
+  padding: 12px;
+  background-color: #e6e6e6;
+  border-radius: 50px;
+}
+.divider {
+  justify-content: center;
+  padding: 15px;
+  align-items: center;
 }

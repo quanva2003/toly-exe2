@@ -11,7 +11,6 @@ const SideMenu: React.FC = () => {
   const handleMenuClick = (content: string) => {
     setSelectedSidebar(content);
     setSelectedContent(content);
-    console.log(content);
   };
 
   return (

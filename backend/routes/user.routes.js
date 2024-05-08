@@ -1,6 +1,13 @@
 import express from "express";
 import protectRoute from "../middleware/protectRoute.js";
-import { AcceptFriendRequest, DeclineFriendRequest, FriendRequestList, SendFriendRequest, getFriendList, getUsersForSidebar } from "../controllers/user.controller.js";
+import {
+  AcceptFriendRequest,
+  DeclineFriendRequest,
+  FriendRequestList,
+  SendFriendRequest,
+  getFriendList,
+  getUsersForSidebar,
+} from "../controllers/user.controller.js";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useSidebar from "../../zustand/testUseSidebar";
+import useSidebar from "../../zustand/useSidebar";
 import LogoutButton from "../Sidebar/LogoutButton";
 
 const SideMenu: React.FC = () => {
