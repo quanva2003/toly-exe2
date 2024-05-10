@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import LogoutButton from "../Sidebar/LogoutButton";
 import useSidebar from "../../zustand/useSidebar";
 import { FiMessageCircle, FiUsers, FiCompass } from "react-icons/fi";
 
@@ -57,7 +56,6 @@ const SideMenu: React.FC = () => {
           backgroundColor: selectedContent === "Explore" ? "lightgray" : ""
         }}
       />{" "}
-      <LogoutButton />
     </div>
   );
 };
