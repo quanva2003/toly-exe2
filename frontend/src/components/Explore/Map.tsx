@@ -1,35 +1,49 @@
 // Map.tsx
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import { Location } from "./LocationDB"; // Import Location type
 
-// Replace with your actual data
-const locations = [
-  { name: "Suối Tiên", position: [10.9802, 106.6367] },
-  { name: "Chợ Bến Thành", position: [10.772, 106.6983] },
-  { name: "Landmark 81", position: [10.7941, 106.7216] },
-  { name: "Đường Sách Nguyễn Văn Bình", position: [10.7799, 106.6993] },
-  // Add more locations here...
-];
+interface MapProps {
+  center: { lat: number; lng: number };
+  selectedLocation: Location | null;
+  locations: Location[]; // Add locations prop
+}
 
-const Map: React.FC = () => {
-  return (
-    <div style={{ height: "88vh", width: "30vw", overflow: "hidden" }}>
-      <MapContainer
-        center={locations[0].position}
-        zoom={13}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+const Map: React.FC<MapProps> = ({ center, selectedLocation, locations }) => {
+  // Add locations to props
+  const apiKey = "AIzaSyBNCZWA8OpV48m7sML5N8v68nRQyCu6NE0";
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: apiKey,
+  });
+
+  const mapContainerStyle = {
+    height: "88vh",
+    width: "100%",
+  };
+
+  const zoom = 13;
+
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      center={center}
+      zoom={zoom}
+    >
+      {locations.map((location, i) => (
+        <Marker key={i} position={location.position} title={location.name} />
+      ))}
+      {selectedLocation && (
+        <Marker
+          position={selectedLocation.position}
+          title={selectedLocation.name}
+          // icon={{
+          //   url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+          // }}
         />
-        {locations.map((location, index) => (
-          <Marker key={index} position={location.position}>
-            <Popup>{location.name}</Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-    </div>
+      )}
+    </GoogleMap>
+  ) : (
+    <></>
   );
 };
 
