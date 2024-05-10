@@ -1,3 +1,4 @@
+// import React from "react";
 // import { useState } from "react";
 // import { BsSend } from "react-icons/bs";
 // import useSendMessage from "../../hooks/useSendMessage";
@@ -6,14 +7,14 @@
 //   const [message, setMessage] = useState("");
 //   const { loading, sendMessage } = useSendMessage();
 
-//   const handleSubmit = async (e) => {
+//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 //     e.preventDefault();
 //     if (!message) return;
 //     await sendMessage(message);
 //     setMessage("");
 //   };
 
-//   const inputStyles = {
+//   const inputStyles: React.CSSProperties = {
 //     border: "1px solid #718096",
 //     fontSize: "0.875rem",
 //     borderRadius: "0.5rem",
@@ -24,19 +25,18 @@
 //     color: "#000",
 //   };
 
-//   const buttonStyles = {
+//   const buttonStyles: React.CSSProperties = {
 //     position: "absolute",
 //     top: 0,
 //     right: 0,
 //     bottom: 0,
 //     display: "flex",
 //     alignItems: "center",
-//     paddingRight: "0.75rem",
 //   };
 
 //   return (
 //     <form
-//       style={{ padding: "0 1rem", marginTop: "0.75rem" }}
+//       // style={{ padding: "0.5rem", marginTop: "0.75rem" }}
 //       onSubmit={handleSubmit}
 //     >
 //       <div style={{ position: "relative", width: "100%" }}>
@@ -77,12 +77,19 @@ const MessageInput = () => {
     setMessage("");
   };
 
+  const inputContainerStyles: React.CSSProperties = {
+    position: "relative",
+    width: "100%",
+    maxHeight: "100px", // Adjust as needed
+    overflowY: "auto",
+  };
+
   const inputStyles: React.CSSProperties = {
     border: "1px solid #718096",
     fontSize: "0.875rem",
     borderRadius: "0.5rem",
     display: "block",
-    width: "100%",
+    width: "calc(100% - 40px)", // Adjust for button width
     padding: "0.625rem",
     backgroundColor: "#fff",
     color: "#000",
@@ -98,11 +105,8 @@ const MessageInput = () => {
   };
 
   return (
-    <form
-      // style={{ padding: "0.5rem", marginTop: "0.75rem" }}
-      onSubmit={handleSubmit}
-    >
-      <div style={{ position: "relative", width: "100%" }}>
+    <form onSubmit={handleSubmit}>
+      <div style={inputContainerStyles}>
         <input
           type="text"
           style={inputStyles}
@@ -110,14 +114,10 @@ const MessageInput = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit" style={buttonStyles}>
-          {loading ? (
-            <div className="loading loading-spinner"></div>
-          ) : (
-            <BsSend />
-          )}
-        </button>
       </div>
+      {/* <button type="submit" style={buttonStyles}>
+        {loading ? <div className="loading loading-spinner"></div> : <BsSend />}
+      </button> */}
     </form>
   );
 };

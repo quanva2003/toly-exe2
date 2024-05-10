@@ -45,6 +45,8 @@ const Message: React.FC<MessageProps> = ({ message }) => {
     color: fromMe ? "#fff" : "#333",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     marginBottom: "0.5rem",
+    whiteSpace: "pre-wrap",
+    wordWrap: "break-word",
   };
   const footerStyle: React.CSSProperties = {
     opacity: 0.6,

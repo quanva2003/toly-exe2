@@ -87,6 +87,8 @@ export const AcceptFriendRequest = async (req, res) => {
     await sender.save();
     await recepient.save();
 
+    // await Promise.all([sender.save(), recepient.save()]);
+
     res.status(200).json({ message: "Friend Request accepted successfully" });
   } catch (error) {
     console.error("Error in AcceptFriendRequest: ", error.message);
