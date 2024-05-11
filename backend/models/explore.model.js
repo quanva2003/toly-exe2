@@ -22,7 +22,17 @@ const exploreSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
       required: true,
-    }
+    },
+    position: {
+      lat: {
+        type: Number,
+        required: true,
+      },
+      lng: {
+        type: Number,
+        required: true
+      }
+    },
   },
   { timestamps: true }
 );
