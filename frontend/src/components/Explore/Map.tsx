@@ -11,7 +11,7 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({ center, selectedLocation, locations }) => {
   // Add locations to props
-  const apiKey = "AIzaSyBNCZWA8OpV48m7sML5N8v68nRQyCu6NE0";
+  const apiKey = "AIzaSyDRCoGxmaIjIhWyNxaXGVzYCcUAq4mA7jY";
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
   });

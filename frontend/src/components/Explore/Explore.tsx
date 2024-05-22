@@ -4,6 +4,7 @@ import { Col, Row } from "antd";
 import ExploreList from "./ExploreList";
 import Map from "./Map";
 import locationDb, { Location } from "./LocationDB"; // Import locationDb
+import DBtest from "./MapTest";
 
 const Explore: React.FC = () => {
   const [center, setCenter] = useState({ lat: 10.762622, lng: 106.660172 });
@@ -14,12 +15,12 @@ const Explore: React.FC = () => {
   return (
     <Row>
       <Col span={18} push={6}>
-        <Map
+        {/* <Map
           center={center}
           selectedLocation={selectedLocation}
           locations={locationDb}
-        />{" "}
-        {/* Pass locations prop */}
+        /> */}
+        <DBtest />
       </Col>
       <Col span={6} pull={18} style={{ height: "50vh" }}>
         <ExploreList

@@ -11,25 +11,25 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "You are welcome",
+      text: "Welcome to Toly!!! ^^",
       isUser: false,
       timestamp: "9:00 AM, Today",
     },
     {
       id: 2,
-      text: "I am looking for your next templates",
+      text: "Oh hi Toly ^^",
       isUser: true,
       timestamp: "9:05 AM, Today",
     },
     {
       id: 3,
-      text: "Ok, thank you have a good day",
+      text: "Ok, let talk?",
       isUser: false,
       timestamp: "9:07 AM, Today",
     },
     {
       id: 4,
-      text: "Bye, see you",
+      text: "Oteeeeeeeeeee",
       isUser: true,
       timestamp: "9:10 AM, Today",
     },

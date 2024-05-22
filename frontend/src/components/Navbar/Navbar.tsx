@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/LOGO-TOLY.png";
+import Logo from "../../assets/images/logo.png";
 import { useAuthContext } from "../../context/AuthContext";
 import LogoutButton from "../Sidebar/LogoutButton";
 import { Dropdown, MenuProps, Space } from "antd";
@@ -33,8 +33,7 @@ const Navbar: React.FC = () => {
   const { authUser } = useAuthContext();
   const profileData = JSON.parse(localStorage.getItem("chat-user") || "{}");
   const profilePic = profileData.profilePic;
-  console.log(profilePic);
-
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -45,11 +44,14 @@ const Navbar: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
   return (
     <nav
       style={
         isScrolled
-          ? { backgroundColor: "white" }
+          ? { backgroundColor: "white", borderBottom: "1px solid #ccc" }
           : { backgroundColor: "transparent" }
       }
     >
@@ -58,24 +60,25 @@ const Navbar: React.FC = () => {
           <img alt="logo" src={Logo} />
         </div>
       </Link>
-      <div className="menu">
+      <div
+        className={`menu ${menuOpen ? "active" : ""}`}
+        style={!authUser ? { marginLeft: "125px" } : {}}
+      >
         <Link to="/" style={{ textDecoration: "none", color: "unset" }}>
           <div className="menu-link">Home</div>
         </Link>
-        <div className="divider">|</div>{" "}
-        {/* Divider between Home and Explore */}
+        <div className="divider">|</div>
         <Link to="/explore" style={{ textDecoration: "none", color: "unset" }}>
           <div className="menu-link">Explore</div>
         </Link>
-        <div className="divider">|</div>{" "}
-        {/* Divider between Explore and Contact */}
+        <div className="divider">|</div>
         <Link to="/contact" style={{ textDecoration: "none", color: "unset" }}>
           <div className="menu-link">Contact</div>
         </Link>
       </div>
 
       {!authUser ? (
-        <div className="login">
+        <div className={`login ${menuOpen ? "active" : ""}`}>
           <Link to="/signup" className="login-link">
             SIGNIN
           </Link>
@@ -85,20 +88,14 @@ const Navbar: React.FC = () => {
         </div>
       ) : (
         <div className="login">
-          {/* <LogoutButton />
-          <Link to="/profile" className="login-link">
-            Profile
-          </Link> */}
           <Link
             to="/friends"
             style={{ textDecoration: "none", color: "unset" }}
           >
             <MessageFilled className="mess-icon" />
           </Link>
-
           <Dropdown menu={{ items }} trigger={["click"]}>
             <a onClick={(e) => e.preventDefault()}>
-              {/* <Space className="login-link">Click me</Space> */}
               <img
                 src={profilePic}
                 alt="Profile"
@@ -108,6 +105,11 @@ const Navbar: React.FC = () => {
           </Dropdown>
         </div>
       )}
+      <div className="hamburger" onClick={toggleMenu}>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </nav>
   );
 };
