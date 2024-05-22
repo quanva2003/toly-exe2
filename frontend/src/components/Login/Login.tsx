@@ -25,6 +25,9 @@ const Login: React.FC = () => {
   });
 
   const handleSubmit = async (values: LogInInputs) => {
+    // Your authentication logic here (e.g., API call to validate credentials)
+    // If successful, redirect to the profile page
+    // history.push('/profile');
     login(values.email, values.password);
     console.log(values.email, values.password);
   };

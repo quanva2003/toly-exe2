@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./SignUp.css";
@@ -6,14 +6,13 @@ import GoogleButton from "react-google-button";
 import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import useSignup from "../../hooks/useSignup";
-import { Input } from "@chakra-ui/react";
 
 interface SignUpInputs {
   email: string;
   name: string;
   password: string;
   confirmPassword: string;
-  pic: string;
+  gender: string;
 }
 
 const SignIn: React.FC = () => {
@@ -22,12 +21,10 @@ const SignIn: React.FC = () => {
     name: "",
     password: "",
     confirmPassword: "",
-    pic: "",
+    gender: "male",
   };
 
   const { loading, signup } = useSignup();
-  const [pic, setPic] = useState();
-  const [picLoading, setPicLoading] = useState(false);
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -38,45 +35,11 @@ const SignIn: React.FC = () => {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Confirm Password is required"),
-    // pic: Yup.string().required("Picture is required"),
   });
 
   const handleSubmit = (values: SignUpInputs) => {
     console.log(values);
     signup(values);
-  };
-
-  const postDetails = (pic: any) => {
-    setPicLoading(true);
-    if (pic === undefined) {
-      console.log("ERROR PICTURE");
-
-      return;
-    }
-    console.log(pic);
-    if (pic.type === "image/jpeg" || pic.type === "image/png") {
-      const data = new FormData();
-      data.append("file", pic);
-      data.append("upload_preset", "chat-app");
-      data.append("cloud_name", "piyushproj");
-      fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setPic(data.url.toString());
-          console.log(data.url.toString());
-          setPicLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setPicLoading(false);
-        });
-    } else {
-      setPicLoading(false);
-      return;
-    }
   };
 
   return (
@@ -131,21 +94,6 @@ const SignIn: React.FC = () => {
               />
               <ErrorMessage
                 name="confirmPassword"
-                component="div"
-                className="error-message"
-              />
-            </div>
-
-            <div className="form-group">
-              <Input
-                type="file"
-                id="pic"
-                name="pic"
-                placeholder="Picture"
-                onChange={(e: any) => postDetails(e.target.files[0])}
-              />
-              <ErrorMessage
-                name="pic"
                 component="div"
                 className="error-message"
               />

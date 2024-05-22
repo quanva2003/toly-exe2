@@ -1,30 +1,78 @@
 import React from "react";
 import "./Banner.css";
-import Chat from "./Chat";
+import { Link } from "react-router-dom";
+import { Button, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import BeachAccessIcon from "@mui/icons-material/BeachAccess";
+import TerrainIcon from "@mui/icons-material/Terrain";
+import FastfoodIcon from "@mui/icons-material/Fastfood";
+import LocalBarIcon from "@mui/icons-material/LocalBar";
+import WaterIcon from "@mui/icons-material/Water";
+
+const categories = [
+  {
+    name: "Beach",
+    icon: (
+      <span className="icon-category">
+        <WaterIcon />
+      </span>
+    ),
+  },
+  {
+    name: "Mountain",
+    icon: (
+      <span className="icon-category">
+        <TerrainIcon />
+      </span>
+    ),
+  },
+  {
+    name: "Food",
+    icon: (
+      <span className="icon-category">
+        <FastfoodIcon />
+      </span>
+    ),
+  },
+  {
+    name: "Bar",
+    icon: (
+      <span className="icon-category">
+        <LocalBarIcon />
+      </span>
+    ),
+  },
+  {
+    name: "Camping",
+    icon: (
+      <span className="icon-category">
+        <BeachAccessIcon />
+      </span>
+    ),
+  },
+];
 
 const Banner: React.FC = () => {
   return (
     <div className="banner-container">
-      <div className="left-part">
-        <p className="banner-title">AI CHATBOT GENERATOR</p>
-        <p className="banner-des">
-          Turn leads into revenue and keep customers satisfied.
-        </p>
-        <button className="cta-button">Try Landbot for Free</button>
+      <h1 className="banner-heading">Unleash your journey's potential.</h1>
+      <div className="search-bar">
+        <Input
+          size="large"
+          placeholder="Search destinations, hotels"
+          prefix={<SearchOutlined />}
+        />
+        <Button size="large">Search</Button>
       </div>
-      <div className="right-part">
-        {/* <div className="chat-box">
-          <div className="chat-bubble bot">
-            <span className="avatar">Landbot:</span>
-            <p>Hi there, I'm Landbot! 🤖</p>
-            <img src="ironman.png" alt="Iron Man" className="ironman-image" />
+      <h1 className="top-categories-heading">Top categories</h1>
+
+      <div className="top-categories">
+        {categories.map((category, index) => (
+          <div key={index} className="category">
+            {category.icon}
+            <p className="category-name">{category.name}</p>
           </div>
-          <div className="chat-bubble user">
-            <span className="avatar">You:</span>
-            <p>What can you do?</p>
-          </div>
-        </div>*/}
-        <Chat />
+        ))}
       </div>
     </div>
   );

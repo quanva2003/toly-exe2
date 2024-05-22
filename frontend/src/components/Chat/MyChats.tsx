@@ -122,7 +122,7 @@ const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
                 bg={selectedChat === chat ? "#01c0c1" : "#E8E8E8"}
-                color={selectedChat === chat ? "white" : "black"}
+                // color={selectedChat === chat ? "white" : "black"}
                 px={3}
                 py={2}
                 borderRadius="lg"
@@ -135,10 +135,12 @@ const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
                 </Text>
                 {chat.latestMessage && (
                   <Text fontSize="xs">
-                    <b>{chat.latestMessage.sender.name} : </b>
-                    {chat.latestMessage.content.length > 50
-                      ? chat.latestMessage.content.substring(0, 51) + "..."
-                      : chat.latestMessage.content}
+                    <b>
+                      {chat.latestMessage.sender.name}:{" "}
+                      {chat.latestMessage.content.length > 50
+                        ? chat.latestMessage.content.substring(0, 51) + "..."
+                        : chat.latestMessage.content}{" "}
+                    </b>
                   </Text>
                 )}
               </Box>

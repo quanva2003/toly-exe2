@@ -5,6 +5,8 @@ const userRoutes = require("./routes/userRoutes");
 const friendRoutes = require("./routes/friendRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const exploreRoutes = require("./routes/exploreRoutes");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require("path");
 
@@ -18,6 +20,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/friend", friendRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/explore", exploreRoutes);
 
 // --------------------------deployment------------------------------
 

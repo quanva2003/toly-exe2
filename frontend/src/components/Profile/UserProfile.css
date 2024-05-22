@@ -1,0 +1,113 @@
+.profile-container {
+  /* display: flex; */
+  /* flex-direction: column; */
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-image: url("https://images.unsplash.com/photo-1715356758153-6d58ae44e8fe?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 20px 0;
+  /* 
+  position: fixed;
+  top: 0;
+  margin-top: 82px; */
+}
+
+.profile-limited {
+  width: 90%;
+  max-width: 800px;
+}
+
+.profile-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  /* background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 1) 80%
+  ); */
+  z-index: -1;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar {
+  /* transition: width 0.5s ease-in-out, height 0.5s ease-in-out; */
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+}
+
+.user-detail {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.user-detail h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.user-detail .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* .button--circle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ddd;
+  color: #333;
+  text-decoration: none;
+  font-size: 24px;
+  margin-top: 10px;
+} */
+
+.profile-main {
+  /* width: 100%; */
+  padding-left: 20px;
+  padding-right: 20px;
+  /* margin-top: calc(250px); */
+  /* padding: 20px; */
+  /* background-color: #f0f0f0; */
+  /* height: 200vh; */
+
+  /* z-index: -1; */
+}
+.user-tab {
+  position: sticky;
+  top: 82px;
+  /* margin-top: 360px; */
+}
+.user-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
