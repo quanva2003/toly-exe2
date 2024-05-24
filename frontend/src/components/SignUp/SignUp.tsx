@@ -12,7 +12,7 @@ interface SignUpInputs {
   name: string;
   password: string;
   confirmPassword: string;
-  gender: string;
+  pic: string;
 }
 
 const SignIn: React.FC = () => {
@@ -21,7 +21,7 @@ const SignIn: React.FC = () => {
     name: "",
     password: "",
     confirmPassword: "",
-    gender: "male",
+    pic: "male",
   };
 
   const { loading, signup } = useSignup();

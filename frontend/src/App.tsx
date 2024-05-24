@@ -12,6 +12,7 @@ import ContactForm from "./pages/ContactForm";
 import UserProfilePage from "./pages/Profile/UserProfile";
 import ExplorePage from "./pages/Explore/ExplorePage";
 import { ChakraProvider } from "@chakra-ui/react";
+import ForgotPass from "./pages/ForgotPass";
 
 function App() {
   const { user } = ChatState();
@@ -39,6 +40,7 @@ function App() {
           path="/signup"
           element={user ? <Navigate to="/chats" /> : <SignUp />}
         />
+        <Route path="/forgot" element={<ForgotPass />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/contact" element={<ContactForm />} />

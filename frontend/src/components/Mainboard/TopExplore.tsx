@@ -16,6 +16,8 @@ const TopExplore: React.FC = () => {
         const response = await axios.get<ExploreData[]>(
           "http://localhost:5000/api/explore"
         );
+        console.log(response.data);
+
         setExploreData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
