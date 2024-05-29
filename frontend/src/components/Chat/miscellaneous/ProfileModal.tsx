@@ -77,7 +77,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ user, children }) => {
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}>Close</Button>
-            <LogoutButton/>
+            <LogoutButton />
           </ModalFooter>
         </ModalContent>
       </Modal>

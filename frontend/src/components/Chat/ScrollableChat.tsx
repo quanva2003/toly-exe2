@@ -10,25 +10,7 @@ import {
 } from "../../config/ChatLogics";
 import { ChatState } from "../../context/ChatProvider";
 
-// Define the types for the message and user
-interface User {
-  _id: string;
-  name: string;
-  pic: string;
-}
-
-interface Message {
-  _id: string;
-  sender: User;
-  content: string;
-}
-
-// Define the props type
-interface ScrollableChatProps {
-  messages: Message[];
-}
-
-const ScrollableChat: React.FC<ScrollableChatProps> = ({ messages }) => {
+const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
 
   return (
@@ -55,7 +37,7 @@ const ScrollableChat: React.FC<ScrollableChatProps> = ({ messages }) => {
                   m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
                 }`,
                 marginLeft: isSameSenderMargin(messages, m, i, user._id),
-                marginTop: isSameUser(messages, m, i) ? 3 : 8,
+                marginTop: isSameUser(messages, m, i) ? 3 : 10,
                 borderRadius: "20px",
                 padding: "5px 15px",
                 maxWidth: "75%",

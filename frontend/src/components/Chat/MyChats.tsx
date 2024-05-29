@@ -3,46 +3,22 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getSender } from "../../config/ChatLogics.js";
+import { getSender } from "../../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
-import { ChatState } from "../../context/ChatProvider.jsx";
+import { ChatState } from "../../context/ChatProvider";
 import React from "react";
-import SideDrawer from "./miscellaneous/SideDrawer.js";
 
-interface MyChatsProps {
-  fetchAgain: boolean;
-}
-
-interface Chat {
-  _id: string;
-  chatName: string;
-  isGroupChat: boolean;
-  users: User[];
-  latestMessage?: {
-    sender: User;
-    content: string;
-  };
-}
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  token: string;
-}
-
-const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
-  const [loggedUser, setLoggedUser] = useState<User | null>(null);
+const MyChats = ({ fetchAgain }) => {
+  const [loggedUser, setLoggedUser] = useState();
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
   const toast = useToast();
 
   const fetchChats = async () => {
-    if (!user) return;
-
+    // console.log(user._id);
     try {
       const config = {
         headers: {
@@ -50,11 +26,11 @@ const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get<Chat[]>("/api/chat", config);
+      const { data } = await axios.get("/api/chat", config);
       setChats(data);
     } catch (error) {
       toast({
-        title: "Error Occurred!",
+        title: "Error Occured!",
         description: "Failed to Load the chats",
         status: "error",
         duration: 5000,
@@ -79,7 +55,7 @@ const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
       alignItems="center"
       p={3}
       bg="white"
-      w={{ base: "100%", md: "25%" }}
+      w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
     >
@@ -93,7 +69,7 @@ const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        Chats
+        My Chats
         <GroupChatModal>
           <Button
             display="flex"
@@ -104,7 +80,6 @@ const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
           </Button>
         </GroupChatModal>
       </Box>
-      <SideDrawer />
       <Box
         display="flex"
         flexDir="column"
@@ -117,30 +92,28 @@ const MyChats: React.FC<MyChatsProps> = ({ fetchAgain }) => {
       >
         {chats ? (
           <Stack overflowY="scroll">
-            {chats.map((chat: any) => (
+            {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? "#01c0c1" : "#E8E8E8"}
-                // color={selectedChat === chat ? "white" : "black"}
+                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                color={selectedChat === chat ? "white" : "black"}
                 px={3}
                 py={2}
                 borderRadius="lg"
                 key={chat._id}
               >
-                <Text fontWeight="bold" color="black">
+                <Text>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (
                   <Text fontSize="xs">
-                    <b>
-                      {chat.latestMessage.sender.name}:{" "}
-                      {chat.latestMessage.content.length > 50
-                        ? chat.latestMessage.content.substring(0, 51) + "..."
-                        : chat.latestMessage.content}{" "}
-                    </b>
+                    <b>{chat.latestMessage.sender.name} : </b>
+                    {chat.latestMessage.content.length > 50
+                      ? chat.latestMessage.content.substring(0, 51) + "..."
+                      : chat.latestMessage.content}
                   </Text>
                 )}
               </Box>

@@ -1,15 +1,10 @@
 import { Box } from "@chakra-ui/layout";
-import React from "react";
 import "./styles.css";
-import SingleChat from "./SingleChat.tsx";
-import { ChatState } from "../../context/ChatProvider.jsx";
+import SingleChat from "./SingleChat";
+import { ChatState } from "../../context/ChatProvider";
+import React from "react";
 
-interface ChatboxProps {
-  fetchAgain: boolean;
-  setFetchAgain: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Chatbox: React.FC<ChatboxProps> = ({ fetchAgain, setFetchAgain }) => {
+const Chatbox = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat } = ChatState();
 
   return (
@@ -19,7 +14,7 @@ const Chatbox: React.FC<ChatboxProps> = ({ fetchAgain, setFetchAgain }) => {
       flexDir="column"
       p={3}
       bg="white"
-      width={{ base: "100%", md: "74%" }}
+      w={{ base: "100%", md: "68%" }}
       borderRadius="lg"
       borderWidth="1px"
     >

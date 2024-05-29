@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const Friend = require("../models/friend.model");
-const User = require("../models/friend.model");
+const Friend = require("../models/friend.model.js");
+const User = require("../models/user.model.js");
 
 const sendFriendRequest = asyncHandler(async (req, res) => {
 
@@ -23,10 +23,10 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
 });
 
 const acceptFriendRequest = asyncHandler(async (req, res) => {
-  const friend = await Friend.findOneAndUpdate();
-
   try {
-
+    const friend = await Friend.findByIdAndUpdate({ requester: req.params.id }, { status: 2 });
+    const newFriend = await User.findByIdAndUpdate(req.user._id, { friends: friend });
+    res.status(200).json(newFriend);
   } catch (error) {
     res.status(400);
     throw new Error(error.message);
@@ -34,9 +34,9 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
 });
 
 const declineFriendRequest = asyncHandler(async (req, res) => {
-  const friend = await Friend.findOneAndUpdate();
   try {
-
+    const friend = await Friend.findByIdAndUpdate(req.params._id, { status: 3 });
+    res.status(200).json(friend);
   } catch (error) {
     res.status(400);
     throw new Error(error.message);

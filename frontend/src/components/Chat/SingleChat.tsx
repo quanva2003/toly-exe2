@@ -1,3 +1,4 @@
+import React from "react";
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
@@ -15,26 +16,16 @@ import animationData from "../../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../../context/ChatProvider";
-import React from "react";
+const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+var socket, selectedChatCompare;
 
-const ENDPOINT: string = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
-let socket: any, selectedChatCompare: any;
-
-interface SingleChatProps {
-  fetchAgain: boolean;
-  setFetchAgain: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const SingleChat: React.FC<SingleChatProps> = ({
-  fetchAgain,
-  setFetchAgain,
-}) => {
-  const [messages, setMessages] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [newMessage, setNewMessage] = useState<string>("");
-  const [socketConnected, setSocketConnected] = useState<boolean>(false);
-  const [typing, setTyping] = useState<boolean>(false);
-  const [istyping, setIsTyping] = useState<boolean>(false);
+const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+  const [messages, setMessages] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
 
   const defaultOptions = {
@@ -80,7 +71,7 @@ const SingleChat: React.FC<SingleChatProps> = ({
     }
   };
 
-  const sendMessage = async (event: any) => {
+  const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
@@ -120,17 +111,21 @@ const SingleChat: React.FC<SingleChatProps> = ({
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
+
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     fetchMessages();
+
     selectedChatCompare = selectedChat;
+    // eslint-disable-next-line
   }, [selectedChat]);
 
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved: any) => {
       if (
-        !selectedChatCompare ||
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         if (!notification.includes(newMessageRecieved)) {
@@ -143,7 +138,7 @@ const SingleChat: React.FC<SingleChatProps> = ({
     });
   });
 
-  const typingHandler = (e: any) => {
+  const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
     if (!socketConnected) return;
@@ -177,7 +172,6 @@ const SingleChat: React.FC<SingleChatProps> = ({
             display="flex"
             justifyContent={{ base: "space-between" }}
             alignItems="center"
-            borderBottom="2px solid #f0f0f0"
           >
             <IconButton
               display={{ base: "flex", md: "none" }}
@@ -191,6 +185,7 @@ const SingleChat: React.FC<SingleChatProps> = ({
                   {getSender(user, selectedChat.users)}
                   <ProfileModal
                     user={getSenderFull(user, selectedChat.users)}
+                    children={undefined}
                   />
                 </>
               ) : (
@@ -209,7 +204,7 @@ const SingleChat: React.FC<SingleChatProps> = ({
             flexDir="column"
             justifyContent="flex-end"
             p={3}
-            bg="#fff"
+            bg="#E8E8E8"
             w="100%"
             h="100%"
             borderRadius="lg"
@@ -249,8 +244,8 @@ const SingleChat: React.FC<SingleChatProps> = ({
               )}
               <Input
                 variant="filled"
-                bg="#f3f3f5"
-                placeholder="Enter a message..."
+                bg="#E0E0E0"
+                placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
               />
@@ -258,6 +253,7 @@ const SingleChat: React.FC<SingleChatProps> = ({
           </Box>
         </>
       ) : (
+        // to get socket.io on same page
         <Box
           display="flex"
           alignItems="center"
