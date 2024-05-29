@@ -8,11 +8,11 @@ const generateToken = require("../config/generateToken");
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-      $or: [
-        { name: { $regex: req.query.search, $options: "i" } },
-        { email: { $regex: req.query.search, $options: "i" } },
-      ],
-    }
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -92,4 +92,31 @@ const logoutUser = asyncHandler((req, res) => {
   }
 });
 
-module.exports = { allUsers, registerUser, authUser, logoutUser };
+const updateUserPassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.email);
+
+  if (user) {
+    user.password = req.body.password;
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      pic: updatedUser.pic,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+module.exports = {
+  allUsers,
+  registerUser,
+  authUser,
+  logoutUser,
+  updateUserPassword,
+};

@@ -2,8 +2,8 @@ import React from "react";
 import "./Tolymium.css";
 import { Button, Carousel, Tag } from "antd";
 const contentStyle: React.CSSProperties = {
-  //   height: "160px",
-  width: "100%",
+  height: "10px",
+  width: "10px",
   color: "#fff",
   lineHeight: "160px",
   textAlign: "center",
@@ -18,7 +18,7 @@ const Tolymium: React.FC = () => {
       <div className="pre">
         <h1 className="pre-header">Tolymium</h1>
         <div className="pre-detail">
-          <Carousel autoplay>
+          {/* <Carousel autoplay>
             <div>
               <img
                 src="https://images.unsplash.com/photo-1614925861087-aa06270091b3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -40,7 +40,7 @@ const Tolymium: React.FC = () => {
                 style={contentStyle}
               />
             </div>
-          </Carousel>
+          </Carousel> */}
           <div className="pre-price">
             <div className="price-card">
               <div className="price-des">

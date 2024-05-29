@@ -3,8 +3,15 @@ import "./UserProfile.css";
 import { Button, Tabs, TabsProps } from "antd";
 import { EditFilled } from "@ant-design/icons";
 import FriendsList from "./FriendList";
+import { log } from "console";
 
 const UserProfile: React.FC = () => {
+  const storedUserInfo = localStorage.getItem("userInfo");
+  const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
+  console.log(userInfo);
+
+  console.log(userInfo);
+
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {
@@ -58,7 +65,7 @@ const UserProfile: React.FC = () => {
             // style={{ flexDirection: scrollPosition > 50 ? "row" : "row" }}
           >
             <img
-              src="https://brm.us/avatar"
+              src="https://i.pinimg.com/564x/4a/33/53/4a3353b603710dc3c36d9c3247493175.jpg"
               alt="Bramus"
               className="avatar"
               // style={{ height: `${avatarSize}px`, width: `${avatarSize}px` }}
@@ -68,7 +75,7 @@ const UserProfile: React.FC = () => {
               // style={{ flexDirection: scrollPosition > 50 ? "row" : "column" }}
             >
               <div className="user-name">
-                <h2>Bramus Van Damme</h2>
+                <h2>{userInfo.name}</h2>
                 <p>456 friends</p>
               </div>
               {/* <a href="#" className="button button--circle" id="button-edit">

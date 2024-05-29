@@ -22,7 +22,7 @@ const items: MenuProps["items"] = [
   {
     label: (
       <Space>
-        <LogoutButton /> Logout
+        <LogoutButton />
       </Space>
     ),
     key: "1",
@@ -88,10 +88,7 @@ const Navbar: React.FC = () => {
         </div>
       ) : (
         <div className="login">
-          <Link
-            to="/chats"
-            style={{ textDecoration: "none", color: "unset" }}
-          >
+          <Link to="/chats" style={{ textDecoration: "none", color: "unset" }}>
             <MessageFilled className="mess-icon" />
           </Link>
           <Dropdown menu={{ items }} trigger={["click"]}>

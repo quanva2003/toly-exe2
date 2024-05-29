@@ -9,7 +9,13 @@ const useSignup = () => {
   const { setUser } = ChatState();
 
   const signup = async ({ email, name, password, confirmPassword, pic }) => {
-    const success = handleInputErrors({ email, name, password, confirmPassword, pic });
+    const success = handleInputErrors({
+      email,
+      name,
+      password,
+      confirmPassword,
+      pic,
+    });
     if (!success) return;
 
     setLoading(true);
@@ -67,7 +73,7 @@ const useSignup = () => {
         throw new Error(data.error);
       }
       localStorage.setItem("userInfo", JSON.stringify(data));
-      setUser(data)
+      setUser(data);
     } catch (error) {
       toast.error(error.message);
     } finally {
