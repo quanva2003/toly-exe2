@@ -4,6 +4,7 @@ const {
   authUser,
   allUsers,
   logoutUser,
+  updateUserPassword
 } = require("../controllers/userControllers");
 const { protect } = require("../middleware/authMiddleware");
 

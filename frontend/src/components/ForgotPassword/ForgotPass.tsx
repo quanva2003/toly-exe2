@@ -14,7 +14,7 @@ const ForgotPassword: React.FC = () => {
   const [inputCode, setInputCode] = useState("");
   const [isCodeCorrect, setIsCodeCorrect] = useState(false);
 
-  const sendEmail = (e) => {
+  const sendEmail = (e: any) => {
     e.preventDefault();
 
     const code = generateCode();
