@@ -10,8 +10,8 @@ const router = express.Router();
 
 router.route("/:id").post(protect, sendFriendRequest);
 
-router.route("/:id").patch(protect, acceptFriendRequest);
+router.route("/accept/:id").patch(protect, acceptFriendRequest);
 
-router.route("/:id").patch(protect, declineFriendRequest,);
+router.route("/decline/:id").patch(protect, declineFriendRequest,);
 
 module.exports = router;
