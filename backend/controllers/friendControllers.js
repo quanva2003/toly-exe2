@@ -12,7 +12,7 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
     const existingFriendRequest = await Friend.findOne({
       requester: requesterId,
       recipient: recipientId,
-      status: 1 || 2,
+      status: { $in: [1, 2] },
     });
 
     if (existingFriendRequest) {
