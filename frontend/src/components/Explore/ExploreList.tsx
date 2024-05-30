@@ -1,25 +1,21 @@
-// LocationList.tsx
+// ExploreList.tsx
 import React, { useState, useEffect } from "react";
 import { Card, Flex } from "antd";
 import { EnvironmentOutlined, StarFilled } from "@ant-design/icons";
 import "./ExploreList.css";
 import locationDb, { Location } from "./LocationDB";
-// interface Location {
-//   name: string;
-//   area: string;
-//   rating: number;
-//   priceRange: string;
-//   imageUrl: string;
-// }
+
 interface ExploreListProps {
   setCenter: (position: { lat: number; lng: number }) => void;
   setSelectedLocation: (location: Location) => void;
 }
+
 const ExploreList: React.FC<ExploreListProps> = ({
   setCenter,
   setSelectedLocation,
 }) => {
   const [locations, setLocations] = useState(locationDb);
+
   useEffect(() => {
     const fetchLocations = async () => {
       setLocations(locationDb);
@@ -35,7 +31,6 @@ const ExploreList: React.FC<ExploreListProps> = ({
           key={index}
           hoverable
           style={{ margin: "10px " }}
-          styles={{ body: { padding: 10, overflow: "hidden" } }}
           onClick={() => {
             setCenter(location.position);
             setSelectedLocation(location);
@@ -53,12 +48,7 @@ const ExploreList: React.FC<ExploreListProps> = ({
                 borderRadius: "10px",
               }}
             />
-            <Flex
-              vertical
-              //   align="flex-start"
-              //   justify="space-between"
-              style={{ paddingLeft: 20 }}
-            >
+            <Flex vertical style={{ paddingLeft: 20 }}>
               <p className="location-name">{location.name}</p>
               <p className="location-address">
                 <EnvironmentOutlined />

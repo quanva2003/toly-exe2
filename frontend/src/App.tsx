@@ -13,6 +13,7 @@ import UserProfilePage from "./pages/Profile/UserProfile";
 import ExplorePage from "./pages/Explore/ExplorePage";
 import { ChakraProvider } from "@chakra-ui/react";
 import ForgotPass from "./pages/ForgotPass";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   const { user } = ChatState();
@@ -46,6 +47,7 @@ function App() {
         <Route path="/contact" element={<ContactForm />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
       <Toaster />
     </div>
