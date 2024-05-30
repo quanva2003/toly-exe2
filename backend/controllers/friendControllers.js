@@ -3,6 +3,23 @@ const asyncHandler = require("express-async-handler");
 const Friend = require("../models/friend.model.js");
 const User = require("../models/user.model.js");
 
+const getAllFriend = asyncHandler(async (req, res) => {
+  const { _id: currentUser } = req.user;
+
+  try {
+    const friend = await User.findById(currentUser).populate('friends', 'name pic email');
+
+    if (!friend) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(friend);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 const sendFriendRequest = asyncHandler(async (req, res) => {
   const { _id: requesterId } = req.user;
   const { id: recipientId } = req.params;
@@ -118,4 +135,4 @@ const declineFriendRequest = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { sendFriendRequest, acceptFriendRequest, declineFriendRequest };
+module.exports = { getAllFriend, sendFriendRequest, acceptFriendRequest, declineFriendRequest };

@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "Friend" }]
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
   },
   { timestaps: true }
 );

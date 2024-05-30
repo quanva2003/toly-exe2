@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  getAllFriend,
   sendFriendRequest,
   acceptFriendRequest,
   declineFriendRequest,
@@ -7,6 +8,8 @@ const {
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+router.route("/").get(protect, getAllFriend);
 
 router.route("/:id").post(protect, sendFriendRequest);
 
