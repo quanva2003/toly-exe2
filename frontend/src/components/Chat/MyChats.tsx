@@ -9,6 +9,7 @@ import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
 import React from "react";
+import SideDrawer from "./miscellaneous/SideDrawer";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -80,6 +81,7 @@ const MyChats = ({ fetchAgain }) => {
           </Button>
         </GroupChatModal>
       </Box>
+      <SideDrawer />
       <Box
         display="flex"
         flexDir="column"

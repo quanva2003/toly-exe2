@@ -33,19 +33,16 @@ function App() {
             )
           }
         />
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/chats" /> : <Login />}
-        />
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route
           path="/signup"
-          element={user ? <Navigate to="/chats" /> : <SignUp />}
+          element={user ? <Navigate to="/" /> : <SignUp />}
         />
         <Route path="/forgot" element={<ForgotPass />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/contact" element={<ContactForm />} />
-        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/profile/:id" element={<UserProfilePage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/search" element={<SearchPage />} />
       </Routes>

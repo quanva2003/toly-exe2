@@ -20,6 +20,23 @@ const getAllFriend = asyncHandler(async (req, res) => {
   }
 });
 
+const getFriendRequestList = asyncHandler(async (req, res) => {
+  const { _id: currentUser } = req.user;
+
+  try {
+    const friendRequests = await Friend.find({ requester: currentUser });
+
+    if (!friendRequests) {
+      return res.status(404).json({ message: 'No Friend Request' });
+    }
+
+    res.status(200).json(friendRequests);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 const sendFriendRequest = asyncHandler(async (req, res) => {
   const { _id: requesterId } = req.user;
   const { id: recipientId } = req.params;
@@ -135,4 +152,4 @@ const declineFriendRequest = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getAllFriend, sendFriendRequest, acceptFriendRequest, declineFriendRequest };
+module.exports = { getAllFriend, getFriendRequestList, sendFriendRequest, acceptFriendRequest, declineFriendRequest };

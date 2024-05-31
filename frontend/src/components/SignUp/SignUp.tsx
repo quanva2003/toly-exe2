@@ -156,9 +156,9 @@ const SignIn: React.FC = () => {
         />
 
         <div className="signin">
-          Don't have an account?{" "}
-          <Link className="signin-link" to="/signin">
-            Register
+          Already have an account?{" "}
+          <Link className="signin-link" to="/login">
+            Log In
           </Link>
         </div>
       </div>
