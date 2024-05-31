@@ -18,16 +18,6 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    position: {
-      lat: {
-        type: Number,
-        required: true,
-      },
-      lng: {
-        type: Number,
-        required: true,
-      },
-    },
   },
   { timestamps: true }
 );
@@ -37,7 +27,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified) {
+  if (!this.isModified()) {
     next();
   }
 

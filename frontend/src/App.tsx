@@ -45,7 +45,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/contact" element={<ContactForm />} />
-        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/profile/:id" element={<UserProfilePage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/search" element={<SearchPage />} />
       </Routes>

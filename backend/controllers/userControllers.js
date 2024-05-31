@@ -9,17 +9,25 @@ const bcrypt = require("bcryptjs");
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-      $or: [
-        { name: { $regex: req.query.search, $options: "i" } },
-        { email: { $regex: req.query.search, $options: "i" } },
-      ],
-    }
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
   res.send(users);
 });
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
 
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404).json({ message: "User not found" });
+  }
+});
 //@description     Register new user
 //@route           POST /api/user/
 //@access          Public
@@ -93,14 +101,12 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const updateUserPassword = asyncHandler(async (req, res) => {
-
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(404).json({ msg: 'User not found' });
+    return res.status(404).json({ msg: "User not found" });
   } else {
-
     user.password = password;
     const updatedUser = await user.save();
 
@@ -113,7 +119,7 @@ const updateUserPassword = asyncHandler(async (req, res) => {
       token: generateToken(updatedUser._id),
     });
 
-    res.status(200).json({ msg: 'Password updated successfully' });
+    res.status(200).json({ msg: "Password updated successfully" });
   }
 });
 
@@ -123,4 +129,5 @@ module.exports = {
   authUser,
   logoutUser,
   updateUserPassword,
+  getUserById,
 };

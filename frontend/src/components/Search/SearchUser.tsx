@@ -3,8 +3,9 @@ import axios from "axios";
 import { Card } from "antd";
 import { ChatState } from "../../context/ChatProvider";
 import "./SearchUser.css";
+import { useNavigate } from "react-router-dom";
 interface User {
-  id: number;
+  _id: number;
   name: string;
   mutualFriends: number;
   // Add more properties as needed
@@ -18,7 +19,7 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [users, setUsers] = useState<User[]>([]);
   const { user } = ChatState();
-
+  const navigate = useNavigate();
   useEffect(() => {
     setSearchTerm(initialSearchTerm);
   }, [initialSearchTerm]);
@@ -59,17 +60,22 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
       /> */}
       {filteredUsers.map((user) => (
         <Card
-          key={user.id}
+          key={user._id}
           style={{ marginTop: 16, width: "70%" }}
           loading={false}
         >
           <div className="user-search-detail">
             <img
-              src={`path/to/images/${user.id}`}
+              src={`https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433__480.png`}
               alt={user.name}
               className="user-image"
             />
-            <h2 className="user-search-name">{user.name}</h2>
+            <h2
+              className="user-search-name"
+              onClick={() => navigate(`/profile/${user._id}`)}
+            >
+              {user.name}
+            </h2>
           </div>
           {/* <p className="mutual-friends">{user.mutualFriends} mutual friends</p> */}
           <div className="user-search-action">

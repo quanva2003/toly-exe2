@@ -4,7 +4,9 @@ import { Button, Dropdown, MenuProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
-
+interface FriendsListProps {
+  setFriendsOnMap: (friends: any) => void;
+}
 const FriendsList = ({ setFriendsOnMap }) => {
   const { user } = ChatState();
   const [friends, setFriends] = useState<any>([]);

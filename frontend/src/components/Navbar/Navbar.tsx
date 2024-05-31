@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
@@ -6,31 +6,12 @@ import LogoutButton from "../Chat/LogoutButton";
 import { Dropdown, MenuProps, Space } from "antd";
 import { MessageFilled } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
-const items: MenuProps["items"] = [
-  {
-    label: (
-      <Link to="/profile" className="login-link">
-        Profile
-      </Link>
-    ),
-    key: "0",
-  },
 
-  {
-    type: "divider",
-  },
-  {
-    label: (
-      <Space>
-        <LogoutButton />
-      </Space>
-    ),
-    key: "1",
-  },
-];
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { user } = ChatState();
+  console.log("hi", user);
+
   const profileData = JSON.parse(localStorage.getItem("chat-user") || "{}");
   const profilePic = profileData.profilePic;
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,6 +28,28 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+  const items: MenuProps["items"] = [
+    {
+      label: (
+        <Link to={`/profile/${user._id}`} className="login-link">
+          Profile
+        </Link>
+      ),
+      key: "0",
+    },
+
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <Space>
+          <LogoutButton />
+        </Space>
+      ),
+      key: "1",
+    },
+  ];
   return (
     <nav
       style={

@@ -13,10 +13,6 @@ interface SignUpInputs {
   password: string;
   confirmPassword: string;
   pic: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
 }
 
 const SignIn: React.FC = () => {
@@ -26,10 +22,6 @@ const SignIn: React.FC = () => {
     password: "",
     confirmPassword: "",
     pic: "123",
-    position: {
-      lat: 0,
-      lng: 0,
-    },
   };
 
   const { loading, signup } = useSignup();
