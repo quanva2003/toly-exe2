@@ -16,34 +16,44 @@ const ScrollableChat = ({ messages }) => {
   return (
     <ScrollableFeed>
       {messages &&
-        messages.map((m, i) => (
-          <div style={{ display: "flex" }} key={m._id}>
-            {(isSameSender(messages, m, i, user._id) ||
-              isLastMessage(messages, i, user._id)) && (
-              <Tooltip label={m.sender.name} placement="bottom-start" hasArrow>
+        messages.map((message: any, index: any) => (
+          <div style={{ display: "flex" }} key={message._id}>
+            {(isSameSender(messages, message, index, user._id) ||
+              isLastMessage(messages, index, user._id)) && (
+              <Tooltip
+                label={message.sender.name}
+                placement="bottom-start"
+                hasArrow
+              >
                 <Avatar
-                  mt="7px"
+                  mt="17px"
                   mr={1}
                   size="sm"
                   cursor="pointer"
-                  name={m.sender.name}
-                  src={m.sender.pic}
+                  name={message.sender.name}
+                  src={message.sender.pic}
                 />
               </Tooltip>
             )}
             <span
               style={{
                 backgroundColor: `${
-                  m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
+                  message.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
                 }`,
-                marginLeft: isSameSenderMargin(messages, m, i, user._id),
-                marginTop: isSameUser(messages, m, i) ? 3 : 10,
+                marginLeft: isSameSenderMargin(
+                  messages,
+                  message,
+                  index,
+                  user._id
+                ),
+                marginTop: isSameUser(messages, message, index) ? 5 : 20,
+                marginRight: message.sender._id === user._id ? "10px" : "0px",
                 borderRadius: "20px",
                 padding: "5px 15px",
                 maxWidth: "75%",
               }}
             >
-              {m.content}
+              {message.content}
             </span>
           </div>
         ))}

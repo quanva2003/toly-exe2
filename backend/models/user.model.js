@@ -17,9 +17,22 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
+    friends: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }],
+    position: {
+      lat: {
+        type: Number,
+        required: true,
+      },
+      lng: {
+        type: Number,
+        required: true
+      }
+    },
   },
-  { timestaps: true }
+  { timestamps: true }
 );
 
 userSchema.methods.matchPassword = async function (enteredPassword) {

@@ -23,8 +23,8 @@ code {
 }
 
 /* dark mode looking scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* ::-webkit-scrollbar {
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -38,6 +38,24 @@ code {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #242424;
+} */
+
+/* white theme scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
 }
 
 /* SHAKE ANIMATION ON HORIZONTAL DIRECTION */
