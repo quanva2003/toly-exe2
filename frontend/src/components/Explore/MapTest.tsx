@@ -1,3 +1,4 @@
+// DBtest.tsx
 import React from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
@@ -45,6 +46,7 @@ const mapContainerStyle = {
 };
 
 const zoom = 13;
+
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2 - lat1);
@@ -64,65 +66,48 @@ function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
 
-const handleClick = () => {
-  // For each user
-  users.forEach((user) => {
-    // Find places within a 3km square around the user
-    const nearbyPlaces = places.filter(
-      (place) =>
-        Math.abs(user.location.lat - place.location.lat) <= 0.027 &&
-        Math.abs(user.location.lng - place.location.lng) <= 0.027
-    );
-
-    // If there are any nearby places, display them
-    if (nearbyPlaces.length > 0) {
-      alert(
-        `User ${
-          user.name
-        } has the following places within a 3km square: ${nearbyPlaces
-          .map((place) => place.name)
-          .join(", ")}`
-      );
-    } else {
-      alert(`User ${user.name} has no places within a 3km square.`);
-    }
-  });
-};
-const DBtest = () => {
+const DBtest = ({ center, selectedLocation, friends }) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
   });
 
   return isLoaded ? (
     <div style={{ height: "80vh", width: "100%" }}>
-      <button onClick={handleClick}>Click me</button>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        center={{ lat: 10.762622, lng: 106.660172 }}
+        center={center}
         zoom={zoom}
-        onClick={(e) => {
-          if (e.latLng) {
-            const clickedLat = e.latLng.lat();
-            const clickedLng = e.latLng.lng();
-            const usersWithin5km = users.filter(
-              (user) =>
-                getDistanceFromLatLonInKm(
-                  clickedLat,
-                  clickedLng,
-                  user.location.lat,
-                  user.location.lng
-                ) < 1
-            );
-            console.log(usersWithin5km);
-          }
+        options={{
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
         }}
       >
-        {users.map((user) => (
+        {/* {users.map((user) => (
           <Marker key={user.id} position={user.location} label={user.name} />
         ))}
         {places.map((place) => (
           <Marker key={place.id} position={place.location} label={place.name} />
         ))}
+        {selectedLocation && (
+          <Marker
+            position={selectedLocation.position}
+            label={selectedLocation.name}
+          />
+        )} */}
+        {friends.map((friend) => (
+          <Marker
+            key={friend.id}
+            position={friend.location}
+            label={friend.name}
+          />
+        ))}
+        {selectedLocation && (
+          <Marker
+            position={selectedLocation.position}
+            label={selectedLocation.name}
+          />
+        )}
       </GoogleMap>
     </div>
   ) : (

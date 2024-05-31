@@ -8,13 +8,21 @@ const useSignup = () => {
   const [picLoading, setPicLoading] = useState(false);
   const { setUser } = ChatState();
 
-  const signup = async ({ email, name, password, confirmPassword, pic }) => {
+  const signup = async ({
+    email,
+    name,
+    password,
+    confirmPassword,
+    pic,
+    position,
+  }) => {
     const success = handleInputErrors({
       email,
       name,
       password,
       confirmPassword,
       pic,
+      position,
     });
     if (!success) return;
 
@@ -65,7 +73,14 @@ const useSignup = () => {
       const res = await fetch("/api/user/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, password, confirmPassword, pic }),
+        body: JSON.stringify({
+          email,
+          name,
+          password,
+          confirmPassword,
+          pic,
+          position,
+        }),
       });
 
       const data = await res.json();
@@ -84,8 +99,15 @@ const useSignup = () => {
 };
 export default useSignup;
 
-function handleInputErrors({ email, name, password, confirmPassword, pic }) {
-  if (!email || !name || !password || !confirmPassword || !pic) {
+function handleInputErrors({
+  email,
+  name,
+  password,
+  confirmPassword,
+  pic,
+  position,
+}) {
+  if (!email || !name || !password || !confirmPassword || !pic || !position) {
     toast.error("Please fill in all fields");
     return false;
   }

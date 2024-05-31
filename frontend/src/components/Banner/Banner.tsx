@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Banner.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
@@ -53,6 +53,12 @@ const categories = [
 ];
 
 const Banner: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    navigate(`/search?query=${searchTerm}`);
+  };
   return (
     <div className="banner-container">
       <h1 className="banner-heading">Unleash your journey's potential.</h1>
@@ -61,8 +67,12 @@ const Banner: React.FC = () => {
           size="large"
           placeholder="Search destinations, hotels"
           prefix={<SearchOutlined />}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Button size="large">Search</Button>
+        <Button size="large" onClick={handleSearch}>
+          Search
+        </Button>
       </div>
       <h1 className="top-categories-heading">Top categories</h1>
 

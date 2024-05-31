@@ -60,6 +60,7 @@ const ForgotPassword: React.FC = () => {
       .email("Invalid email address")
       .required("Required"),
   });
+
   return (
     <div className="forgot-password-container">
       {!codeSent ? (

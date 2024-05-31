@@ -17,10 +17,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    friends: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    }],
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     position: {
       lat: {
         type: Number,
@@ -28,8 +25,8 @@ const userSchema = mongoose.Schema(
       },
       lng: {
         type: Number,
-        required: true
-      }
+        required: true,
+      },
     },
   },
   { timestamps: true }
