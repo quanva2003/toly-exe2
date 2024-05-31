@@ -5,7 +5,7 @@ import { MoreOutlined } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
 
-const FriendsList = () => {
+const FriendsList = ({ setFriendsOnMap }) => {
   const { user } = ChatState();
   const [friends, setFriends] = useState<any>([]);
 
@@ -43,6 +43,7 @@ const FriendsList = () => {
 
         const { data } = await axios.get("/api/friend", config);
         setFriends(data.friends);
+        setFriendsOnMap(data.friends);
         console.log("Friend:", data.friends);
       } catch (error) {
         console.log("Error: ", error.message);
@@ -50,7 +51,7 @@ const FriendsList = () => {
     };
 
     fetchFriend();
-  }, []);
+  }, [user, setFriendsOnMap]);
 
   return (
     <ul className="friends-list">
