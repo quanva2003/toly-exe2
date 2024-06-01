@@ -85,6 +85,12 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
       };
       const { data } = await axios.post(`/api/friend/${id}`, {}, config);
       console.log("Friend: ", data);
+
+      // Update the requests state
+      setRequests((prevRequests) => [
+        ...prevRequests,
+        { _id: data._id, requester: user._id, recipient: id, status: 1 },
+      ]);
     } catch (error) {
       console.log("Error when sent friend request", error.message);
     }

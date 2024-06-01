@@ -1,9 +1,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const useResetPassword = () => {
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const resetPassword = async ({ email, password, confirmPassword }) => {
     const success = handleInputErrors({
       email,
@@ -25,6 +26,7 @@ const useResetPassword = () => {
         throw new Error(data.error);
       }
       toast.success("Password has been reset successfully!");
+      navigate("/login");
     } catch (error) {
       toast.error(error.message);
     } finally {

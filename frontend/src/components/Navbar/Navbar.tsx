@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
 import LogoutButton from "../Chat/LogoutButton";
 import { Dropdown, MenuProps, Space } from "antd";
@@ -15,6 +15,7 @@ const Navbar: React.FC = () => {
   const profileData = JSON.parse(localStorage.getItem("chat-user") || "{}");
   const profilePic = profileData.profilePic;
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -31,9 +32,12 @@ const Navbar: React.FC = () => {
   const items: MenuProps["items"] = [
     {
       label: (
-        <Link to={`/profile/${user._id}`} className="login-link">
+        <div
+          onClick={() => navigate(`/profile/${user._id}`)}
+          className="login-link"
+        >
           Profile
-        </Link>
+        </div>
       ),
       key: "0",
     },

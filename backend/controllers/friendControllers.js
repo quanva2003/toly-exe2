@@ -7,16 +7,19 @@ const getAllFriend = asyncHandler(async (req, res) => {
   const { _id: currentUser } = req.user;
 
   try {
-    const friend = await User.findById(currentUser).populate('friends', 'name pic email');
+    const friends = await Friend.find({
+      requester: currentUser,
+      status: 2,
+    }).populate("recipient", "name pic email");
 
-    if (!friend) {
-      return res.status(404).json({ message: 'User not found' });
+    if (!friends.length) {
+      return res.status(404).json({ message: "No accepted friends found" });
     }
 
-    res.status(200).json(friend);
+    res.status(200).json(friends);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -27,13 +30,13 @@ const getFriendRequestList = asyncHandler(async (req, res) => {
     const friendRequests = await Friend.find({ requester: currentUser });
 
     if (!friendRequests) {
-      return res.status(404).json({ message: 'No Friend Request' });
+      return res.status(404).json({ message: "No Friend Request" });
     }
 
     res.status(200).json(friendRequests);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -50,7 +53,7 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
     });
 
     if (existingFriendRequest) {
-      return res.status(400).json({ message: 'Friend request already sent' });
+      return res.status(400).json({ message: "Friend request already sent" });
     }
 
     // Create a new friend request
@@ -69,7 +72,7 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
     res.status(201).json(friend);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -89,7 +92,7 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
     );
 
     if (!friend) {
-      throw new Error('Friend request not found or already accepted.');
+      throw new Error("Friend request not found or already accepted.");
     }
 
     // Add each user to the other's friends list
@@ -136,7 +139,7 @@ const declineFriendRequest = asyncHandler(async (req, res) => {
     if (!friend) {
       await session.abortTransaction();
       session.endSession();
-      return res.status(404).json({ message: 'Friend request not found' });
+      return res.status(404).json({ message: "Friend request not found" });
     }
 
     await session.commitTransaction();
@@ -152,4 +155,10 @@ const declineFriendRequest = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getAllFriend, getFriendRequestList, sendFriendRequest, acceptFriendRequest, declineFriendRequest };
+module.exports = {
+  getAllFriend,
+  getFriendRequestList,
+  sendFriendRequest,
+  acceptFriendRequest,
+  declineFriendRequest,
+};

@@ -11,10 +11,10 @@ import { ChatState } from "../../context/ChatProvider";
 const UserProfile: React.FC = () => {
   const storedUserInfo = localStorage.getItem("userInfo");
   const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
-  console.log("current:", userInfo);
+  // console.log("current:", userInfo);
   const { user } = ChatState();
-  const { id } = useParams<{ id: string }>(); // Extracting user ID from URL
-  console.log(id);
+  const { id } = useParams<{ id: string }>();
+  // console.log(id);
 
   const [userProfile, setUserProfile] = useState<any>(null);
   const [numFriends, setNumFriends] = useState<number>(0);
@@ -47,7 +47,7 @@ const UserProfile: React.FC = () => {
             },
           }
         );
-        console.log("friend:", response.data);
+        // console.log("friend:", response.data);
 
         setUserProfile(response.data);
       } catch (error) {

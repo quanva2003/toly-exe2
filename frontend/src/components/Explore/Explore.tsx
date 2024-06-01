@@ -23,7 +23,7 @@ const Explore: React.FC = () => {
         <DBtest
           center={center}
           selectedLocation={selectedLocation}
-          friends={friends}
+          // friends={friends}
         />
       </Col>
       <Col span={6} pull={18} style={{ height: "50vh" }}>

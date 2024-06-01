@@ -4,25 +4,17 @@ import { Button, Dropdown, MenuProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
+
 interface FriendsListProps {
   setFriendsOnMap: (friends: any) => void;
 }
-const FriendsList = ({ setFriendsOnMap }) => {
+
+const FriendsList = ({ setFriendsOnMap }: FriendsListProps) => {
   const { user } = ChatState();
+  console.log(user._id);
+
   const [friends, setFriends] = useState<any>([]);
 
-  // const friends = [
-  //   "Friend1",
-  //   "Friend2",
-  //   "Friend3",
-  //   "Friend4",
-  //   "Friend5",
-  //   "Friend6",
-  //   "Friend7",
-  //   "Friend8",
-  //   "Friend9",
-  //   "Friend10",
-  // ];
   const items: MenuProps["items"] = [
     {
       label: <a href="https://www.antgroup.com">View Profile</a>,
@@ -37,16 +29,42 @@ const FriendsList = ({ setFriendsOnMap }) => {
   useEffect(() => {
     const fetchFriend = async () => {
       try {
-        const config = {
+        const response = await axios.get("http://localhost:5000/api/friend", {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        };
+        });
+        console.log(response.data);
 
-        const { data } = await axios.get("/api/friend", config);
-        setFriends(data.friends);
-        setFriendsOnMap(data.friends);
-        console.log("Friend:", data.friends);
+        const friendData = response.data.filter(
+          (friend) => friend.requester === user._id
+        );
+        console.log(friendData);
+
+        const friendsInfo = await Promise.all(
+          friendData.map(async (friend) => {
+            try {
+              const res = await axios.get(
+                `http://localhost:5000/api/user/${friend.recipient._id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                }
+              );
+              console.log(res.data);
+              return res.data;
+            } catch (error) {
+              console.error(
+                `Error fetching data for friend ID ${friend.recipient}: `,
+                error.message
+              );
+            }
+          })
+        );
+
+        setFriends(friendsInfo);
+        setFriendsOnMap(friendsInfo);
       } catch (error) {
         console.log("Error: ", error.message);
       }
@@ -57,12 +75,12 @@ const FriendsList = ({ setFriendsOnMap }) => {
 
   return (
     <ul className="friends-list">
-      {friends.map((friend: any, index: any) => (
+      {friends.map((friend: any, index: number) => (
         <li key={index} className="friend-item">
           <div className="friend-detail">
             <img
-              // src="https://i.pinimg.com/564x/ea/56/d8/ea56d8b90e525b069de9448d473da337.jpg"
-              src={friend.pic}
+              src="https://i.pinimg.com/564x/ea/56/d8/ea56d8b90e525b069de9448d473da337.jpg"
+              // src={friend.pic}
               alt="Profile"
               className="friend-image"
             />

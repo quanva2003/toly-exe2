@@ -1,7 +1,9 @@
 // DBtest.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-
+import axios from "axios";
+import { ChatState } from "../../context/ChatProvider";
+import UserImage from "../../assets/images/user-map.png";
 const users = [
   {
     id: 1,
@@ -38,7 +40,7 @@ const places = [
   },
 ];
 
-const apiKey = "AIzaSyDRCoGxmaIjIhWyNxaXGVzYCcUAq4mA7jY";
+const apiKey = "AIzaSyBNCZWA8OpV48m7sML5N8v68nRQyCu6NE0";
 
 const mapContainerStyle = {
   height: "88vh",
@@ -66,10 +68,56 @@ function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
 
-const DBtest = ({ center, selectedLocation, friends }) => {
+const DBtest = ({ center, selectedLocation }) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
   });
+  const { user } = ChatState();
+  const [friends, setFriends] = useState<any>([]);
+  useEffect(() => {
+    const fetchFriend = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/friend", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        const friendData = response.data.filter(
+          (friend) => friend.requester === user._id
+        );
+
+        const friendsInfo = await Promise.all(
+          friendData.map(async (friend) => {
+            try {
+              const res = await axios.get(
+                `http://localhost:5000/api/user/${friend.recipient._id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                }
+              );
+
+              return res.data;
+            } catch (error) {
+              console.error(
+                `Error fetching data for friend ID ${friend.recipient}: `,
+                error.message
+              );
+            }
+          })
+        );
+
+        setFriends(friendsInfo);
+      } catch (error) {
+        console.log("Error: ", error.message);
+      }
+    };
+
+    fetchFriend();
+  }, [user]);
+  console.log(friends);
 
   return isLoaded ? (
     <div style={{ height: "80vh", width: "100%" }}>
@@ -97,9 +145,13 @@ const DBtest = ({ center, selectedLocation, friends }) => {
         )} */}
         {friends.map((friend) => (
           <Marker
-            key={friend.id}
-            position={friend.location}
+            key={friend._id}
+            position={{ lat: friend.position.lat, lng: friend.position.lng }}
             label={friend.name}
+            icon={{
+              url: UserImage, // replace this with the path to your image
+              scaledSize: new window.google.maps.Size(50, 50), // adjust the size as needed
+            }}
           />
         ))}
         {selectedLocation && (
