@@ -28,6 +28,25 @@ const getUserById = asyncHandler(async (req, res) => {
     res.status(404).json({ message: "User not found" });
   }
 });
+//@description     Get user by name
+//@route           GET /api/user/name/:name
+//@access          Protected
+const getUserByName = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.find({
+      name: { $regex: req.params.name, $options: "i" },
+    });
+
+    if (user.length > 0) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching user by name: ", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 //@description     Register new user
 //@route           POST /api/user/
 //@access          Public
@@ -134,4 +153,5 @@ module.exports = {
   logoutUser,
   updateUserPassword,
   getUserById,
+  getUserByName,
 };

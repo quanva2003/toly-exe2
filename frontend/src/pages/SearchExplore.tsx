@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
-import SearchUsers from "../components/Search/SearchUser";
 import Footer from "../components/Footer/Footer";
+import SearchExploreComponent from "../components/Search/SearchExplore";
 
-const SearchPage = () => {
+const SearchExplore: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchTerm = queryParams.get("query");
@@ -12,10 +12,10 @@ const SearchPage = () => {
   return (
     <>
       <Navbar />
-      <SearchUsers initialSearchTerm={searchTerm || ""} />
+      <SearchExploreComponent initialSearchTerm={searchTerm || ""} />
       <Footer />
     </>
   );
 };
 
-export default SearchPage;
+export default SearchExplore;

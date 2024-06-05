@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
 import LogoutButton from "../Chat/LogoutButton";
 import { Dropdown, MenuProps, Space } from "antd";
-import { MessageFilled } from "@ant-design/icons";
+import { MessageFilled, TeamOutlined } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 
 const Navbar: React.FC = () => {
@@ -58,11 +58,15 @@ const Navbar: React.FC = () => {
     <nav
       style={
         isScrolled
-          ? { backgroundColor: "white", borderBottom: "1px solid #ccc" }
+          ? {
+              backgroundColor: " rgba(255, 255, 255, 0.8)",
+              backdropFilter: "blur(10px)",
+              borderBottom: "1px solid #ccc",
+            }
           : { backgroundColor: "transparent" }
       }
     >
-      <Link to="/">
+      <Link to="/home">
         <div className="logo">
           <img alt="logo" src={Logo} />
         </div>
@@ -71,7 +75,7 @@ const Navbar: React.FC = () => {
         className={`menu ${menuOpen ? "active" : ""}`}
         style={!user ? { marginLeft: "125px" } : {}}
       >
-        <Link to="/" style={{ textDecoration: "none", color: "unset" }}>
+        <Link to="/home" style={{ textDecoration: "none", color: "unset" }}>
           <div className="menu-link">Home</div>
         </Link>
         <div className="divider">|</div>
@@ -95,6 +99,12 @@ const Navbar: React.FC = () => {
         </div>
       ) : (
         <div className="login">
+          <Link
+            to="/friends"
+            style={{ textDecoration: "none", color: "unset" }}
+          >
+            <TeamOutlined className="mess-icon" />
+          </Link>
           <Link to="/chats" style={{ textDecoration: "none", color: "unset" }}>
             <MessageFilled className="mess-icon" />
           </Link>
