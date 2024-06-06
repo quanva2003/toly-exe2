@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
   console.log("hi", user);
 
   const profileData = JSON.parse(localStorage.getItem("chat-user") || "{}");
-  const profilePic = profileData.profilePic;
+  const profilePic = profileData.pic;
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -101,7 +101,7 @@ const Navbar: React.FC = () => {
           <Dropdown menu={{ items }} trigger={["click"]}>
             <a onClick={(e) => e.preventDefault()}>
               <img
-                src={profilePic}
+                src={user.pic}
                 alt="Profile"
                 style={{ width: "40px", height: "40px" }}
               />

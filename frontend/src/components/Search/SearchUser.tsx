@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card } from "antd";
+// import { Card } from "antd";
 import { ChatState } from "../../context/ChatProvider";
 import "./SearchUser.css";
 import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Typography,
+  Grid,
+} from "@mui/material";
 interface User {
   _id: string;
   name: string;
+  pic: string;
   mutualFriends: number;
   // Add more properties as needed
 }
@@ -72,6 +81,8 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
     fetchFriendRequest();
   }, [searchTerm]);
 
+  console.log("REada:", requests);
+
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -98,13 +109,7 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
 
   return (
     <div className="search-container">
-      {/* <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
-      /> */}
+      {/* Changed the container to a grid */}
       {filteredUsers.map((user) => {
         const request = requests.find((req) => req.recipient === user._id);
         const status = request ? request.status : 0;
@@ -121,37 +126,45 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
         }
 
         return (
-          <Card
-            key={user._id}
-            style={{ marginTop: 16, width: "70%" }}
-            loading={false}
-          >
-            <div className="user-search-detail">
-              <img
-                src={`https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433__480.png`}
-                alt={user.name}
-                className="user-image"
-              />
-              <h2
-                className="user-search-name"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigate(`/profile/${user._id}`)}
-              >
-                {user.name}
-              </h2>
-            </div>
-            {/* <p className="mutual-friends">{user.mutualFriends} mutual friends</p> */}
-            <div className="user-search-action">
-              <button
-                className="add-friend-button"
-                onClick={() => handleAddFriend(user._id)}
-                disabled={status !== 0}
-              >
-                {buttonText}
-              </button>
-              <button className="send-message-button">Nhắn tin</button>
-            </div>
-          </Card>
+          <>
+            <Grid item key={user._id} xs={2}>
+              {" "}
+              {/* Added class */}
+              <Card>
+                <CardContent>
+                  <div className="user-search-detail">
+                    <img
+                      // src={`https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433__480.png`}
+                      src={user.pic}
+                      alt={user.name}
+                      className="user-image"
+                    />
+                    <Typography
+                      variant="h5"
+                      component="h2"
+                      className="user-search-name"
+                    >
+                      {user.name}
+                    </Typography>
+                  </div>
+                  {/* ... rest of the card content */}
+                </CardContent>
+                <CardActions>
+                  <Button
+                    variant="contained"
+                    className="add-friend-button"
+                    onClick={() => handleAddFriend(user._id)}
+                    disabled={status !== 0}
+                  >
+                    {buttonText}
+                  </Button>
+                  <Button variant="contained" className="send-message-button">
+                    Nhắn tin
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          </>
         );
       })}
     </div>

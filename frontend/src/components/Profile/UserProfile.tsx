@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
 import "./UserProfile.css";
-import { Button, Tabs, TabsProps } from "antd";
+import { Button, Tabs } from "antd";
 import { EditFilled } from "@ant-design/icons";
-import FriendsList from "./FriendList";
-import { log } from "console";
+import FriendList from "./FriendList";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
 
+interface UserProfileProps {
+  _id: string;
+  name: string;
+  pic: string;
+  friends: string[];
+}
+
 const UserProfile: React.FC = () => {
   const storedUserInfo = localStorage.getItem("userInfo");
   const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
-  // console.log("current:", userInfo);
+
   const { user } = ChatState();
   const { id } = useParams<{ id: string }>();
-  // console.log(id);
 
-  const [userProfile, setUserProfile] = useState<any>(null);
-  const [numFriends, setNumFriends] = useState<number>(0);
+  const [userProfile, setUserProfile] = useState<UserProfileProps | null>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [friendsOnMap, setFriendsOnMap] = useState([]);
+
   const handleScroll = () => {
     const position = window.pageYOffset;
     setScrollPosition(position);
@@ -32,9 +36,6 @@ const UserProfile: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  useEffect(() => {
-    setNumFriends(friendsOnMap.length);
-  }, [friendsOnMap]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -47,8 +48,6 @@ const UserProfile: React.FC = () => {
             },
           }
         );
-        // console.log("friend:", response.data);
-
         setUserProfile(response.data);
       } catch (error) {
         console.error("Error fetching user profile", error);
@@ -57,13 +56,15 @@ const UserProfile: React.FC = () => {
 
     fetchUserProfile();
   }, [id, user.token]);
+
   const avatarSize = Math.max(50, 200 - scrollPosition);
   const headerHeight = Math.max(50, 250 - scrollPosition);
-  const items: TabsProps["items"] = [
+
+  const items = [
     {
       key: "1",
       label: "Friends",
-      children: <FriendsList setFriendsOnMap={setFriendsOnMap} />,
+      children: <FriendList />,
     },
     {
       key: "2",
@@ -77,41 +78,28 @@ const UserProfile: React.FC = () => {
     },
   ];
 
+  if (!userProfile) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="profile-container">
-      <div
-        className="profile-header"
-        style={
-          {
-            // height: `${headerHeight}px`,
-            // padding: scrollPosition ? "20px 0" : "0",
-          }
-        }
-      >
+      <div className="profile-header" style={{ height: `${headerHeight}px` }}>
         <div className="profile-limited">
           <div className="profile-bg"></div>
-          <div
-            className="profile-info"
-            // style={{ flexDirection: scrollPosition > 50 ? "row" : "row" }}
-          >
+          <div className="profile-info">
             <img
-              src="https://i.pinimg.com/564x/4a/33/53/4a3353b603710dc3c36d9c3247493175.jpg"
-              alt="Bramus"
+              src={userProfile.pic}
+              alt={userProfile.name}
               className="avatar"
-              // style={{ height: `${avatarSize}px`, width: `${avatarSize}px` }}
+              style={{ height: `${avatarSize}px`, width: `${avatarSize}px` }}
             />
-            <div
-              className="user-detail"
-              // style={{ flexDirection: scrollPosition > 50 ? "row" : "column" }}
-            >
+            <div className="user-detail">
               <div className="user-name">
-                <h2>{userProfile?.name}</h2>
-                <p>{numFriends} friends</p>
+                <h2>{userProfile.name}</h2>
+                <p>{userProfile.friends.length} friends</p>
               </div>
-              {/* <a href="#" className="button button--circle" id="button-edit">
-                ✎
-              </a> */}
-              {userInfo?._id === userProfile?._id ? (
+              {userInfo?._id === userProfile._id ? (
                 <Button shape="circle" icon={<EditFilled />} />
               ) : (
                 <Button>Add friend</Button>
@@ -120,7 +108,6 @@ const UserProfile: React.FC = () => {
           </div>
         </div>
       </div>
-
       <div className="profile-main">
         <Tabs defaultActiveKey="1" items={items} className="user-tab" />
       </div>

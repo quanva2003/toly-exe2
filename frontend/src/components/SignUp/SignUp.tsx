@@ -25,7 +25,7 @@ const SignIn: React.FC = () => {
     name: "",
     password: "",
     confirmPassword: "",
-    pic: "123",
+    pic: "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png",
     position: {
       lat: 0,
       lng: 0,

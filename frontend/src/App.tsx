@@ -15,6 +15,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import ForgotPass from "./pages/ForgotPass";
 import SearchPage from "./pages/SearchPage";
 
+import Home from "./pages/HomeWithHiddenPage/HomeWithHiddenCreatePost";
+
 function App() {
   const { user } = ChatState();
 
@@ -45,6 +47,8 @@ function App() {
         <Route path="/profile/:id" element={<UserProfilePage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/search" element={<SearchPage />} />
+
+        <Route path="/home" element={<Home />} />
       </Routes>
       <Toaster />
     </div>

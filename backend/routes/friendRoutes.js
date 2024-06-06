@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  getAllFriend,
+  getFriendListById,
   sendFriendRequest,
   acceptFriendRequest,
   declineFriendRequest,
@@ -10,7 +10,7 @@ const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.route("/").get(protect, getAllFriend);
+router.route("/list/:id").get(protect, getFriendListById);
 
 router.route("/request").get(protect, getFriendRequestList);
 

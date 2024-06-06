@@ -3,16 +3,13 @@ const asyncHandler = require("express-async-handler");
 const Friend = require("../models/friend.model.js");
 const User = require("../models/user.model.js");
 
-const getAllFriend = asyncHandler(async (req, res) => {
-  const { _id: currentUser } = req.user;
+const getFriendListById = asyncHandler(async (req, res) => {
+  // const { _id: currentUser } = req.user;
 
   try {
-    const friends = await Friend.find({
-      requester: currentUser,
-      status: 2,
-    }).populate("recipient", "name pic email");
+    const friends = await User.findById(req.params.id).populate("friends", "name pic email position");
 
-    if (!friends.length) {
+    if (!friends) {
       return res.status(404).json({ message: "No accepted friends found" });
     }
 
@@ -156,7 +153,7 @@ const declineFriendRequest = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  getAllFriend,
+  getFriendListById,
   getFriendRequestList,
   sendFriendRequest,
   acceptFriendRequest,
