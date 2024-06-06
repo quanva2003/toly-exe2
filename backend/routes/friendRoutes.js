@@ -18,6 +18,6 @@ router.route("/:id").post(protect, sendFriendRequest);
 
 router.route("/accept/:id").patch(protect, acceptFriendRequest);
 
-router.route("/decline/:id").patch(protect, declineFriendRequest,);
+router.route("/decline/:id").delete(protect, declineFriendRequest);
 
 module.exports = router;

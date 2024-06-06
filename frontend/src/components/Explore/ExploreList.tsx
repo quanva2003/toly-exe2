@@ -1,9 +1,10 @@
 // ExploreList.tsx
 import React, { useState, useEffect } from "react";
-import { Card, Flex } from "antd";
+import { Card, Flex, Input } from "antd";
 import { EnvironmentOutlined, StarFilled } from "@ant-design/icons";
 import "./ExploreList.css";
 import locationDb, { Location } from "./LocationDB";
+import { SearchIcon } from "@chakra-ui/icons";
 
 interface ExploreListProps {
   setCenter: (position: { lat: number; lng: number }) => void;
@@ -26,6 +27,11 @@ const ExploreList: React.FC<ExploreListProps> = ({
 
   return (
     <div style={{ height: "88vh", overflowY: "auto" }}>
+      <Input
+        placeholder="Seacrh explore..."
+        prefix={<SearchIcon />}
+        maxLength={300}
+      />
       {locations.map((location, index) => (
         <Card
           key={index}

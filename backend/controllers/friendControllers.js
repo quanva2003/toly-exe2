@@ -21,19 +21,24 @@ const getFriendListById = asyncHandler(async (req, res) => {
 });
 
 const getFriendRequestList = asyncHandler(async (req, res) => {
-  const { _id: currentUser } = req.user;
-
   try {
-    const friendRequests = await Friend.find({ requester: currentUser });
+    const { _id: currentUser } = req.user;
 
-    if (!friendRequests) {
+    // Find friend requests where currentUser is either the requester or the recipient
+    const requestList = await Friend.find({
+      $or: [
+        { requester: currentUser },
+        { recipient: currentUser }
+      ]
+    }).populate("requester recipient", "name email pic");
+
+    if (!requestList) {
       return res.status(404).json({ message: "No Friend Request" });
     }
 
-    res.status(200).json(friendRequests);
+    res.status(200).json(requestList);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Server error" });
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -119,36 +124,25 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
 });
 
 const declineFriendRequest = asyncHandler(async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
-    const { id: requesterId } = req.params;
-    const { _id: userId } = req.user;
+    const { _id: currentUser } = req.user;
+    const { id: userId } = req.params;
 
-    // Update the friend request status
-    const friend = await Friend.findOneAndUpdate(
-      { requester: requesterId, recipient: userId, status: 1 }, // Assuming status 1 means pending
-      { status: 3 }, // Assuming status 3 means declined
-      { new: true, session }
-    );
+    const requestList = await Friend.findOneAndDelete({
+      $or: [
+        { requester: currentUser, recipient: userId },
+        { recipient: currentUser, requester: userId }
+      ]
+    });
 
-    if (!friend) {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(404).json({ message: "Friend request not found" });
+    if (!requestList) {
+      return res.status(404).json({ message: "No friend request found" });
     }
 
-    await session.commitTransaction();
-    session.endSession();
-
-    res.status(200).json(friend);
+    res.status(200).json(requestList);
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-
     console.error(error.message);
-    res.status(400).json({ message: error.message });
+    res.status(404).json({ message: error.message });
   }
 });
 

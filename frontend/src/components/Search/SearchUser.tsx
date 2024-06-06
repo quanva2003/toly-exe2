@@ -70,7 +70,10 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
             },
           }
         );
-        setRequests(result.data);
+        const filteredRequests = result.data.filter(
+          (req) => req.recipient._id === user._id
+        );
+        setRequests(filteredRequests);
         console.log("Request: ", requests);
       } catch (error) {
         console.error("Error fetching data from API", error);
