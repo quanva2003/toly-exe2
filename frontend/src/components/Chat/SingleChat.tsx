@@ -3,13 +3,18 @@ import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
-import { IconButton, Spinner, useToast } from "@chakra-ui/react";
-import { getSender, getSenderFull } from "../../config/ChatLogics";
+import { Avatar, IconButton, Spinner, useToast } from "@chakra-ui/react";
+import {
+  getSender,
+  getSenderAvatar,
+  getSenderFull,
+} from "../../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ProfileModal from "./miscellaneous/ProfileModal";
-import ScrollableChat from "./ScrollableChat";
+import Messages from "./Messages";
+
 import Lottie from "react-lottie";
 import animationData from "../../animations/typing.json";
 
@@ -138,7 +143,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     });
   });
 
-  const typingHandler = (e) => {
+  const typingHandler = (e: any) => {
     setNewMessage(e.target.value);
 
     if (!socketConnected) return;
@@ -168,6 +173,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             pb={3}
             px={2}
             w="100%"
+            borderBottom="0.5px solid lightgray"
+            // boxShadow="0 4px 2px -2px rgba(0, 0, 0, 0.2)"
             fontFamily="Work sans"
             display="flex"
             justifyContent={{ base: "space-between" }}
@@ -182,7 +189,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {messages &&
               (!selectedChat.isGroupChat ? (
                 <>
-                  {getSender(user, selectedChat.users)}
+                  <div>
+                    <Avatar
+                      style={{ marginRight: "12px" }}
+                      src={getSenderAvatar(user, selectedChat.users)}
+                    />
+                    {getSender(user, selectedChat.users)}
+                  </div>
                   <ProfileModal
                     user={getSenderFull(user, selectedChat.users)}
                     children={undefined}
@@ -203,8 +216,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             display="flex"
             flexDir="column"
             justifyContent="flex-end"
-            p={3}
-            bg="#E8E8E8"
+            // p={3}
+            // bg="#E8E8E8"
             w="100%"
             h="100%"
             borderRadius="lg"
@@ -220,7 +233,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               />
             ) : (
               <div className="messages">
-                <ScrollableChat messages={messages} />
+                <Messages messages={messages} />
               </div>
             )}
 
@@ -244,7 +257,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               )}
               <Input
                 variant="filled"
-                bg="#E0E0E0"
+                // bg="#E0E0E0"
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}

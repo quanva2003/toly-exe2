@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
-import UserImage from "../../assets/images/user-map.png";
+// import UserImage from "../../assets/images/user-map.png";
 const users = [
   {
     id: 1,

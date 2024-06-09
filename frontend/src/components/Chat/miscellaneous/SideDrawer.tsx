@@ -1,36 +1,15 @@
-import { Button } from "@chakra-ui/button";
-import { useDisclosure } from "@chakra-ui/hooks";
-import { Input } from "@chakra-ui/input";
-import { Box, Text } from "@chakra-ui/layout";
-import {
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/menu";
-import {
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
-} from "@chakra-ui/modal";
-import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { Avatar } from "@chakra-ui/avatar";
-import { useState } from "react";
+import { IconButton } from "@chakra-ui/button";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
+import { Spinner } from "@chakra-ui/spinner";
+import { Box, Flex } from "@chakra-ui/layout";
+import { ArrowBackIcon, SearchIcon } from "@chakra-ui/icons";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/toast";
 import ChatLoading from "../ChatLoading";
-import { Spinner } from "@chakra-ui/spinner";
-import ProfileModal from "./ProfileModal";
-import NotificationBadge from "react-notification-badge";
-import { Effect } from "react-notification-badge";
-import { getSender } from "../../../config/ChatLogics.js";
 import UserListItem from "../userAvatar/UserListItem";
-import { ChatState } from "../../../context/ChatProvider.jsx";
+import { ChatState } from "../../../context/ChatProvider";
 import React from "react";
-import useLogout from "../../../hooks/useLogout.js";
 
 interface User {
   _id: string;
@@ -38,24 +17,22 @@ interface User {
   pic: string;
 }
 
-function SideDrawer() {
+interface SideDrawerProps {
+  onEnterSearchMode: () => void;
+  onExitSearchMode: () => void;
+}
+
+function SideDrawer({ onEnterSearchMode, onExitSearchMode }: SideDrawerProps) {
   const [search, setSearch] = useState<string>("");
   const [searchResult, setSearchResult] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingChat, setLoadingChat] = useState<boolean>(false);
+  const [isSearchMode, setIsSearchMode] = useState<boolean>(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const {
-    setSelectedChat,
-    user,
-    notification,
-    setNotification,
-    chats,
-    setChats,
-  } = ChatState();
+  const { setSelectedChat, user, chats, setChats } = ChatState();
 
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { logout } = useLogout();
 
   const handleSearch = async () => {
     if (!search) {
@@ -84,7 +61,7 @@ function SideDrawer() {
       setSearchResult(data);
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred!",
         description: "Failed to Load the Search Results",
         status: "error",
         duration: 5000,
@@ -95,8 +72,6 @@ function SideDrawer() {
   };
 
   const accessChat = async (userId: string) => {
-    console.log(userId);
-
     try {
       setLoadingChat(true);
       const config = {
@@ -111,7 +86,7 @@ function SideDrawer() {
         setChats([data, ...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
-      onClose();
+      handleExitSearchMode();
     } catch (error) {
       toast({
         title: "Error fetching the chat",
@@ -124,101 +99,85 @@ function SideDrawer() {
     }
   };
 
+  const handleEnterSearchMode = () => {
+    setIsSearchMode(true);
+    onEnterSearchMode();
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 0);
+  };
+
+  const handleExitSearchMode = () => {
+    setIsSearchMode(false);
+    onExitSearchMode();
+    setSearch("");
+    setSearchResult([]);
+  };
+
   return (
     <>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        bg="white"
-        w="100%"
-        p="5px 10px 5px 10px"
-        // borderWidth="5px"
-      >
-        <Button variant="ghost" onClick={onOpen} w="100%">
-          <i className="fas fa-search"></i>
-          <Text display={{ base: "none", md: "flex" }} px={4}>
-            Search User
-          </Text>
-        </Button>
-        {/* <Text fontSize="2xl" fontFamily="Work sans">
-          Toly
-        </Text> */}
-        {/* <div>
-          <Menu>
-            <MenuButton p={1}>
-              <NotificationBadge
-                count={notification.length}
-                effect={Effect.SCALE}
-              />
-              <BellIcon fontSize="2xl" m={1} />
-            </MenuButton>
-            <MenuList pl={2}>
-              {!notification.length && "No New Messages"}
-              {notification.map((notif: any) => (
-                <MenuItem
-                  key={notif._id}
-                  onClick={() => {
-                    setSelectedChat(notif.chat);
-                    setNotification(notification.filter((n) => n !== notif));
-                  }}
-                >
-                  {notif.chat.isGroupChat
-                    ? `New Message in ${notif.chat.chatName}`
-                    : `New Message from ${getSender(user, notif.chat.users)}`}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
-              <Avatar
-                size="sm"
-                cursor="pointer"
-                name={user.name}
-                src={user.pic}
-              />
-            </MenuButton>
-            <MenuList>
-              <ProfileModal user={user}>
-                <MenuItem>My Profile</MenuItem>{" "}
-              </ProfileModal>
-              <MenuDivider />
-              <MenuItem onClick={logout}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
-        </div> */}
-      </Box>
-
-      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
-          <DrawerBody>
-            <Box display="flex" pb={2}>
+      {isSearchMode ? (
+        <Box p="10px" bg="white" w="100%" h="100vh">
+          <Flex mb="10px" alignItems="center">
+            <IconButton
+              icon={<ArrowBackIcon />}
+              onClick={handleExitSearchMode}
+              mr="10px"
+              aria-label="Back"
+              bg="none"
+              fontSize={20}
+            />
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon color="gray.300" />
+              </InputLeftElement>
               <Input
+                borderRadius={20}
+                ref={searchInputRef}
                 placeholder="Search by name or email"
-                mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onBlur={handleExitSearchMode}
+                onKeyUp={(e) => e.key === "Enter" && handleSearch()}
               />
-              <Button onClick={handleSearch}>Go</Button>
-            </Box>
-            {loading ? (
-              <ChatLoading />
-            ) : (
-              searchResult?.map((user: any) => (
-                <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => accessChat(user._id)}
-                />
-              ))
-            )}
-            {loadingChat && <Spinner ml="auto" display="flex" />}
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+            </InputGroup>
+          </Flex>
+          {loading ? (
+            <ChatLoading />
+          ) : (
+            searchResult?.map((user) => (
+              <UserListItem
+                key={user._id}
+                user={user}
+                handleFunction={() => accessChat(user._id)}
+              />
+            ))
+          )}
+          {loadingChat && <Spinner ml="auto" display="flex" />}
+        </Box>
+      ) : (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          bg="white"
+          w="100%"
+          p="10px"
+          borderBottom="1px solid lightgray"
+        >
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" />
+            </InputLeftElement>
+            <Input
+              placeholder="Search User"
+              onFocus={handleEnterSearchMode}
+              borderRadius={20}
+              borderColor={"lightgray"}
+            />
+          </InputGroup>
+        </Box>
+      )}
     </>
   );
 }
