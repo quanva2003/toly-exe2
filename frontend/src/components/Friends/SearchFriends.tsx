@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Input, List, Avatar, Button, message, Form, Empty } from "antd";
 import { ChatState } from "../../context/ChatProvider";
-
+import { SearchOutlined } from "@ant-design/icons";
 interface User {
   _id: string;
   name: string;
@@ -164,7 +164,9 @@ const SearchFriends: React.FC = () => {
           placeholder="Search friends by name"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          size="large"
           style={{ marginBottom: "20px" }}
+          prefix={<SearchOutlined />}
         />
       </Form>
       {submittedSearch && (

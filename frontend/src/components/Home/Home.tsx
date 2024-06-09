@@ -5,6 +5,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import TopExplore from "../Mainboard/TopExplore";
 import { useNavigate } from "react-router-dom";
 import SearchExplore from "../../pages/SearchExplore";
+import NewExplore from "./NewExplore";
 const Home = () => {
   const slides = [
     {
@@ -67,6 +68,7 @@ const Home = () => {
         </div>
       </div>
       <TopExplore />
+      <NewExplore />
     </div>
   );
 };

@@ -17,7 +17,6 @@ interface User {
   name: string;
   pic: string;
   mutualFriends: number;
-  // Add more properties as needed
 }
 
 interface Request {
@@ -133,7 +132,7 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
             <Grid item key={user._id} xs={2}>
               {" "}
               {/* Added class */}
-              <Card>
+              <Card className="card-user-search">
                 <CardContent>
                   <div className="user-search-detail">
                     <img

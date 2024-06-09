@@ -65,13 +65,13 @@
   gap: 1rem;
   align-items: center;
 }
-.ant-card-body {
+/* .ant-card-body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
   min-width: 300px;
-}
+} */
 .user-search-action {
   display: flex;
   flex-direction: row;

@@ -110,7 +110,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ChatState } from "../../context/ChatProvider";
 import {
   Container,
@@ -139,7 +139,7 @@ const FriendList = () => {
   const { user } = ChatState();
   const { id } = useParams();
   const [friends, setFriends] = useState<FriendsListProps[]>([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchFriend = async () => {
       try {
@@ -254,7 +254,10 @@ const FriendList = () => {
                 alt={friend.name}
                 sx={{ width: 50, height: 50 }}
               />
-              <Box sx={{ flex: 1, marginLeft: 2 }}>
+              <Box
+                sx={{ flex: 1, marginLeft: 2, cursor: "pointer" }}
+                onClick={() => navigate(`/profile/${friend._id}`)}
+              >
                 <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                   {friend.name}
                 </Typography>
