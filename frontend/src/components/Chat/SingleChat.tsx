@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Box, Text } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import "./styles.css";
 import { Avatar, IconButton, Spinner, useToast } from "@chakra-ui/react";
 import {
@@ -11,16 +11,24 @@ import {
 } from "../../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ChatState } from "../../context/ChatProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
+import SendIcon from "@mui/icons-material/Send";
 import ProfileModal from "./miscellaneous/ProfileModal";
+import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import Messages from "./Messages";
 
 import Lottie from "react-lottie";
 import animationData from "../../animations/typing.json";
 
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+
 import io from "socket.io-client";
-import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
-import { ChatState } from "../../context/ChatProvider";
 const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
@@ -31,7 +39,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
   const toast = useToast();
+
+  const { selectedChat, setSelectedChat, user, notification, setNotification } =
+    ChatState();
 
   const defaultOptions = {
     loop: true,
@@ -41,8 +54,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const { selectedChat, setSelectedChat, user, notification, setNotification } =
-    ChatState();
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -77,7 +88,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    if ((event.key === "Enter" || event.type === "click") && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -110,13 +121,47 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
+  const sendFile = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("chatId", selectedChat._id);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { data } = await axios.post("/api/message/file", formData, config);
+      socket.emit("new message", data);
+      setMessages([...messages, data]);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: "Failed to upload the file",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      sendFile(file);
+    }
+  };
+
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
-
     // eslint-disable-next-line
   }, []);
 
@@ -124,6 +169,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     fetchMessages();
 
     selectedChatCompare = selectedChat;
+    setNewMessage("");
+    setShowEmojiPicker(false);
     // eslint-disable-next-line
   }, [selectedChat]);
 
@@ -164,6 +211,28 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, timerLength);
   };
 
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    setNewMessage(newMessage + emoji.native);
+  };
+
+  const myRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (myRef.current && !myRef.current.contains(event.target as any)) {
+        setShowEmojiPicker(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [myRef]);
+
   return (
     <>
       {selectedChat ? (
@@ -174,7 +243,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             px={2}
             w="100%"
             borderBottom="0.5px solid lightgray"
-            // boxShadow="0 4px 2px -2px rgba(0, 0, 0, 0.2)"
             fontFamily="Work sans"
             display="flex"
             justifyContent={{ base: "space-between" }}
@@ -255,18 +323,65 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
-              <Input
-                variant="filled"
-                // bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+              <div
+                ref={myRef}
+                style={{ position: "absolute", bottom: "50px", zIndex: 1 }}
+              >
+                {showEmojiPicker && (
+                  <Picker
+                    data={data}
+                    onEmojiSelect={handleEmojiSelect}
+                    theme="light"
+                    previewPosition="none"
+                  />
+                )}
+              </div>
+              <Flex display="flex">
+                <IconButton
+                  aria-label="Emoji Picker"
+                  icon={<InsertEmoticonIcon />}
+                  variant="ghost"
+                  onClick={toggleEmojiPicker}
+                />
+                <IconButton
+                  aria-label="Sticker Picker"
+                  icon={<FontAwesomeIcon icon={faNoteSticky} fontSize={20} />}
+                  variant="ghost"
+                />
+                <input
+                  type="file"
+                  style={{ display: "none" }}
+                  id="file-input"
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="file-input">
+                  <IconButton
+                    aria-label="Attach Image"
+                    icon={<InsertPhotoIcon />}
+                    variant="ghost"
+                    as="span"
+                    mr={2}
+                  />
+                </label>
+                <Input
+                  variant="filled"
+                  borderRadius={20}
+                  // bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                />
+                <IconButton
+                  aria-label="Send Message"
+                  icon={<SendIcon />}
+                  variant="ghost"
+                  onClick={sendMessage}
+                />
+              </Flex>
             </FormControl>
           </Box>
         </>
       ) : (
-        // to get socket.io on same page
         <Box
           display="flex"
           alignItems="center"

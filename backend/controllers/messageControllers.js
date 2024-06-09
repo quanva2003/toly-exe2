@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const upload = require("../middleware/fileMiddleware");
 const Message = require("../models/message.model");
 const User = require("../models/user.model");
 const Chat = require("../models/chat.model");
@@ -54,4 +55,36 @@ const sendMessage = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { allMessages, sendMessage };
+const sendFile = asyncHandler(async (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: err });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    // const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    const fileUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+
+    try {
+      const message = await Message.create({
+        sender: req.user._id,
+        content: fileUrl,
+        chat: req.body.chatId,
+        file: true,
+      });
+
+      const populatedMessage = await message.populate('sender chat', 'name pic');
+      await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: populatedMessage });
+
+      res.status(200).json(populatedMessage);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  })
+})
+
+module.exports = { allMessages, sendMessage, sendFile };

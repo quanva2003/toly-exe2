@@ -154,7 +154,9 @@ const MyChats = ({ fetchAgain }) => {
                         {chat.latestMessage && (
                           <Text fontSize="xs">
                             {chat.latestMessage.sender.name}:{" "}
-                            {chat.latestMessage.content.length > 50
+                            {chat.latestMessage.file
+                              ? "sent a photo"
+                              : chat.latestMessage.content.length > 50
                               ? chat.latestMessage.content.substring(0, 51) +
                                 "..."
                               : chat.latestMessage.content}

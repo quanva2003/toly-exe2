@@ -3,6 +3,7 @@ import ScrollableFeed from "react-scrollable-feed";
 import moment from "moment";
 import { Avatar, Box, Tooltip } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
+import { Image } from "antd";
 
 const Messages = ({ messages }) => {
   const { user } = ChatState();
@@ -57,15 +58,31 @@ const Messages = ({ messages }) => {
               >
                 <Box
                   style={{
-                    backgroundColor: isCurrentUser ? "#243666" : "#bfefef",
+                    backgroundColor: message.file
+                      ? "none"
+                      : isCurrentUser
+                      ? "#243666"
+                      : "#bfefef",
                     color: isCurrentUser ? "#fff" : "#243666",
-                    padding: 10,
+                    padding: message.file ? 0 : 10,
                     borderRadius: 10,
                     maxWidth: "600px",
                     wordBreak: "break-word",
                   }}
                 >
-                  {message.content}
+                  {message.file ? (
+                    <Image
+                      src={message.content}
+                      alt="uploaded file"
+                      style={{
+                        maxHeight: "300px",
+                        maxWidth: "300px",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  ) : (
+                    message.content
+                  )}
                 </Box>
               </Tooltip>
             </div>

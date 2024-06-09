@@ -24,6 +24,8 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/explore", exploreRoutes);
 
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 // --------------------------deployment------------------------------
 
 const __dirname1 = path.resolve();
