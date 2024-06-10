@@ -15,6 +15,7 @@
   "author": "Piyush Agarwal",
   "license": "ISC",
   "dependencies": {
+    "@payos/node": "^1.0.6",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^9.0.2",

@@ -1,4 +1,3 @@
-import { ViewIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
@@ -22,6 +21,8 @@ import { ChatState } from "../../../context/ChatProvider.jsx";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 interface UpdateGroupChatModalProps {
   fetchMessages: () => void;
@@ -215,7 +216,7 @@ const UpdateGroupChatModal: React.FC<UpdateGroupChatModalProps> = ({
     <>
       <IconButton
         display={{ base: "flex" }}
-        icon={<ViewIcon />}
+        icon={<FontAwesomeIcon icon={faEllipsis} />}
         onClick={onOpen}
         aria-label={""}
       />

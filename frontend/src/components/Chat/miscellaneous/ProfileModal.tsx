@@ -1,4 +1,3 @@
-import { ViewIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
@@ -14,13 +13,21 @@ import {
   Image,
 } from "@chakra-ui/react";
 import React from "react";
-import LogoutButton from "../LogoutButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faCompass } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 // Define the type for the user object
 interface User {
+  _id: string;
   name: string;
   pic: string;
   email: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
 }
 
 // Define the props type
@@ -31,6 +38,7 @@ interface ProfileModalProps {
 
 const ProfileModal: React.FC<ProfileModalProps> = ({ user, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -39,7 +47,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ user, children }) => {
       ) : (
         <IconButton
           display={{ base: "flex" }}
-          icon={<ViewIcon />}
+          icon={<FontAwesomeIcon icon={faEllipsis} />}
           onClick={onOpen}
           aria-label={""}
         />
@@ -75,9 +83,15 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ user, children }) => {
               Email: {user.email}
             </Text>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter style={{ justifyContent: "space-between" }}>
             <Button onClick={onClose}>Close</Button>
-            <LogoutButton />
+            <Button
+              leftIcon={<FontAwesomeIcon icon={faCompass} />}
+              style={{ backgroundColor: "#bfefef" }}
+              onClick={() => navigate(`/explore`)}
+            >
+              Navigate Location
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

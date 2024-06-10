@@ -1,4 +1,4 @@
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import { Box, Flex, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getSender } from "../../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
-import { Avatar, Button, IconButton } from "@chakra-ui/react";
+import { Avatar, IconButton } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
 import React from "react";
 import moment from "moment";
@@ -85,7 +85,7 @@ const MyChats = ({ fetchAgain }) => {
           <IconButton
             aria-label="Create Group Chat"
             display="flex"
-            fontSize={{ base: "17px", md: "10px", lg: "20px" }}
+            fontSize={{ base: "17px", md: "20px", lg: "20px" }}
             icon={<EditIcon />}
             variant="ghost"
             borderRadius="20px"

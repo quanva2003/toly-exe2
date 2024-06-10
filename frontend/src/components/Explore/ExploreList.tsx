@@ -28,7 +28,7 @@ const ExploreList: React.FC<ExploreListProps> = ({
   return (
     <div style={{ height: "88vh", overflowY: "auto" }}>
       <Input
-        placeholder="Seacrh explore..."
+        placeholder="Search location..."
         prefix={<SearchIcon />}
         maxLength={300}
       />

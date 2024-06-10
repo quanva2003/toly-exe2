@@ -6,6 +6,7 @@ const friendRoutes = require("./routes/friendRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const exploreRoutes = require("./routes/exploreRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require("path");
@@ -23,6 +24,7 @@ app.use("/api/friend", friendRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/explore", exploreRoutes);
+app.use("/api/order", orderRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
