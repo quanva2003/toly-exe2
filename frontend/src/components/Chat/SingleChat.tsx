@@ -271,7 +271,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 </>
               ) : (
                 <>
-                  {selectedChat.chatName.toUpperCase()}
+                  <Box className="avatar-group-custom" display="flex">
+                    {selectedChat.users.slice(0, 2).map((userItem, index) => (
+                      <Avatar
+                        key={index}
+                        className={
+                          index === 0
+                            ? "avatar avatar-top-right"
+                            : "avatar avatar-bottom-left"
+                        }
+                        src={userItem.pic}
+                      />
+                    ))}
+                    <span style={{ marginLeft: "60px" }}>
+                      {selectedChat.chatName}
+                    </span>
+                  </Box>
                   <UpdateGroupChatModal
                     fetchMessages={fetchMessages}
                     fetchAgain={fetchAgain}

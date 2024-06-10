@@ -4,6 +4,7 @@ import moment from "moment";
 import { Avatar, Box, Tooltip } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
 import { Image } from "antd";
+import Linkify from "linkify-react";
 
 const Messages = ({ messages }) => {
   const { user } = ChatState();
@@ -81,7 +82,7 @@ const Messages = ({ messages }) => {
                       }}
                     />
                   ) : (
-                    message.content
+                    <Linkify>{message.content}</Linkify>
                   )}
                 </Box>
               </Tooltip>

@@ -1,4 +1,4 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Flex, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import { getSender } from "../../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
-import { Avatar, Button } from "@chakra-ui/react";
+import { Avatar, Button, IconButton } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
 import React from "react";
+import moment from "moment";
 import SideDrawer from "./miscellaneous/SideDrawer";
 import "./styles.css";
 
@@ -63,16 +64,17 @@ const MyChats = ({ fetchAgain }) => {
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
-      p={3}
       bg="white"
-      w={{ base: "100%", md: "31%" }}
+      w={{ base: "100%", md: "25%" }}
       borderRadius="lg"
       borderWidth="1px"
     >
       <Box
         px={3}
+        mt={3}
         fontSize={{ base: "28px", md: "30px" }}
-        fontFamily="Work sans"
+        // fontFamily="Work sans"
+        fontWeight="bold"
         display="flex"
         w="100%"
         justifyContent="space-between"
@@ -80,13 +82,14 @@ const MyChats = ({ fetchAgain }) => {
       >
         Chats
         <GroupChatModal>
-          <Button
+          <IconButton
+            aria-label="Create Group Chat"
             display="flex"
-            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-            rightIcon={<AddIcon />}
-          >
-            Create Group Chat
-          </Button>
+            fontSize={{ base: "17px", md: "10px", lg: "20px" }}
+            icon={<EditIcon />}
+            variant="ghost"
+            borderRadius="20px"
+          />
         </GroupChatModal>
       </Box>
       <SideDrawer
@@ -153,13 +156,18 @@ const MyChats = ({ fetchAgain }) => {
                         </Text>
                         {chat.latestMessage && (
                           <Text fontSize="xs">
-                            {chat.latestMessage.sender.name}:{" "}
+                            {chat.latestMessage.sender.name}
                             {chat.latestMessage.file
-                              ? "sent a photo"
-                              : chat.latestMessage.content.length > 50
-                              ? chat.latestMessage.content.substring(0, 51) +
-                                "..."
-                              : chat.latestMessage.content}
+                              ? " sent an image"
+                              : ": " +
+                                (chat.latestMessage.content.length > 50
+                                  ? chat.latestMessage.content.substring(
+                                      0,
+                                      51
+                                    ) + "..."
+                                  : chat.latestMessage.content)}
+                            {" · " +
+                              moment(chat.latestMessage.createdAt).fromNow()}
                           </Text>
                         )}
                       </Flex>
