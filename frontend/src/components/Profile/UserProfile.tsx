@@ -99,11 +99,11 @@ const UserProfile: React.FC = () => {
                 <h2>{userProfile.name}</h2>
                 <p>{userProfile.friends.length} friends</p>
               </div>
-              {userInfo?._id === userProfile._id ? (
+              {/* {userInfo?._id === userProfile._id ? (
                 <Button shape="circle" icon={<EditFilled />} />
               ) : (
                 <Button>Add friend</Button>
-              )}
+              )} */}
             </div>
           </div>
         </div>

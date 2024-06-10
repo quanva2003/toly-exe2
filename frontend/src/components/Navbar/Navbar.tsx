@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
       label: (
         <div
           onClick={() => navigate(`/profile/${user._id}`)}
-          className="login-link"
+          className="profile-link"
         >
           Profile
         </div>
@@ -113,7 +113,7 @@ const Navbar: React.FC = () => {
               <img
                 src={user.pic}
                 alt="Profile"
-                style={{ width: "40px", height: "40px" }}
+                style={{ width: "40px", height: "40px", borderRadius: "50px" }}
               />
             </a>
           </Dropdown>

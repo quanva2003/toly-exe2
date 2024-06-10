@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
-import UserImage from "../../assets/images/user-map.png";
+// import UserImage from "../../assets/images/user-map.png";
 const users = [
   {
     id: 1,
@@ -40,7 +40,7 @@ const places = [
   },
 ];
 
-const apiKey = "AIzaSyBNCZWA8OpV48m7sML5N8v68nRQyCu6NE0";
+const apiKey = "AIzaSyApCxLqCsVpq5Ig_9hklh2DZSgWnL8EJEg";
 
 const mapContainerStyle = {
   height: "88vh",
@@ -73,51 +73,56 @@ const DBtest = ({ center, selectedLocation }) => {
     googleMapsApiKey: apiKey,
   });
   const { user } = ChatState();
+  const userId = user._id;
+
   const [friends, setFriends] = useState<any>([]);
-  useEffect(() => {
-    const fetchFriend = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/friend", {
+  const [friendLists, setFriendLists] = useState<any>([]);
+  const fetchFriend = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/user/${userId}`,
+        {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        });
+        }
+      );
+      console.log(response.data);
 
-        const friendData = response.data.filter(
-          (friend) => friend.requester === user._id
-        );
-
-        const friendsInfo = await Promise.all(
-          friendData.map(async (friend) => {
-            try {
-              const res = await axios.get(
-                `http://localhost:5000/api/user/${friend.recipient._id}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${user.token}`,
-                  },
-                }
-              );
-
-              return res.data;
-            } catch (error) {
-              console.error(
-                `Error fetching data for friend ID ${friend.recipient}: `,
-                error.message
-              );
+      setFriends(response.data.friends);
+    } catch (error) {
+      console.log("Error: ", error.message);
+    }
+  };
+  const fetchFriendsDetails = async (friends) => {
+    try {
+      const friendDetails = await Promise.all(
+        friends.map(async (friendId) => {
+          const response = await axios.get(
+            `http://localhost:5000/api/user/${friendId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
             }
-          })
-        );
-
-        setFriends(friendsInfo);
-      } catch (error) {
-        console.log("Error: ", error.message);
-      }
-    };
-
+          );
+          return response.data;
+        })
+      );
+      setFriendLists(friendDetails);
+    } catch (error) {
+      console.log("Error fetching friends details: ", error.message);
+    }
+  };
+  useEffect(() => {
     fetchFriend();
-  }, [user]);
-  console.log(friends);
+  }, [userId]);
+  useEffect(() => {
+    if (friends.length > 0) {
+      fetchFriendsDetails(friends);
+    }
+  }, [friends]);
+  console.log(friendLists);
 
   return isLoaded ? (
     <div style={{ height: "80vh", width: "100%" }}>
@@ -143,13 +148,13 @@ const DBtest = ({ center, selectedLocation }) => {
             label={selectedLocation.name}
           />
         )} */}
-        {friends.map((friend) => (
+        {friendLists.map((friend) => (
           <Marker
             key={friend._id}
             position={{ lat: friend.position.lat, lng: friend.position.lng }}
             label={friend.name}
             icon={{
-              url: UserImage, // replace this with the path to your image
+              url: friend.pic, // replace this with the path to your image
               scaledSize: new window.google.maps.Size(50, 50), // adjust the size as needed
             }}
           />

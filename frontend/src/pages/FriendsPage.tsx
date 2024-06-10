@@ -34,10 +34,8 @@ const FriendsPage: React.FC = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  // Add state for selected menu item
   const [selectedKey, setSelectedKey] = useState("sub1");
 
-  // Function to handle menu click
   const handleMenuClick = (e: any) => {
     setSelectedKey(e.key);
   };

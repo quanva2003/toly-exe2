@@ -15,6 +15,7 @@ const LogoutButton: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            fontWeight: "500",
           }}
         >
           <BiLogOut
@@ -23,6 +24,8 @@ const LogoutButton: React.FC = () => {
               height: "24px",
               color: "black",
               cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
             }}
           />
           Logout

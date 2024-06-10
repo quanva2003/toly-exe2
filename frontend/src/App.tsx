@@ -18,9 +18,11 @@ import HomePage from "./pages/HomePage";
 import SearchExplore from "./pages/SearchExplore";
 import ExploreDetailPage from "./pages/ExploreDetailPage";
 import FriendsPage from "./pages/FriendsPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   const { user } = ChatState();
+  // console.log(user.isAdmin);
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -37,7 +39,20 @@ function App() {
             )
           }
         />
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+        <Route
+          path="/login"
+          element={
+            user ? (
+              user.isAdmin ? (
+                <Navigate to="/admin" />
+              ) : (
+                <Navigate to="/home" />
+              )
+            ) : (
+              <Login />
+            )
+          }
+        />
         <Route
           path="/signup"
           element={user ? <Navigate to="/" /> : <SignUp />}
@@ -53,6 +68,21 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/explore/:id" element={<ExploreDetailPage />} />
         <Route path="/friends" element={<FriendsPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        {/* <Route
+          path="/admin"
+          element={
+            user ? (
+              user.isAdmin ? (
+                <AdminPage />
+              ) : (
+                <Navigate to="/chats" />
+              )
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        /> */}
       </Routes>
       <Toaster />
     </div>

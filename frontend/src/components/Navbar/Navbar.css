@@ -46,7 +46,12 @@ nav {
   cursor: pointer;
   color: #3f4c74;
 }
-
+.profile-link {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 400;
+}
 .login-btn {
   border-radius: 10px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
