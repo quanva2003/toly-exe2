@@ -1,6 +1,7 @@
 import React from "react";
 import "./Tolymium.css";
-import { Button, Carousel, Tag } from "antd";
+import { Button, Carousel, Space, Tag } from "antd";
+import { CheckOutlined } from "@ant-design/icons";
 const contentStyle: React.CSSProperties = {
   height: "10px",
   width: "10px",
@@ -18,60 +19,95 @@ const Tolymium: React.FC = () => {
       <div className="pre">
         <h1 className="pre-header">Tolymium</h1>
         <div className="pre-detail">
-          {/* <Carousel autoplay>
-            <div>
-              <img
-                src="https://images.unsplash.com/photo-1614925861087-aa06270091b3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Image 1"
-                style={contentStyle}
-              />
-            </div>
-            <div>
-              <img
-                src="https://images.unsplash.com/photo-1614925861087-aa06270091b3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Image 2"
-                style={contentStyle}
-              />
-            </div>
-            <div>
-              <img
-                src="https://images.unsplash.com/photo-1614925861087-aa06270091b3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Image 3"
-                style={contentStyle}
-              />
-            </div>
-          </Carousel> */}
-          <div className="pre-price">
-            <div className="price-card">
-              <div className="price-des">
-                <div className="price-header">
-                  <h2 className="price-title">Month</h2>
-                  {/* <Tag color="#2db7f5">Free for student!</Tag> */}
-                </div>
-                {/* <p>For individuals that need advanced recording & editing.</p> */}
-              </div>
-              <div className="price">
-                <h1 className="price-number">49.000VND</h1>
-                <Button size="large" type="primary">
-                  Start
-                </Button>
+          <div className="price-card">
+            <div className="price-header">
+              <p className="pre-package-name">Free</p>
+              <div className="pre-package-price">
+                <h1 className="price-number">0đ</h1>
+                <p className="price-number-time">/month</p>
               </div>
             </div>
-            <div className="price-card">
-              <div className="price-des">
-                <div className="price-header">
-                  <h2 className="price-title">Year</h2>
-                  <Tag color="#2db7f5">Recommend!</Tag>
-                </div>
-                {/* <p>For individuals that need advanced recording & editing.</p> */}
-              </div>
-              <div className="price">
-                <h1 className="price-number">490.000VND</h1>
-                <Button size="large" type="primary">
-                  Start
-                </Button>
+            <div className="pre-description">
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+            </div>
+            <button className="trial-btn">USE FREE</button>
+          </div>
+          <div className="price-card">
+            <div className="price-header">
+              <p className="pre-package-name">Tolymium</p>
+              <div className="pre-package-price">
+                <h1 className="price-number">49.000đ</h1>
+                <p className="price-number-time">/months</p>
               </div>
             </div>
+            <div className="pre-description">
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+            </div>
+            <button className="trial-btn">USE TOLYMIUM</button>
+          </div>
+          <div className="price-card">
+            <div className="price-header">
+              <p className="pre-package-name">Tolymium</p>
+              <div className="pre-package-price">
+                <h1 className="price-number">490.000đ</h1>
+                <p className="price-number-time">/year</p>
+              </div>
+            </div>
+            <div className="pre-description">
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+              <Space align="center" size="middle">
+                <CheckOutlined /> Some description of this package
+              </Space>
+            </div>
+            <button className="trial-btn">USE TOLYMIUM</button>
           </div>
         </div>
       </div>
