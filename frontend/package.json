@@ -26,6 +26,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
+    "@payos/node": "^1.0.6",
     "@react-google-maps/api": "^2.19.3",
     "antd": "^5.17.2",
     "axios": "^1.6.8",
@@ -48,6 +49,8 @@
     "react-lottie": "^1.2.4",
     "react-router-dom": "^6.23.1",
     "react-scrollable-feed": "^2.0.2",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.7.4",
     "styled-components": "^6.1.9",
     "yup": "^1.4.0"

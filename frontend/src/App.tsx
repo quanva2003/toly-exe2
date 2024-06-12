@@ -19,6 +19,9 @@ import SearchExplore from "./pages/SearchExplore";
 import ExploreDetailPage from "./pages/ExploreDetailPage";
 import FriendsPage from "./pages/FriendsPage";
 import AdminPage from "./pages/AdminPage";
+import TolymiumPage from "./pages/TolymiumPage";
+import SuccessPage from "./pages/ResultPage/SuccessPage";
+import FailPage from "./pages/ResultPage/FailPage";
 
 function App() {
   const { user } = ChatState();
@@ -69,6 +72,10 @@ function App() {
         <Route path="/explore/:id" element={<ExploreDetailPage />} />
         <Route path="/friends" element={<FriendsPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/tolymium" element={<TolymiumPage />} />
+        <Route path="/successPay" element={<SuccessPage />} />
+        <Route path="/failPay" element={<FailPage />} />
+
         {/* <Route
           path="/admin"
           element={

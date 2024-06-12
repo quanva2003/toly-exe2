@@ -14,6 +14,27 @@ const contentStyle: React.CSSProperties = {
 };
 
 const Tolymium: React.FC = () => {
+  const handleButtonClick = async (amount, description) => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/create-payment-link",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: amount,
+            description: description,
+          }),
+        }
+      );
+      const data = await response.json();
+      window.location.href = data.checkoutUrl;
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
   return (
     <div className="pre-container">
       <div className="pre">
@@ -77,7 +98,12 @@ const Tolymium: React.FC = () => {
                 <CheckOutlined /> Some description of this package
               </Space>
             </div>
-            <button className="trial-btn">USE TOLYMIUM</button>
+            <button
+              className="trial-btn"
+              onClick={() => handleButtonClick(49000, "Payment for Tolymium ")}
+            >
+              USE TOLYMIUM
+            </button>
           </div>
           <div className="price-card">
             <div className="price-header">
@@ -107,7 +133,12 @@ const Tolymium: React.FC = () => {
                 <CheckOutlined /> Some description of this package
               </Space>
             </div>
-            <button className="trial-btn">USE TOLYMIUM</button>
+            <button
+              className="trial-btn"
+              onClick={() => handleButtonClick(490000, "Payment for Tolymium ")}
+            >
+              USE TOLYMIUM
+            </button>
           </div>
         </div>
       </div>

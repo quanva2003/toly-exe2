@@ -12,6 +12,8 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require("path");
 const cors = require("cors");
 
+const PayOS = require("@payos/node");
+
 dotenv.config();
 connectDB();
 const app = express();
@@ -28,6 +30,50 @@ app.use("/api/order", orderRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
+const payOS = new PayOS(
+  "b3ceb827-00af-4af8-bc55-1b02281df434",
+  "7964573e-1cd8-4790-9b99-dbcf8bf9bef4",
+  "a1803813477cfdedff4b8dc761e015e885f1ee79945052b80304c7d9e734eb3b"
+);
+
+const YOUR_DOMAIN = "http://localhost:3000";
+
+app.post("/create-payment-link", async (req, res) => {
+  try {
+    const { amount, description } = req.body;
+
+    if (!amount || !description) {
+      return res
+        .status(400)
+        .json({ error: "Amount and description are required." });
+    }
+
+    const order = {
+      amount: amount,
+      description: description,
+      orderCode: Date.now(),
+      returnUrl: `${YOUR_DOMAIN}/successPay`,
+      cancelUrl: `${YOUR_DOMAIN}/failPay`,
+    };
+
+    const paymentLink = await payOS.createPaymentLink(order);
+    res.json({ checkoutUrl: paymentLink.checkoutUrl });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to create payment link" });
+  }
+});
+
+app.post("/cancel-payment-link", async (req, res) => {
+  const orderCode = req.body.orderCode; // assuming you pass the orderCode in the request body
+  try {
+    const cancellationResult = await payOS.cancelPaymentLink(orderCode);
+    res.json({ result: cancellationResult });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to cancel payment link" });
+  }
+});
 // --------------------------deployment------------------------------
 
 const __dirname1 = path.resolve();

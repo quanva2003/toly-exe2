@@ -3,10 +3,11 @@ import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
 import LogoutButton from "../Chat/LogoutButton";
-import { Dropdown, MenuProps, Space } from "antd";
-import { MessageFilled, TeamOutlined } from "@ant-design/icons";
+import { Badge, Dropdown, MenuProps, Space } from "antd";
+import { MessageFilled, TeamOutlined, StarOutlined } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
-
+import axios from "axios";
+import DiamondOutlinedIcon from "@mui/icons-material/DiamondOutlined";
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { user } = ChatState();
@@ -15,7 +16,29 @@ const Navbar: React.FC = () => {
   const profileData = JSON.parse(localStorage.getItem("chat-user") || "{}");
   const profilePic = profileData.pic;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (user && user._id && user.token) {
+      const fetchUserProfile = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/user/${user._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+          setUserProfile(response.data);
+        } catch (error) {
+          console.error("Error fetching user profile", error);
+        }
+      };
+      fetchUserProfile();
+    }
+  }, [user]);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -54,6 +77,16 @@ const Navbar: React.FC = () => {
       key: "1",
     },
   ];
+  console.log(userProfile);
+  const renderBadge = () => {
+    if (user.accountType === "premium_month") {
+      return <StarOutlined />;
+    } else if (user.accountType === "premium_year") {
+      return <DiamondOutlinedIcon />;
+    }
+    return null;
+  };
+
   return (
     <nav
       style={
@@ -100,6 +133,12 @@ const Navbar: React.FC = () => {
       ) : (
         <div className="login">
           <Link
+            to="/tolymium"
+            style={{ textDecoration: "none", color: "unset" }}
+          >
+            <DiamondOutlinedIcon fontSize="inherit" className="mess-icon" />
+          </Link>
+          <Link
             to="/friends"
             style={{ textDecoration: "none", color: "unset" }}
           >
@@ -109,13 +148,19 @@ const Navbar: React.FC = () => {
             <MessageFilled className="mess-icon" />
           </Link>
           <Dropdown menu={{ items }} trigger={["click"]}>
-            <a onClick={(e) => e.preventDefault()}>
-              <img
-                src={user.pic}
-                alt="Profile"
-                style={{ width: "40px", height: "40px", borderRadius: "50px" }}
-              />
-            </a>
+            <Badge count={<DiamondOutlinedIcon />}>
+              <a onClick={(e) => e.preventDefault()}>
+                <img
+                  src={profilePic || user.pic}
+                  alt="Profile"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50px",
+                  }}
+                />
+              </a>
+            </Badge>
           </Dropdown>
         </div>
       )}

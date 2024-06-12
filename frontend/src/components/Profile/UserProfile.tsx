@@ -15,11 +15,12 @@ interface UserProfileProps {
 }
 
 const UserProfile: React.FC = () => {
-  const storedUserInfo = localStorage.getItem("userInfo");
-  const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
+  // const storedUserInfo = localStorage.getItem("userInfo");
+  // const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
 
   const { user } = ChatState();
   const { id } = useParams<{ id: string }>();
+  console.log(user);
 
   const [userProfile, setUserProfile] = useState<UserProfileProps | null>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -81,10 +82,11 @@ const UserProfile: React.FC = () => {
   if (!userProfile) {
     return <div>Loading...</div>;
   }
+  console.log(userProfile);
 
   return (
     <div className="profile-container">
-      <div className="profile-header" style={{ height: `${headerHeight}px` }}>
+      <div className="profile-header">
         <div className="profile-limited">
           <div className="profile-bg"></div>
           <div className="profile-info">
@@ -92,7 +94,7 @@ const UserProfile: React.FC = () => {
               src={userProfile.pic}
               alt={userProfile.name}
               className="avatar"
-              style={{ height: `${avatarSize}px`, width: `${avatarSize}px` }}
+              // style={{ height: `${avatarSize}px`, width: `${avatarSize}px` }}
             />
             <div className="user-detail">
               <div className="user-name">
