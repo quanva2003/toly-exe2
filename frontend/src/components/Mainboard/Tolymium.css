@@ -80,10 +80,40 @@ h1.price-number {
 }
 
 .trial-btn {
-  background-color: #54b4b9;
+  position: relative;
+  display: inline-block;
   font-weight: 700;
   border-radius: 50px;
   margin-top: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #54b4b9;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color 1s;
+}
+
+.trial-btn:hover {
+  background-color: #243666;
+}
+
+.trial-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -200%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(135deg);
+  transition: left 1s;
+}
+
+.trial-btn:hover::before {
+  left: 100%;
 }
 
 @media only screen and (max-width: 768px) {

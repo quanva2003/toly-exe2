@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/user.model.js");
 const generateToken = require("../config/generateToken");
-const bcrypt = require("bcryptjs");
 
 //@description     Get or Search all users
 //@route           GET /api/user?search=
@@ -9,11 +8,11 @@ const bcrypt = require("bcryptjs");
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
+      $or: [
+        { name: { $regex: req.query.search, $options: "i" } },
+        { email: { $regex: req.query.search, $options: "i" } },
+      ],
+    }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -71,6 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
     pic,
     position,
+    accountType
   });
 
   if (user) {
@@ -81,6 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       pic: user.pic,
       position: user.position,
+      accountType: user.accountType,
       token: generateToken(user._id),
     });
   } else {
@@ -104,6 +105,7 @@ const authUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       pic: user.pic,
       position: user.position,
+      accountType: user.accountType,
       token: generateToken(user._id),
     });
   } else {

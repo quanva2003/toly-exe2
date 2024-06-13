@@ -86,6 +86,7 @@ const Navbar: React.FC = () => {
     }
     return null;
   };
+  console.log("SSAĐÂ:", user);
 
   return (
     <nav
@@ -148,7 +149,8 @@ const Navbar: React.FC = () => {
             <MessageFilled className="mess-icon" />
           </Link>
           <Dropdown menu={{ items }} trigger={["click"]}>
-            <Badge count={<DiamondOutlinedIcon />}>
+            {/* <Badge count={<DiamondOutlinedIcon />}> */}
+            <Badge count={renderBadge()}>
               <a onClick={(e) => e.preventDefault()}>
                 <img
                   src={profilePic || user.pic}

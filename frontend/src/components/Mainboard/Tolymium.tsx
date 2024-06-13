@@ -2,6 +2,8 @@ import React from "react";
 import "./Tolymium.css";
 import { Button, Carousel, Space, Tag } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
+import { ChatState } from "../../context/ChatProvider";
+import axios from "axios";
 const contentStyle: React.CSSProperties = {
   height: "10px",
   width: "10px",
@@ -14,27 +16,30 @@ const contentStyle: React.CSSProperties = {
 };
 
 const Tolymium: React.FC = () => {
-  const handleButtonClick = async (amount, description) => {
+  const { user } = ChatState();
+
+  const handleButtonClick = async (amount, description, type) => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/create-payment-link",
+      const { data } = await axios.post(
+        "http://localhost:5000/api/order/create-payment-link",
         {
-          method: "POST",
+          amount: amount,
+          description: description,
+          type: type,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
           },
-          body: JSON.stringify({
-            amount: amount,
-            description: description,
-          }),
         }
       );
-      const data = await response.json();
       window.location.href = data.checkoutUrl;
     } catch (error) {
       console.error("Fetch error:", error);
     }
   };
+
   return (
     <div className="pre-container">
       <div className="pre">
@@ -100,9 +105,19 @@ const Tolymium: React.FC = () => {
             </div>
             <button
               className="trial-btn"
-              onClick={() => handleButtonClick(49000, "Payment for Tolymium ")}
+              onClick={() => {
+                if (user.accountType !== "premium_month") {
+                  handleButtonClick(
+                    2000,
+                    "Payment for Tolymium ",
+                    "premium_month"
+                  );
+                }
+              }}
             >
-              USE TOLYMIUM
+              {user.accountType === "premium_month"
+                ? "YOUR CURRENT PLAN"
+                : "USE TOLYMIUM"}
             </button>
           </div>
           <div className="price-card">
@@ -135,9 +150,19 @@ const Tolymium: React.FC = () => {
             </div>
             <button
               className="trial-btn"
-              onClick={() => handleButtonClick(490000, "Payment for Tolymium ")}
+              onClick={() => {
+                if (user.accountType !== "premium_year") {
+                  handleButtonClick(
+                    490000,
+                    "Payment for Tolymium ",
+                    "premium_year"
+                  );
+                }
+              }}
             >
-              USE TOLYMIUM
+              {user.accountType === "premium_year"
+                ? "YOUR CURRENT PLAN"
+                : "USE TOLYMIUM"}
             </button>
           </div>
         </div>

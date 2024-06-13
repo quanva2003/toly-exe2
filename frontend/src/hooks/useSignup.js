@@ -80,6 +80,7 @@ const useSignup = () => {
           confirmPassword,
           pic,
           position,
+          accountType,
         }),
       });
 
