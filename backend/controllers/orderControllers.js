@@ -78,7 +78,7 @@ const buyPremium = asyncHandler(async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Failed to create payment link" });
   }
-})
+});
 
 const cancelPremium = asyncHandler(async (req, res) => {
   const orderCode = req.body.orderCode; // assuming you pass the orderCode in the request body
@@ -89,6 +89,17 @@ const cancelPremium = asyncHandler(async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Failed to cancel payment link" });
   }
-})
+});
 
-module.exports = { getOrderList, purchaseOrder, buyPremium, cancelPremium };
+const getPaymentInfo = asyncHandler(async (req, res) => {
+  const order = req.params.id;
+  try {
+    const paymentInfo = await payOS.getPaymentLinkInformation(order);
+    res.status(200).json(paymentInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to get payment link info" });
+  }
+});
+
+module.exports = { getOrderList, purchaseOrder, buyPremium, cancelPremium, getPaymentInfo };

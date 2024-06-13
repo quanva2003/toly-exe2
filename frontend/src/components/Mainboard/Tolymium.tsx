@@ -40,6 +40,17 @@ const Tolymium: React.FC = () => {
     }
   };
 
+  const handleGetLink = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `https://api-merchant.payos.vn/v2/payment-requests/${id}`
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="pre-container">
       <div className="pre">
@@ -150,15 +161,16 @@ const Tolymium: React.FC = () => {
             </div>
             <button
               className="trial-btn"
-              onClick={() => {
-                if (user.accountType !== "premium_year") {
-                  handleButtonClick(
-                    490000,
-                    "Payment for Tolymium ",
-                    "premium_year"
-                  );
-                }
-              }}
+              // onClick={() => {
+              //   if (user.accountType !== "premium_year") {
+              //     handleButtonClick(
+              //       490000,
+              //       "Payment for Tolymium ",
+              //       "premium_year"
+              //     );
+              //   }
+              // }}
+              onClick={() => handleGetLink("1718254559615")}
             >
               {user.accountType === "premium_year"
                 ? "YOUR CURRENT PLAN"
