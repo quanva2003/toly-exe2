@@ -137,7 +137,6 @@ function SideDrawer({ onEnterSearchMode, onExitSearchMode }: SideDrawerProps) {
                 placeholder="Search by name or email"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                onBlur={handleExitSearchMode}
                 onKeyUp={(e) => e.key === "Enter" && handleSearch()}
               />
             </InputGroup>

@@ -2,25 +2,25 @@ const express = require("express");
 const { protect } = require("../middleware/authMiddleware");
 const {
   getOrderList,
-  purchaseOrder,
   buyPremium,
   cancelPremium,
   getPaymentInfo,
-  getAllOrders,
+  getPremiumInfo,
+  createOrder,
 } = require("../controllers/orderControllers");
 
 const router = express.Router();
 
-router.route("/all-orders").get(protect, getAllOrders);
+router.route("/premium-feature").get(protect, getPremiumInfo);
 
 router.route("/order-history").get(protect, getOrderList);
 
-router.route("/purchase").get(protect, purchaseOrder);
+router.route("/create-order/:id").post(protect, createOrder);
 
 router.route("/create-payment-link").post(protect, buyPremium);
 
 router.route("/cancel-payment-link").post(protect, cancelPremium);
 
-router.route("/get-payment-link-info/:id").get(getPaymentInfo);
+router.route("/get-payment-link-info/:id").get(protect, getPaymentInfo);
 
 module.exports = router;

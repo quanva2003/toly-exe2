@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Chat = require("../models/chat.model");
 const User = require("../models/user.model");
+const Premium = require("../models/premium.model");
 
 //@description     Create or fetch One to One Chat
 //@route           POST /api/chat/
@@ -78,6 +79,7 @@ const fetchChats = asyncHandler(async (req, res) => {
 //@route           POST /api/chat/group
 //@access          Protected
 const createGroupChat = asyncHandler(async (req, res) => {
+  let createCount = req.body.count;
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ message: "Please Fill all the feilds" });
   }
@@ -92,6 +94,10 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
   users.push(req.user);
 
+  if (createCount <= 0) {
+    return res.status(400).send("No more group chats allowed");
+  }
+
   try {
     const groupChat = await Chat.create({
       chatName: req.body.name,
@@ -103,6 +109,8 @@ const createGroupChat = asyncHandler(async (req, res) => {
     const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
       .populate("users", "-password")
       .populate("groupAdmin", "-password");
+
+    await Premium.findOneAndUpdate({ subscriber: req.user._id }, { numOfCreateGroupChat: createCount - 1 });
 
     res.status(200).json(fullGroupChat);
   } catch (error) {

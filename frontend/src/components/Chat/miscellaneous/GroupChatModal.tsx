@@ -14,7 +14,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChatState } from "../../../context/ChatProvider.jsx";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
@@ -31,10 +31,16 @@ interface User {
   name: string;
 }
 
+interface PremiumCount {
+  _id: string;
+  numOfCreateGroupChat: number;
+}
+
 const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState<string>("");
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [premiumCount, setPremiumCount] = useState<PremiumCount>();
   const [search, setSearch] = useState<string>("");
   const [searchResult, setSearchResult] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -104,6 +110,16 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
       return;
     }
 
+    if (premiumCount && premiumCount.numOfCreateGroupChat <= 0) {
+      toast({
+        title: "You have no attempts left to create a group chat",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+      return;
+    }
     try {
       const config = {
         headers: {
@@ -114,6 +130,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
         `/api/chat/group`,
         {
           name: groupChatName,
+          count: premiumCount?.numOfCreateGroupChat,
           users: JSON.stringify(selectedUsers.map((u) => u._id)),
         },
         config
@@ -130,7 +147,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
     } catch (error) {
       toast({
         title: "Failed to Create the Chat!",
-        description: error.response.data,
+        description: error.response.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -138,6 +155,27 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
       });
     }
   };
+
+  useEffect(() => {
+    const fetchPremium = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:5000/api/order/premium-feature",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+        setPremiumCount(data[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPremium();
+  }, [premiumCount]);
 
   return (
     <>
@@ -194,7 +232,11 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
                 ))
             )}
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter bg="none" justifyContent="space-between">
+            <span style={{ fontWeight: "bold" }}>
+              Numbers of group chat: {premiumCount?.numOfCreateGroupChat} times
+              left
+            </span>
             <Button onClick={handleSubmit} colorScheme="blue">
               Create Chat
             </Button>

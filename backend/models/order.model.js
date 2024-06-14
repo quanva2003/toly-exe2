@@ -6,6 +6,10 @@ const orderSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    orderId: {
+      type: String,
+      required: true,
+    },
     type: {
       type: String,
       enum: ['premium_month', 'premium_year'],

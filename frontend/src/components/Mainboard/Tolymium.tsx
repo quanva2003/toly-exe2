@@ -41,17 +41,6 @@ const Tolymium: React.FC = () => {
     }
   };
 
-  const handleGetLink = async (id) => {
-    try {
-      const { data } = await axios.get(
-        `https://api-merchant.payos.vn/v2/payment-requests/${id}`
-      );
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="pre-container">
       <div className="pre">

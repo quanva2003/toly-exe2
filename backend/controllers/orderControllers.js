@@ -1,16 +1,19 @@
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 const PayOS = require("@payos/node");
-const User = require("../models/user.model.js");
 const Order = require("../models/order.model.js");
+const Premium = require("../models/premium.model.js");
+const User = require("../models/user.model.js");
 
-const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate("purchaser", "name email pic");
+const getPremiumInfo = asyncHandler(async (req, res) => {
+  const { _id: currentUser } = req.user;
+  const premiumInfo = await Premium.find({ subscriber: currentUser })
 
-  if (!orders || orders.length === 0) {
+  if (!premiumInfo || premiumInfo.length === 0) {
     return res.status(404).json({ message: "No orders found" });
   }
 
-  res.status(200).json(orders);
+  res.status(200).json(premiumInfo);
 });
 
 const getOrderList = asyncHandler(async (req, res) => {
@@ -33,22 +36,60 @@ const getOrderList = asyncHandler(async (req, res) => {
   }
 });
 
-const purchaseOrder = asyncHandler(async (req, res) => {
+const createOrder = asyncHandler(async (req, res) => {
   const { _id: currentUser } = req.user;
-  const { type } = req.body;
+  const { id: orderCode } = req.params;
+  const { amount, createdAt } = req.body;
+
+  const subscriptionExpire = new Date(createdAt);
+  const planType = amount === 2000 ? "premium_month" : "premium_year";
+  subscriptionExpire.setMonth(subscriptionExpire.getMonth() + 1);
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    await User.findByIdAndUpdate(currentUser, { accountType: type });
+    const existOrder = await Order.findOne({ orderId: orderCode }).session(session);
 
-    const order = await Order.create({
-      purchaser: currentUser,
-      type: req.params.id,
-    });
+    if (existOrder) {
+      throw new Error("Order already existed!");
+    }
 
-    res.status(200).json(order);
+    const order = await Order.create(
+      [{
+        purchaser: currentUser,
+        orderId: orderCode,
+        type: planType,
+      }],
+      { session }
+    );
+
+    const user = await User.findByIdAndUpdate(currentUser,
+      { accountType: planType },
+      { new: true, upsert: true, session }
+    );
+
+    const premium = await Premium.findOneAndUpdate(
+      { subscriber: currentUser },
+      {
+        subscriber: currentUser,
+        premiumType: planType,
+        numOfNavigate: amount === 2000 ? 20 : 300,
+        numOfCreateGroupChat: amount === 2000 ? 5 : 10,
+        subscriptionDate: createdAt,
+        subscriptionExpire: subscriptionExpire,
+      },
+      { new: true, upsert: true, session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.status(200).json({ user: user, order: order, premium: premium });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Server error" });
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -61,10 +102,20 @@ const payOS = new PayOS(
 
 const YOUR_DOMAIN = "http://localhost:3000";
 
+const getPaymentInfo = asyncHandler(async (req, res) => {
+  const orderId = req.params.id;
+  try {
+    const paymentInfo = await payOS.getPaymentLinkInformation(orderId);
+    res.status(200).json(paymentInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to get payment link info" });
+  }
+});
+
 const buyPremium = asyncHandler(async (req, res) => {
   try {
-    const { amount, description, type } = req.body;
-    const { _id: currentUser } = req.user;
+    const { amount, description } = req.body;
 
     if (!amount || !description) {
       return res
@@ -81,11 +132,6 @@ const buyPremium = asyncHandler(async (req, res) => {
     };
 
     const paymentLink = await payOS.createPaymentLink(order);
-    await User.findByIdAndUpdate(currentUser, { accountType: type });
-    await Order.create({
-      purchaser: currentUser,
-      type: type,
-    });
     res.json({ checkoutUrl: paymentLink.checkoutUrl });
   } catch (error) {
     console.error(error);
@@ -104,21 +150,10 @@ const cancelPremium = asyncHandler(async (req, res) => {
   }
 });
 
-const getPaymentInfo = asyncHandler(async (req, res) => {
-  const order = req.params.id;
-  try {
-    const paymentInfo = await payOS.getPaymentLinkInformation(order);
-    res.status(200).json(paymentInfo);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to get payment link info" });
-  }
-});
-
 module.exports = {
-  getAllOrders,
+  getPremiumInfo,
   getOrderList,
-  purchaseOrder,
+  createOrder,
   buyPremium,
   cancelPremium,
   getPaymentInfo,

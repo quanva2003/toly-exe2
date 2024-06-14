@@ -32,14 +32,10 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: ['free', 'premium_month', 'premium_year'],
       default: 'free',
-      required: true,
     },
-    subscriptionDate: {
-      type: Date,
-      default: null,
-    },
-    subscriptionExpire: {
-      type: Date,
+    premiumPlan: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Premium",
       default: null,
     },
   },

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const FailPay: React.FC = () => {
   const navigate = useNavigate();
+
   return (
     <Result
       status="warning"

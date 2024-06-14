@@ -16,6 +16,7 @@ const useSignup = () => {
     pic,
     position,
     accountType,
+    premiumPlan,
   }) => {
     const success = handleInputErrors({
       email,
@@ -82,6 +83,7 @@ const useSignup = () => {
           pic,
           position,
           accountType,
+          premiumPlan,
         }),
       });
 

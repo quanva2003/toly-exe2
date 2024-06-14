@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 const User = require("../models/user.model.js");
 const generateToken = require("../config/generateToken");
+const Premium = require("../models/premium.model.js");
 
 //@description     Get or Search all users
 //@route           GET /api/user?search=
@@ -8,11 +10,11 @@ const generateToken = require("../config/generateToken");
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
+      $or: [
+        { name: { $regex: req.query.search, $options: "i" } },
+        { email: { $regex: req.query.search, $options: "i" } },
+      ],
+    }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -57,36 +59,57 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Please Enter all the Feilds");
   }
 
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ email: email });
 
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");
   }
 
-  const user = await User.create({
-    name,
-    email,
-    password,
-    pic,
-    position,
-    accountType: "free",
-  });
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  if (user) {
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      pic: user.pic,
-      position: user.position,
-      accountType: user.accountType,
-      token: generateToken(user._id),
+  try {
+    const user = await User.create({
+      name,
+      email,
+      password,
+      pic,
+      position,
     });
-  } else {
-    res.status(400);
-    throw new Error("User not found");
+
+    const newPremium = await Premium.create({
+      subscriber: user._id,
+    });
+
+    user.premiumPlan = newPremium._id;
+    await user.save();
+
+    if (user) {
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        pic: user.pic,
+        position: user.position,
+        accountType: user.accountType,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(400);
+      throw new Error("User not found");
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+
+    console.error(error);
+    res.status(500).json({ message: "Failed!" });
   }
 });
 
