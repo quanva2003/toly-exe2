@@ -35,7 +35,16 @@ interface User {
   name: string;
   pic: string;
   email: string;
+  createdAt: string;
 }
+interface Order {
+  _id: string;
+  purchaser: User;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const Dashboard = () => {
   // Sample data for the statistics
   const stats = {
@@ -46,12 +55,12 @@ const Dashboard = () => {
   };
 
   // Sample data for the chart
-  const chartData = {
+  const [chartData, setChartData] = useState({
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
       {
         label: "Revenue in USD",
-        data: [5000, 6000, 7000, 8000, 7500, 8500, 9000],
+        data: [],
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         yAxisID: "y",
@@ -64,7 +73,7 @@ const Dashboard = () => {
         yAxisID: "y1",
       },
     ],
-  };
+  });
 
   const chartOptions = {
     responsive: true,
@@ -92,6 +101,8 @@ const Dashboard = () => {
   const { user } = ChatState();
   const [users, setUsers] = useState<User[]>([]);
   const [usersOfWeek, setUsersOfWeek] = useState<User[]>([]);
+  // const [orders, setOrders] = useState<Order[]>([]);
+  const [orderData, setOrderData] = useState<Order[]>([]);
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/user", {
@@ -105,6 +116,8 @@ const Dashboard = () => {
       oneWeekAgo.setDate(now.getDate() - 7);
 
       const usersData = response.data;
+      console.log(usersData);
+
       const usersThisWeek = usersData.filter(
         (user) => new Date(user.createdAt) > oneWeekAgo
       );
@@ -116,9 +129,93 @@ const Dashboard = () => {
       console.error("Error fetching data from API", error);
     }
   };
+
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/order/all-orders",
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      const ordersData = response.data;
+      console.log(ordersData);
+      // setOrders(ordersData);
+
+      // Filter orders by type and calculate revenue
+      const filteredOrders = ordersData.filter(
+        (order) =>
+          order.type === "premium_month" || order.type === "premium_year"
+      );
+
+      setOrderData(filteredOrders);
+    } catch (error) {
+      console.error("Error fetching orders from API", error);
+    }
+  };
   useEffect(() => {
     fetchData();
+    fetchOrders();
   }, []);
+  const getRevenueData = (interval: string) => {
+    const now = new Date();
+    const startDate = new Date();
+
+    switch (interval) {
+      case "week":
+        startDate.setDate(now.getDate() - 7);
+        break;
+      case "month":
+        startDate.setMonth(now.getMonth() - 1);
+        break;
+      case "half-year":
+        startDate.setMonth(now.getMonth() - 6);
+        break;
+      case "year":
+        startDate.setFullYear(now.getFullYear() - 1);
+        break;
+      default:
+        startDate.setDate(now.getDate() - 7);
+        break;
+    }
+
+    const filteredOrders = orderData.filter(
+      (order) => new Date(order.createdAt) > startDate
+    );
+
+    // Calculate total revenue for each interval
+    const revenueData: number[] = [];
+    for (let i = 0; i < chartData.labels.length; i++) {
+      const startDateLabel = new Date(chartData.labels[i]);
+      const endDateLabel = new Date(chartData.labels[i + 1] || now);
+
+      const revenue = filteredOrders.reduce((totalRevenue, order) => {
+        const orderDate = new Date(order.createdAt);
+        if (orderDate >= startDateLabel && orderDate < endDateLabel) {
+          if (order.type === "premium_month") {
+            return totalRevenue + 29000; // Adjust this based on your actual revenue calculation
+          } else if (order.type === "premium_year") {
+            return totalRevenue + 290000; // Adjust this based on your actual revenue calculation
+          }
+        }
+        return totalRevenue;
+      }, 0);
+
+      revenueData.push(revenue);
+    }
+
+    return revenueData;
+  };
+
+  // Update chart data with revenue based on selected interval
+  useEffect(() => {
+    const updatedChartData = { ...chartData };
+    updatedChartData.datasets[0].data = getRevenueData("month");
+    setChartData(updatedChartData);
+  }, [orderData]);
 
   // useEffect(() => {
   //   fetchUsersOfWeek();
@@ -189,7 +286,7 @@ const Dashboard = () => {
                 padding: 8,
               }}
             />
-            <Statistic title="Total Users" value={stats.totalUsers} />
+            <Statistic title="Total Users" value={users.length} />
           </Space>
         </Card>
       </div>

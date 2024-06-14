@@ -17,6 +17,7 @@ const contentStyle: React.CSSProperties = {
 
 const Tolymium: React.FC = () => {
   const { user } = ChatState();
+  console.log(user);
 
   const handleButtonClick = async (amount, description, type) => {
     try {
@@ -56,41 +57,44 @@ const Tolymium: React.FC = () => {
       <div className="pre">
         <h1 className="pre-header">Tolymium</h1>
         <div className="pre-detail">
-          <div className="price-card">
-            <div className="price-header">
-              <p className="pre-package-name">Free</p>
-              <div className="pre-package-price">
-                <h1 className="price-number">0đ</h1>
-                <p className="price-number-time">/month</p>
+          {user && user.accountType === "free" ? (
+            <div className="price-card">
+              <div className="price-header">
+                <p className="pre-package-name">Free</p>
+                <div className="pre-package-price">
+                  <h1 className="price-number">0đ</h1>
+                  <p className="price-number-time">/month</p>
+                </div>
               </div>
+              <div className="pre-description">
+                <Space align="center" size="middle">
+                  <CheckOutlined /> Some description of this package
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckOutlined /> Some description of this package
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckOutlined /> Some description of this package
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckOutlined /> Some description of this package
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckOutlined /> Some description of this package
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckOutlined /> Some description of this package
+                </Space>
+              </div>
+              <button className="trial-btn">USE FREE</button>
             </div>
-            <div className="pre-description">
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-            </div>
-            <button className="trial-btn">USE FREE</button>
-          </div>
+          ) : null}
+
           <div className="price-card">
             <div className="price-header">
               <p className="pre-package-name">Tolymium</p>
               <div className="pre-package-price">
-                <h1 className="price-number">49.000đ</h1>
+                <h1 className="price-number">29.000đ</h1>
                 <p className="price-number-time">/months</p>
               </div>
             </div>
@@ -114,28 +118,30 @@ const Tolymium: React.FC = () => {
                 <CheckOutlined /> Some description of this package
               </Space>
             </div>
-            <button
-              className="trial-btn"
-              onClick={() => {
-                if (user.accountType !== "premium_month") {
-                  handleButtonClick(
-                    2000,
-                    "Payment for Tolymium ",
-                    "premium_month"
-                  );
-                }
-              }}
-            >
-              {user.accountType === "premium_month"
-                ? "YOUR CURRENT PLAN"
-                : "USE TOLYMIUM"}
-            </button>
+            {user && (
+              <button
+                className="trial-btn"
+                onClick={() => {
+                  if (user.accountType !== "premium_month") {
+                    handleButtonClick(
+                      2000,
+                      "Payment for Tolymium ",
+                      "premium_month"
+                    );
+                  }
+                }}
+              >
+                {user.accountType === "premium_month"
+                  ? "YOUR CURRENT PLAN"
+                  : "USE TOLYMIUM"}
+              </button>
+            )}
           </div>
           <div className="price-card">
             <div className="price-header">
               <p className="pre-package-name">Tolymium</p>
               <div className="pre-package-price">
-                <h1 className="price-number">490.000đ</h1>
+                <h1 className="price-number">290.000đ</h1>
                 <p className="price-number-time">/year</p>
               </div>
             </div>
@@ -159,23 +165,24 @@ const Tolymium: React.FC = () => {
                 <CheckOutlined /> Some description of this package
               </Space>
             </div>
-            <button
-              className="trial-btn"
-              // onClick={() => {
-              //   if (user.accountType !== "premium_year") {
-              //     handleButtonClick(
-              //       490000,
-              //       "Payment for Tolymium ",
-              //       "premium_year"
-              //     );
-              //   }
-              // }}
-              onClick={() => handleGetLink("1718254559615")}
-            >
-              {user.accountType === "premium_year"
-                ? "YOUR CURRENT PLAN"
-                : "USE TOLYMIUM"}
-            </button>
+            {user && (
+              <button
+                className="trial-btn"
+                onClick={() => {
+                  if (user.accountType !== "premium_year") {
+                    handleButtonClick(
+                      2000,
+                      "Payment for Tolymium ",
+                      "premium_year"
+                    );
+                  }
+                }}
+              >
+                {user.accountType === "premium_year"
+                  ? "YOUR CURRENT PLAN"
+                  : "USE TOLYMIUM"}
+              </button>
+            )}
           </div>
         </div>
       </div>

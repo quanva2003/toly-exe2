@@ -15,6 +15,7 @@ const useSignup = () => {
     confirmPassword,
     pic,
     position,
+    accountType,
   }) => {
     const success = handleInputErrors({
       email,

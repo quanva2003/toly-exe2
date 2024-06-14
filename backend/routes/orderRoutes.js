@@ -1,8 +1,17 @@
 const express = require("express");
 const { protect } = require("../middleware/authMiddleware");
-const { getOrderList, purchaseOrder, buyPremium, cancelPremium, getPaymentInfo } = require("../controllers/orderControllers");
+const {
+  getOrderList,
+  purchaseOrder,
+  buyPremium,
+  cancelPremium,
+  getPaymentInfo,
+  getAllOrders,
+} = require("../controllers/orderControllers");
 
 const router = express.Router();
+
+router.route("/all-orders").get(protect, getAllOrders);
 
 router.route("/order-history").get(protect, getOrderList);
 

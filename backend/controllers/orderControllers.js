@@ -3,11 +3,24 @@ const PayOS = require("@payos/node");
 const User = require("../models/user.model.js");
 const Order = require("../models/order.model.js");
 
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({}).populate("purchaser", "name email pic");
+
+  if (!orders || orders.length === 0) {
+    return res.status(404).json({ message: "No orders found" });
+  }
+
+  res.status(200).json(orders);
+});
+
 const getOrderList = asyncHandler(async (req, res) => {
   const { _id: currentUser } = req.user;
 
   try {
-    const orderList = await Order.find({ purchaser: currentUser }).populate('purchaser', 'name email pic');
+    const orderList = await Order.find({ purchaser: currentUser }).populate(
+      "purchaser",
+      "name email pic"
+    );
 
     if (!orderList) {
       return res.status(404).json({ message: "No orders found" });
@@ -18,7 +31,7 @@ const getOrderList = asyncHandler(async (req, res) => {
     console.error(error.message);
     res.status(500).json({ message: "Server error" });
   }
-})
+});
 
 const purchaseOrder = asyncHandler(async (req, res) => {
   const { _id: currentUser } = req.user;
@@ -30,20 +43,20 @@ const purchaseOrder = asyncHandler(async (req, res) => {
     const order = await Order.create({
       purchaser: currentUser,
       type: req.params.id,
-    })
+    });
 
     res.status(200).json(order);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Server error" });
   }
-})
+});
 
 //----------TEST-------------
 const payOS = new PayOS(
-  'b3ceb827-00af-4af8-bc55-1b02281df434',
-  '7964573e-1cd8-4790-9b99-dbcf8bf9bef4',
-  'a1803813477cfdedff4b8dc761e015e885f1ee79945052b80304c7d9e734eb3b'
+  "b3ceb827-00af-4af8-bc55-1b02281df434",
+  "7964573e-1cd8-4790-9b99-dbcf8bf9bef4",
+  "a1803813477cfdedff4b8dc761e015e885f1ee79945052b80304c7d9e734eb3b"
 );
 
 const YOUR_DOMAIN = "http://localhost:3000";
@@ -72,7 +85,7 @@ const buyPremium = asyncHandler(async (req, res) => {
     await Order.create({
       purchaser: currentUser,
       type: type,
-    })
+    });
     res.json({ checkoutUrl: paymentLink.checkoutUrl });
   } catch (error) {
     console.error(error);
@@ -102,4 +115,11 @@ const getPaymentInfo = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getOrderList, purchaseOrder, buyPremium, cancelPremium, getPaymentInfo };
+module.exports = {
+  getAllOrders,
+  getOrderList,
+  purchaseOrder,
+  buyPremium,
+  cancelPremium,
+  getPaymentInfo,
+};
