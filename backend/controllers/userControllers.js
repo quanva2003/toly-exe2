@@ -181,6 +181,41 @@ const removeUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "User removed successfully" });
 });
 
+//----------------UPLOAD AVATAR-----------------------//
+
+const cloudinary = require("cloudinary").v2;
+const upload = require("../middleware/fileMiddleware");
+
+cloudinary.config({
+  cloud_name: "dcs6oxnew",
+  api_key: "124981349666343",
+  api_secret: "fur8UklWQm6KdZMURCc1L_INJL0",
+});
+
+const uploadAvatar = asyncHandler(async (req, res) => {
+  upload(req, res, async (err) => {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      await User.findByIdAndUpdate(req.user._id, { pic: result.secure_url });
+      res.json({ url: result.secure_url });
+    } catch (err) {
+      res.status(500).json({ error: 'Upload failed' });
+    }
+  })
+});
+
+const uploadBackground = asyncHandler(async (req, res) => {
+  upload(req, res, async (err) => {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      await User.findByIdAndUpdate(req.user._id, { coverPic: result.secure_url });
+      res.json({ url: result.secure_url });
+    } catch (err) {
+      res.status(500).json({ error: 'Upload failed' });
+    }
+  })
+});
+
 module.exports = {
   allUsers,
   registerUser,
@@ -190,4 +225,6 @@ module.exports = {
   getUserById,
   getUserByName,
   removeUser,
+  uploadAvatar,
+  uploadBackground,
 };

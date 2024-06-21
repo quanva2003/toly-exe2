@@ -8,6 +8,8 @@ const {
   getUserById,
   getUserByName,
   removeUser,
+  uploadAvatar,
+  uploadBackground,
 } = require("../controllers/userControllers");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -21,5 +23,7 @@ router.post("/logout", logoutUser);
 router.route("/password").put(updateUserPassword);
 router.route("/name/:name").get(protect, getUserByName);
 router.route("/:id").delete(protect, removeUser);
+router.route("/upload-avatar").patch(protect, uploadAvatar);
+router.route("/upload-cover").patch(protect, uploadBackground);
 
 module.exports = router;

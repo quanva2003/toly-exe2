@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./UserProfile.css";
-import { Button, Tabs } from "antd";
-import { EditFilled } from "@ant-design/icons";
+import { Tabs } from "antd";
 import FriendList from "./FriendList";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import toast from "react-hot-toast";
 
 interface UserProfileProps {
   _id: string;
   name: string;
   pic: string;
+  coverPic: string;
   friends: string[];
 }
 
 const UserProfile: React.FC = () => {
-  // const storedUserInfo = localStorage.getItem("userInfo");
-  // const userInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
-
   const { user } = ChatState();
   const { id } = useParams<{ id: string }>();
   console.log(user);
@@ -84,33 +83,132 @@ const UserProfile: React.FC = () => {
   }
   console.log(userProfile);
 
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.patch(
+        "http://localhost:5000/api/user/upload-avatar",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      setUserProfile({ ...userProfile, pic: res.data.url });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleCoverUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.patch(
+        "http://localhost:5000/api/user/upload-cover",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      setUserProfile({ ...userProfile, coverPic: res.data.url });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div className="profile-container">
-      <div className="profile-header">
-        <div className="profile-limited">
-          <div className="profile-bg"></div>
-          <div className="profile-info">
+    <div className="profile">
+      <div className="profileContainer">
+        <div className="profileCenter">
+          <div className="profileCenterTop">
             <img
-              src={userProfile.pic}
-              alt={userProfile.name}
-              className="avatar"
-              // style={{ height: `${avatarSize}px`, width: `${avatarSize}px` }}
+              // src="https://images.unsplash.com/photo-1715356758153-6d58ae44e8fe?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={userProfile.coverPic}
+              alt="coverphoto"
+              className="coverPhoto"
             />
-            <div className="user-detail">
-              <div className="user-name">
-                <h2>{userProfile.name}</h2>
-                <p>{userProfile.friends.length} friends</p>
-              </div>
-              {/* {userInfo?._id === userProfile._id ? (
-                <Button shape="circle" icon={<EditFilled />} />
+            <input
+              type="file"
+              onChange={handleCoverUpload}
+              style={{ display: "none" }}
+              id="cover"
+            />
+            <button className="editCoverPhotoBtn">
+              {user.accountType === "free" ? (
+                <>
+                  <CameraAltIcon />
+                  <b
+                    onClick={() => {
+                      toast.error("Premium Account Only");
+                    }}
+                  >
+                    Edit <span className="editPicText">Cover Photo</span>
+                  </b>
+                </>
               ) : (
-                <Button>Add friend</Button>
-              )} */}
+                <>
+                  <CameraAltIcon />
+                  <label htmlFor="cover" style={{ cursor: "pointer" }}>
+                    <b>
+                      Edit <span className="editPicText">Cover Photo</span>
+                    </b>
+                  </label>
+                </>
+              )}
+            </button>
+          </div>
+          <div className="profileCenterDown">
+            <div className="profileCenterDownCont">
+              <div className="profilePhotoCont">
+                <input
+                  type="file"
+                  onChange={handleAvatarUpload}
+                  style={{ display: "none" }}
+                  id="upload"
+                />
+                {user.accountType === "free" ? (
+                  <>
+                    <img
+                      src={userProfile.pic}
+                      alt={userProfile.name}
+                      className="profilePhoto"
+                      onClick={() => toast.error("Premium Account Only")}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <label htmlFor="upload">
+                      <img
+                        src={userProfile.pic}
+                        alt={userProfile.name}
+                        className="profilePhoto"
+                      />
+                    </label>
+                  </>
+                )}
+              </div>
+              <h4 className="profileUsername">
+                {user.name}
+                <p style={{ fontSize: "16px", margin: "0", opacity: "0.5" }}>
+                  {userProfile.friends.length} friends
+                </p>
+              </h4>
             </div>
           </div>
         </div>
       </div>
-      <div className="profile-main">
+      <div className="profileMain">
         <Tabs defaultActiveKey="1" items={items} className="user-tab" />
       </div>
     </div>

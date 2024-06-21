@@ -3,6 +3,13 @@ const upload = require("../middleware/fileMiddleware");
 const Message = require("../models/message.model");
 const User = require("../models/user.model");
 const Chat = require("../models/chat.model");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "dcs6oxnew",
+  api_key: "124981349666343",
+  api_secret: "fur8UklWQm6KdZMURCc1L_INJL0",
+});
 
 //@description     Get all Messages
 //@route           GET /api/Message/:chatId
@@ -66,12 +73,13 @@ const sendFile = asyncHandler(async (req, res) => {
     }
 
     // const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-    const fileUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    // const fileUrl = `http://localhost:5000/uploads/${req.file.filename}`;
 
     try {
+      const result = await cloudinary.uploader.upload(req.file.path);
       const message = await Message.create({
         sender: req.user._id,
-        content: fileUrl,
+        content: result.secure_url,
         chat: req.body.chatId,
         file: true,
       });
