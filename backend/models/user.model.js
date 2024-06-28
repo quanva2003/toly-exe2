@@ -43,6 +43,13 @@ const userSchema = mongoose.Schema(
       ref: "Premium",
       default: null,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    token: {
+      type: String
+    },
   },
   { timestamps: true }
 );

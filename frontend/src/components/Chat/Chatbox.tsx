@@ -4,7 +4,12 @@ import SingleChat from "./SingleChat";
 import { ChatState } from "../../context/ChatProvider";
 import React from "react";
 
-const Chatbox = ({ fetchAgain, setFetchAgain }) => {
+const Chatbox = ({
+  fetchAgain,
+  setFetchAgain,
+  onOpenUpdateBox,
+  isUpdateBoxOpen,
+}) => {
   const { selectedChat } = ChatState();
 
   return (
@@ -14,11 +19,19 @@ const Chatbox = ({ fetchAgain, setFetchAgain }) => {
       flexDir="column"
       p={3}
       bg="white"
-      w={{ base: "100%", md: "74%" }}
+      w={{
+        base: isUpdateBoxOpen ? "69%" : "100%",
+        md: isUpdateBoxOpen ? "52%" : "76%",
+      }}
+      boxShadow="lg"
       borderRadius="lg"
       borderWidth="1px"
     >
-      <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+      <SingleChat
+        fetchAgain={fetchAgain}
+        setFetchAgain={setFetchAgain}
+        onOpenUpdateBox={onOpenUpdateBox}
+      />
     </Box>
   );
 };

@@ -13,6 +13,9 @@ interface SignUpInputs {
   password: string;
   confirmPassword: string;
   pic: string;
+  coverPic: string;
+  accountType: string;
+  premiumPlan: string;
   position: {
     lat: number;
     lng: number;
@@ -26,6 +29,9 @@ const SignIn: React.FC = () => {
     password: "",
     confirmPassword: "",
     pic: "https://i.pinimg.com/564x/fc/ee/20/fcee204260921b296a0ee2549ccb4e18.jpg",
+    coverPic: "",
+    accountType: "",
+    premiumPlan: "",
     position: {
       lat: 0,
       lng: 0,
@@ -157,7 +163,11 @@ const SignIn: React.FC = () => {
 
         <div className="signin">
           Already have an account?{" "}
-          <Link className="signin-link" to="/login">
+          <Link
+            className="signin-link"
+            to={""}
+            onClick={() => (window.location.href = "/login")}
+          >
             Log In
           </Link>
         </div>

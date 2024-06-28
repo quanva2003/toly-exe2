@@ -139,7 +139,9 @@ const FriendList = () => {
   const { user } = ChatState();
   const { id } = useParams();
   const [friends, setFriends] = useState<FriendsListProps[]>([]);
-  const navigate = useNavigate();
+  const navigate = (toUrl) => {
+    window.location.href = toUrl;
+  };
   useEffect(() => {
     const fetchFriend = async () => {
       try {

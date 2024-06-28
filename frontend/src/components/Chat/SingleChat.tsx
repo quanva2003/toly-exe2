@@ -4,22 +4,16 @@ import { Input } from "@chakra-ui/input";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import "./styles.css";
 import { Avatar, IconButton, Spinner, useToast } from "@chakra-ui/react";
-import {
-  getSender,
-  getSenderAvatar,
-  getSenderFull,
-} from "../../config/ChatLogics";
+import { getSender, getSenderAvatar } from "../../config/ChatLogics";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faNoteSticky } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import SendIcon from "@mui/icons-material/Send";
-import ProfileModal from "./miscellaneous/ProfileModal";
-import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import Messages from "./Messages";
 
 import Lottie from "react-lottie";
@@ -32,7 +26,7 @@ import io from "socket.io-client";
 const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
-const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
   const [messages, setMessages] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
@@ -264,9 +258,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     />
                     {getSender(user, selectedChat.users)}
                   </div>
-                  <ProfileModal
-                    user={getSenderFull(user, selectedChat.users)}
-                    children={undefined}
+                  <IconButton
+                    display={{ base: "flex" }}
+                    icon={<FontAwesomeIcon icon={faEllipsis} />}
+                    onClick={onOpenUpdateBox}
+                    aria-label={""}
+                    isRound
                   />
                 </>
               ) : (
@@ -287,10 +284,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                       {selectedChat.chatName}
                     </span>
                   </Box>
-                  <UpdateGroupChatModal
-                    fetchMessages={fetchMessages}
-                    fetchAgain={fetchAgain}
-                    setFetchAgain={setFetchAgain}
+                  <IconButton
+                    display={{ base: "flex" }}
+                    icon={<FontAwesomeIcon icon={faEllipsis} />}
+                    onClick={onOpenUpdateBox}
+                    aria-label={""}
+                    isRound
                   />
                 </>
               ))}
@@ -391,6 +390,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   icon={<SendIcon />}
                   variant="ghost"
                   onClick={sendMessage}
+                  isRound
                 />
               </Flex>
             </FormControl>
