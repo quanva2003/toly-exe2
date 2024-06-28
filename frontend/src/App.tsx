@@ -23,10 +23,10 @@ import TolymiumPage from "./pages/TolymiumPage";
 import SuccessPage from "./pages/ResultPage/SuccessPage";
 import FailPage from "./pages/ResultPage/FailPage";
 import EditProfile from "./pages/EditProfile";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
 
 function App() {
   const { user } = ChatState();
-  // console.log(user.isAdmin);
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -77,6 +77,7 @@ function App() {
         <Route path="/successPay" element={<SuccessPage />} />
         <Route path="/failPay" element={<FailPage />} />
         <Route path="/editProfile" element={<EditProfile />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
         {/* <Route
           path="/admin"
           element={

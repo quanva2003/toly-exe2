@@ -7,6 +7,10 @@ import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 import { ChatState } from "../../context/ChatProvider";
 import mapboxgl from "mapbox-gl";
+
+mapboxgl.accessToken =
+  "pk.eyJ1Ijoid3VhdmFubjUwNzYiLCJhIjoiY2x4cDF5ZTMxMGQwOTJqcHV2ZXlvYzBybSJ9.S90q1YyODPdio83xGUtYAw";
+
 interface ExploreData {
   _id: string;
   name: string;
@@ -19,18 +23,29 @@ interface ExploreData {
     lng: number;
   };
 }
-
+interface MemberData {
+  _id: string;
+  name: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
+  imageUrl: string;
+}
 interface MapProps {
   selectedLocation: ExploreData | null;
+  chatMembers: MemberData[];
 }
 
-const Map: React.FC<MapProps> = ({ selectedLocation }) => {
+const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
   const handleViewportChange = (newViewport) => {
     setViewport({
       ...viewport,
       ...newViewport,
     });
   };
+  console.log("ahihi", chatMembers);
+
   const [map, setMap] = useState(null);
   const { user } = ChatState();
   const userId = user._id;
@@ -153,38 +168,43 @@ const Map: React.FC<MapProps> = ({ selectedLocation }) => {
       fetchFriendsDetails(friends);
     }
   }, [friends]);
+
   const mapContainerRef = useRef(null);
+
   useEffect(() => {
     if (currentLocation && selectedLocation && mapContainerRef.current) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v11",
-        accessToken:
-          "pk.eyJ1Ijoid3VhdmFubjUwNzYiLCJhIjoiY2x4cDF5ZTMxMGQwOTJqcHV2ZXlvYzBybSJ9.S90q1YyODPdio83xGUtYAw",
+        center: [currentLocation.lng, currentLocation.lat],
+        zoom: 16,
       });
-      if (selectedLocation) {
-        const directions = new MapboxDirections({
-          accessToken:
-            "pk.eyJ1Ijoid3VhdmFubjUwNzYiLCJhIjoiY2x4cDF5ZTMxMGQwOTJqcHV2ZXlvYzBybSJ9.S90q1YyODPdio83xGUtYAw",
-          unit: "metric",
-          profile: "mapbox/driving",
-        });
-        map.addControl(directions, "top-left");
-        directions.setOrigin([currentLocation.lng, currentLocation.lat]);
-        directions.setDestination([
-          selectedLocation.position.lng,
-          selectedLocation.position.lat,
-        ]);
-      }
+
+      const directions = new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+        unit: "metric",
+        profile: "mapbox/driving",
+      });
+
+      map.addControl(directions, "top-left");
+
+      directions.setOrigin([currentLocation.lng, currentLocation.lat]);
+      directions.setDestination([
+        selectedLocation.position.lng,
+        selectedLocation.position.lat,
+      ]);
+
+      // setMap(map);
     }
   }, [currentLocation, selectedLocation]);
+
   return (
     <div className="map-wrapper">
       <div className="map-container" ref={mapContainerRef}>
         <ReactMapGL
           {...viewport}
           mapStyle="mapbox://styles/mapbox/streets-v11"
-          mapboxAccessToken="pk.eyJ1Ijoid3VhdmFubjUwNzYiLCJhIjoiY2x4cDF5ZTMxMGQwOTJqcHV2ZXlvYzBybSJ9.S90q1YyODPdio83xGUtYAw"
+          mapboxAccessToken={mapboxgl.accessToken}
           onMove={(evt) => handleViewportChange(evt.viewState)}
           id="map"
         >
@@ -205,7 +225,7 @@ const Map: React.FC<MapProps> = ({ selectedLocation }) => {
             </Marker>
           ))}
 
-          {friendLists.map((friend) => (
+          {chatMembers.map((friend) => (
             <Marker
               key={friend._id}
               latitude={friend.position.lat}
@@ -213,7 +233,7 @@ const Map: React.FC<MapProps> = ({ selectedLocation }) => {
               offset={[-20, -30]}
             >
               <img
-                src={friend.pic}
+                src={friend.imageUrl}
                 style={{
                   height: 50,
                   width: 50,

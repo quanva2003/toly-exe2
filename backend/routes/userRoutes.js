@@ -12,6 +12,7 @@ const {
   uploadBackground,
   updatePosition,
   updateUserName,
+  verifyEmail,
 } = require("../controllers/userControllers");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -20,6 +21,7 @@ const router = express.Router();
 router.route("/").get(protect, allUsers);
 router.route("/:id").get(protect, getUserById);
 router.route("/signup").post(registerUser);
+router.route("/verify-email/:token").get(verifyEmail);
 router.post("/login", authUser);
 router.post("/logout", logoutUser);
 router.route("/password").put(updateUserPassword);

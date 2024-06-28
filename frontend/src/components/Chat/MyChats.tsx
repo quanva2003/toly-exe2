@@ -65,7 +65,8 @@ const MyChats = ({ fetchAgain }) => {
       flexDir="column"
       alignItems="center"
       bg="white"
-      w={{ base: "100%", md: "25%" }}
+      w={{ base: "100%", md: "23%" }}
+      boxShadow="lg"
       borderRadius="lg"
       borderWidth="1px"
     >
@@ -163,11 +164,13 @@ const MyChats = ({ fetchAgain }) => {
                                 (chat.latestMessage.content.length > 50
                                   ? chat.latestMessage.content.substring(
                                       0,
-                                      51
+                                      16
                                     ) + "..."
                                   : chat.latestMessage.content)}
-                            {" · " +
-                              moment(chat.latestMessage.createdAt).fromNow()}
+                            <span style={{ opacity: "70%" }}>
+                              {" · " +
+                                moment(chat.latestMessage.createdAt).fromNow()}
+                            </span>
                           </Text>
                         )}
                       </Flex>

@@ -19,23 +19,8 @@ interface UserProfileProps {
 const UserProfile: React.FC = () => {
   const { user } = ChatState();
   const { id } = useParams<{ id: string }>();
-  console.log(user);
 
   const [userProfile, setUserProfile] = useState<UserProfileProps | null>(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-    setScrollPosition(position);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -49,6 +34,7 @@ const UserProfile: React.FC = () => {
           }
         );
         setUserProfile(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching user profile", error);
       }
@@ -56,9 +42,6 @@ const UserProfile: React.FC = () => {
 
     fetchUserProfile();
   }, [id, user.token]);
-
-  const avatarSize = Math.max(50, 200 - scrollPosition);
-  const headerHeight = Math.max(50, 250 - scrollPosition);
 
   const items = [
     {
@@ -92,7 +75,6 @@ const UserProfile: React.FC = () => {
       </div>
     );
   }
-  console.log(userProfile);
 
   const handleAvatarUpload = async (e) => {
     const file = e.target.files[0];
@@ -144,7 +126,6 @@ const UserProfile: React.FC = () => {
         <div className="profileCenter">
           <div className="profileCenterTop">
             <img
-              // src="https://images.unsplash.com/photo-1715356758153-6d58ae44e8fe?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               src={userProfile.coverPic}
               alt="coverphoto"
               className="coverPhoto"

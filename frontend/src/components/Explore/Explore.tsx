@@ -8,6 +8,7 @@ import FriendsList from "../Profile/FriendList";
 import type { NotificationArgsProps } from "antd";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 type NotificationPlacement = NotificationArgsProps["placement"];
 interface ExploreData {
@@ -83,13 +84,16 @@ const Explore: React.FC = () => {
       openNotification("bottomLeft");
     }
   }, [showNotification]);
+  const location = useLocation();
+  const { chatMembers } = location.state || { chatMembers: [] };
+  console.log(chatMembers);
 
   return (
     <Row>
       <Col span={18} push={6}>
         {/* {contextHolder}
         <DBtest center={center} selectedLocation={selectedLocation} /> */}
-        <Map selectedLocation={selectedLocation} />
+        <Map selectedLocation={selectedLocation} chatMembers={chatMembers} />
       </Col>
       <Col span={6} pull={18} style={{ height: "50vh" }}>
         <ExploreList

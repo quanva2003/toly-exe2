@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const User = require("../models/user.model.js");
+const nodemailer = require("nodemailer");
 const generateToken = require("../config/generateToken");
 const Premium = require("../models/premium.model.js");
 
@@ -62,8 +63,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email: email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error("User already exists");
+    res.status(400).json({ error: "User already exists" });
+    return; // Ensure you return to stop further execution
   }
 
   const session = await mongoose.startSession();
@@ -83,7 +84,28 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 
     user.premiumPlan = newPremium._id;
+    user.token = generateToken(user._id);
     await user.save();
+
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "noplstks@gmail.com",
+        pass: "zodyjdbipiwwlnwf",
+      },
+    })
+
+    await transporter.sendMail({
+      from: "Tolynium",
+      to: user.email,
+      subject: "Email Verification",
+      html: `
+        <div>
+        <h1>Email Verification</h1>
+          <a href=${`http://localhost:3000/verify-email?token=${user.token}`}>Click here to verify email</a>
+        </div>
+      `
+    })
 
     if (user) {
       res.status(201).json({
@@ -94,7 +116,7 @@ const registerUser = asyncHandler(async (req, res) => {
         pic: user.pic,
         position: user.position,
         accountType: user.accountType,
-        token: generateToken(user._id),
+        token: user.token,
       });
     } else {
       res.status(400);
@@ -112,12 +134,36 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+const verifyEmail = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const user = await User.findOne({ token: token });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found or token expired' });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    return res.status(200).json({ message: 'Email verified successfully' });
+  } catch (err) {
+    console.error('Error verifying email:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
 //@description     Auth the user
 //@route           POST /api/user/login
 //@access          Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
+
+  if (!user.isVerified) {
+    return res.status(401).json({ error: "You must verify email before log in" });
+  };
 
   if (user && (await user.matchPassword(password))) {
     res.status(200).json({
@@ -265,6 +311,7 @@ const updateUserName = asyncHandler(async (req, res) => {
 module.exports = {
   allUsers,
   registerUser,
+  verifyEmail,
   authUser,
   logoutUser,
   updateUserPassword,

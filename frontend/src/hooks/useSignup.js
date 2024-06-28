@@ -4,8 +4,6 @@ import { ChatState } from "../context/ChatProvider";
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
-  const [pic, setPic] = useState();
-  const [picLoading, setPicLoading] = useState(false);
   const { setUser } = ChatState();
 
   const signup = async ({
@@ -30,48 +28,7 @@ const useSignup = () => {
     if (!success) return;
 
     setLoading(true);
-    // setPicLoading(true);
-    // if (pic === undefined) {
-    //   toast({
-    //     title: "Please Select an Image!",
-    //     status: "warning",
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: "bottom",
-    //   });
-    //   return;
-    // }
-    // console.log(pic);
-    // if (pic.type === "image/jpeg" || pic.type === "image/png") {
-    //   const data = new FormData();
-    //   data.append("file", pic);
-    //   data.append("upload_preset", "chat-app");
-    //   data.append("cloud_name", "piyushproj");
-    //   fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
-    //     method: "post",
-    //     body: data,
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       setPic(data.url.toString());
-    //       console.log(data.url.toString());
-    //       setPicLoading(false);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       setPicLoading(false);
-    //     });
-    // } else {
-    //   toast({
-    //     title: "Please Select an Image!",
-    //     status: "warning",
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: "bottom",
-    //   });
-    //   setPicLoading(false);
-    //   return;
-    // }
+
     try {
       const res = await fetch("/api/user/signup", {
         method: "POST",
@@ -92,17 +49,19 @@ const useSignup = () => {
       const data = await res.json();
       if (data.error) {
         throw new Error(data.error);
+      } else {
+        toast.success("Signup successful. Please verify your email before logging in.");
       }
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      setUser(data);
     } catch (error) {
       toast.error(error.message);
     } finally {
       setLoading(false);
     }
   };
+
   return { loading, signup };
 };
+
 export default useSignup;
 
 function handleInputErrors({

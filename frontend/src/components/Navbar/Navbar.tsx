@@ -13,6 +13,7 @@ import {
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
 import DiamondOutlinedIcon from "@mui/icons-material/DiamondOutlined";
+
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { user } = ChatState();
@@ -22,7 +23,9 @@ const Navbar: React.FC = () => {
   const profilePic = profileData.pic;
   const [menuOpen, setMenuOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
-  const navigate = useNavigate();
+  const navigate = (toUrl) => {
+    window.location.href = toUrl;
+  };
   useEffect(() => {
     if (user && user._id && user.token) {
       const fetchUserProfile = async () => {
@@ -111,7 +114,7 @@ const Navbar: React.FC = () => {
       key: "2",
     },
   ];
-  console.log(userProfile);
+
   const renderBadge = () => {
     if (user.accountType === "premium_month") {
       return <StarOutlined />;
@@ -120,7 +123,6 @@ const Navbar: React.FC = () => {
     }
     return null;
   };
-  console.log("SSAĐÂ:", user);
 
   return (
     <nav
@@ -134,7 +136,7 @@ const Navbar: React.FC = () => {
           : { backgroundColor: "transparent" }
       }
     >
-      <Link to="/home">
+      <Link onClick={() => navigate("/home")} to={""}>
         <div className="logo">
           <img alt="logo" src={Logo} />
         </div>
@@ -143,43 +145,65 @@ const Navbar: React.FC = () => {
         className={`menu ${menuOpen ? "active" : ""}`}
         style={!user ? { marginLeft: "125px" } : {}}
       >
-        <Link to="/home" style={{ textDecoration: "none", color: "unset" }}>
+        <Link
+          to={""}
+          onClick={() => navigate("/home")}
+          style={{ textDecoration: "none", color: "unset" }}
+        >
           <div className="menu-link">Home</div>
         </Link>
         <div className="divider">|</div>
-        <Link to="/explore" style={{ textDecoration: "none", color: "unset" }}>
+        <Link
+          to={""}
+          onClick={() => navigate("/explore")}
+          style={{ textDecoration: "none", color: "unset" }}
+        >
           <div className="menu-link">Explore</div>
         </Link>
         <div className="divider">|</div>
-        <Link to="/contact" style={{ textDecoration: "none", color: "unset" }}>
+        <Link
+          to={""}
+          onClick={() => navigate("/contact")}
+          style={{ textDecoration: "none", color: "unset" }}
+        >
           <div className="menu-link">Contact</div>
         </Link>
       </div>
 
       {!user ? (
         <div className={`login ${menuOpen ? "active" : ""}`}>
-          <Link to="/signup" className="login-link">
+          <Link
+            to={""}
+            onClick={() => navigate("/signup")}
+            className="login-link"
+          >
             SIGNIN
           </Link>
-          <Link to="/login">
+          <Link to={""} onClick={() => navigate("/login")}>
             <button className="login-btn">LOGIN</button>
           </Link>
         </div>
       ) : (
         <div className="login">
           <Link
-            to="/tolymium"
+            to={""}
+            onClick={() => navigate("/tolymium")}
             style={{ textDecoration: "none", color: "unset" }}
           >
             <DiamondOutlinedIcon fontSize="inherit" className="mess-icon" />
           </Link>
           <Link
-            to="/friends"
+            to={""}
+            onClick={() => navigate("/friends")}
             style={{ textDecoration: "none", color: "unset" }}
           >
             <TeamOutlined className="mess-icon" />
           </Link>
-          <Link to="/chats" style={{ textDecoration: "none", color: "unset" }}>
+          <Link
+            to={""}
+            onClick={() => navigate("/chats")}
+            style={{ textDecoration: "none", color: "unset" }}
+          >
             <MessageFilled className="mess-icon" />
           </Link>
           <Dropdown menu={{ items }} trigger={["click"]}>
