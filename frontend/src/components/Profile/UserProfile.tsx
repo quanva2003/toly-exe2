@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./UserProfile.css";
-import { Tabs } from "antd";
+import { Badge, Spin, Tabs } from "antd";
 import FriendList from "./FriendList";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import toast from "react-hot-toast";
-
+import { CameraFilled, LoadingOutlined } from "@ant-design/icons";
 interface UserProfileProps {
   _id: string;
   name: string;
@@ -79,7 +79,18 @@ const UserProfile: React.FC = () => {
   ];
 
   if (!userProfile) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 60 }} spin />} />
+      </div>
+    );
   }
   console.log(userProfile);
 
@@ -188,13 +199,28 @@ const UserProfile: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <label htmlFor="upload">
+                    <Badge
+                      count={
+                        <label htmlFor="upload">
+                          <CameraFilled
+                            style={{
+                              fontSize: "20px",
+                              padding: 5,
+                              backgroundColor: "#ccc",
+                              borderRadius: 50,
+                              cursor: "pointer",
+                            }}
+                          />
+                        </label>
+                      }
+                      offset={[-20, 125]}
+                    >
                       <img
                         src={userProfile.pic}
                         alt={userProfile.name}
                         className="profilePhoto"
                       />
-                    </label>
+                    </Badge>
                   </>
                 )}
               </div>

@@ -112,7 +112,8 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
 
     if (premiumCount && premiumCount.numOfCreateGroupChat <= 0) {
       toast({
-        title: "You have no attempts left to create a group chat",
+        title:
+          "You have no attempts left to create a group chat. Please update to premium to create more chat!",
         status: "warning",
         duration: 5000,
         isClosable: true,

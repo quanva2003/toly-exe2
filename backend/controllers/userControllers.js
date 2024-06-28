@@ -10,11 +10,11 @@ const Premium = require("../models/premium.model.js");
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-      $or: [
-        { name: { $regex: req.query.search, $options: "i" } },
-        { email: { $regex: req.query.search, $options: "i" } },
-      ],
-    }
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -103,7 +103,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
     await session.commitTransaction();
     session.endSession();
-
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
@@ -199,23 +198,70 @@ const uploadAvatar = asyncHandler(async (req, res) => {
       await User.findByIdAndUpdate(req.user._id, { pic: result.secure_url });
       res.json({ url: result.secure_url });
     } catch (err) {
-      res.status(500).json({ error: 'Upload failed' });
+      res.status(500).json({ error: "Upload failed" });
     }
-  })
+  });
 });
 
 const uploadBackground = asyncHandler(async (req, res) => {
   upload(req, res, async (err) => {
     try {
       const result = await cloudinary.uploader.upload(req.file.path);
-      await User.findByIdAndUpdate(req.user._id, { coverPic: result.secure_url });
+      await User.findByIdAndUpdate(req.user._id, {
+        coverPic: result.secure_url,
+      });
       res.json({ url: result.secure_url });
     } catch (err) {
-      res.status(500).json({ error: 'Upload failed' });
+      res.status(500).json({ error: "Upload failed" });
     }
-  })
+  });
 });
 
+//@description     Update user position
+//@route           PATCH /api/user/update-position
+//@access          Protected
+const updatePosition = asyncHandler(async (req, res) => {
+  const { lat, lng } = req.body;
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  user.position = { lat, lng };
+  await user.save();
+
+  res
+    .status(200)
+    .json({ message: "User position updated successfully", user: user });
+});
+const updateUserName = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+  const userId = req.user._id;
+
+  if (!name) {
+    res.status(400);
+    throw new Error("Name is required");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  user.name = name;
+  await user.save();
+
+  res.status(200).json({
+    message: "User name updated successfully",
+    user: user,
+  });
+});
 module.exports = {
   allUsers,
   registerUser,
@@ -227,4 +273,6 @@ module.exports = {
   removeUser,
   uploadAvatar,
   uploadBackground,
+  updatePosition,
+  updateUserName,
 };

@@ -87,7 +87,7 @@ const Login: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <Form>
-            <div className="form-group">
+            <div className="form-group-login">
               <Field type="email" id="email" name="email" placeholder="Email" />
               <ErrorMessage
                 name="email"
@@ -96,7 +96,7 @@ const Login: React.FC = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-login">
               <Field
                 type="password"
                 id="password"

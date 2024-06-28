@@ -3,6 +3,7 @@ import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
+import useLogout from "../../hooks/useLogout";
 
 interface OrderProps {
   orderCode: string;
@@ -16,7 +17,8 @@ const SuccessPay: React.FC = () => {
   const [orders, setOrders] = useState<OrderProps>();
   const urlParams = new URLSearchParams(window.location.search);
   const orderCode = urlParams.get("orderCode");
-
+  console.log(orderCode);
+  const { loading, logout } = useLogout();
   useEffect(() => {
     const getOrder = async () => {
       try {
@@ -30,6 +32,8 @@ const SuccessPay: React.FC = () => {
               },
             }
           );
+          console.log(data);
+
           setOrders(data);
         }
       } catch (error) {
@@ -56,7 +60,8 @@ const SuccessPay: React.FC = () => {
             },
           }
         );
-        navigate("/");
+        navigate("/home");
+        // logout();
       }
     } catch (error) {
       if (error.response) {
@@ -75,10 +80,10 @@ const SuccessPay: React.FC = () => {
         subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
         extra={[
           <Button type="primary" key="console" onClick={() => createOrder()}>
-            Go Home
+            Log out to use Premium
           </Button>,
           <Button onClick={() => navigate("/home")} key="buy">
-            Buy Again
+            Go home
           </Button>,
         ]}
       />

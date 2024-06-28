@@ -53,9 +53,13 @@
   /* background: rgba(0, 0, 0, 0.1); */
 }
 .search-bar-home .ant-input-affix-wrapper .ant-input {
-  color: #ffffff;
+  color: #ccc;
+  /* background: transparent !important; */
 }
 
+span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-dev-only-do-not-override-3rel02.ant-input-outlined {
+  background: transparent;
+}
 .search-bar-home .ant-input-affix-wrapper .ant-input::placeholder {
   color: #ccc;
 }

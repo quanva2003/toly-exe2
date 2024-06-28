@@ -10,6 +10,8 @@ const {
   removeUser,
   uploadAvatar,
   uploadBackground,
+  updatePosition,
+  updateUserName,
 } = require("../controllers/userControllers");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -25,5 +27,7 @@ router.route("/name/:name").get(protect, getUserByName);
 router.route("/:id").delete(protect, removeUser);
 router.route("/upload-avatar").patch(protect, uploadAvatar);
 router.route("/upload-cover").patch(protect, uploadBackground);
+router.patch("/update-position/:id", protect, updatePosition);
+router.route("/update-name").patch(protect, updateUserName);
 
 module.exports = router;

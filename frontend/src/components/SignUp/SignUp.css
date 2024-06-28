@@ -39,9 +39,8 @@
   transform: scale(1.04);
 }
 
-.form-group {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.form-group-signup {
+  margin-bottom: 1.5rem;
 }
 
 label {

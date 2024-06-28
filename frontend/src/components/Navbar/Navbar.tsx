@@ -4,7 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
 import LogoutButton from "../Chat/LogoutButton";
 import { Badge, Dropdown, MenuProps, Space } from "antd";
-import { MessageFilled, TeamOutlined, StarOutlined } from "@ant-design/icons";
+import {
+  MessageFilled,
+  TeamOutlined,
+  StarOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
 import DiamondOutlinedIcon from "@mui/icons-material/DiamondOutlined";
@@ -52,15 +57,29 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const truncateName = (name: string) => {
+    return name.length > 10 ? `${name.slice(0, 10)}...` : name;
+  };
+
   const items: MenuProps["items"] = [
     {
       label: (
-        <div
-          onClick={() => navigate(`/profile/${user._id}`)}
+        <Space
+          onClick={() => navigate(`/profile/${user?._id}`)}
           className="profile-link"
         >
-          Profile
-        </div>
+          {user && (
+            <>
+              <img
+                src={profilePic || user.pic}
+                alt=""
+                style={{ height: 24, width: 24, borderRadius: 50 }}
+              />
+              {truncateName(user.name)}
+            </>
+          )}
+        </Space>
       ),
       key: "0",
     },
@@ -70,11 +89,26 @@ const Navbar: React.FC = () => {
     },
     {
       label: (
+        <Space
+          onClick={() => navigate(`/editProfile`)}
+          className="profile-link"
+        >
+          <SettingOutlined style={{ fontSize: 20, marginLeft: 5 }} />
+          Setting
+        </Space>
+      ),
+      key: "1",
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: (
         <Space>
           <LogoutButton />
         </Space>
       ),
-      key: "1",
+      key: "2",
     },
   ];
   console.log(userProfile);

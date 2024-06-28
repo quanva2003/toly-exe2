@@ -1,9 +1,10 @@
 import React from "react";
 import "./Tolymium.css";
 import { Button, Carousel, Space, Tag } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
+import { CheckCircleFilled, StarFilled, CrownFilled } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const contentStyle: React.CSSProperties = {
   height: "10px",
   width: "10px",
@@ -18,7 +19,7 @@ const contentStyle: React.CSSProperties = {
 const Tolymium: React.FC = () => {
   const { user } = ChatState();
   console.log(user);
-
+  const navigate = useNavigate();
   const handleButtonClick = async (amount, description, type) => {
     try {
       const { data } = await axios.post(
@@ -46,7 +47,7 @@ const Tolymium: React.FC = () => {
       <div className="pre">
         <h1 className="pre-header">Tolymium</h1>
         <div className="pre-detail">
-          {user && user.accountType === "free" ? (
+          {!user || (user && user.accountType === "free") ? (
             <div className="price-card">
               <div className="price-header">
                 <p className="pre-package-name">Free</p>
@@ -57,31 +58,45 @@ const Tolymium: React.FC = () => {
               </div>
               <div className="pre-description">
                 <Space align="center" size="middle">
-                  <CheckOutlined /> Some description of this package
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Limit the
+                  number of map use
+                </Space>
+
+                <Space align="center" size="middle">
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Limit the
+                  number of chat group creation
                 </Space>
                 <Space align="center" size="middle">
-                  <CheckOutlined /> Some description of this package
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Add friends
                 </Space>
                 <Space align="center" size="middle">
-                  <CheckOutlined /> Some description of this package
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Chat with
+                  your friends
                 </Space>
                 <Space align="center" size="middle">
-                  <CheckOutlined /> Some description of this package
-                </Space>
-                <Space align="center" size="middle">
-                  <CheckOutlined /> Some description of this package
-                </Space>
-                <Space align="center" size="middle">
-                  <CheckOutlined /> Some description of this package
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Explore
+                  location around you
                 </Space>
               </div>
-              <button className="trial-btn">USE FREE</button>
+              <button
+                className="trial-btn"
+                onClick={() => {
+                  if (!user) {
+                    navigate("/login");
+                  }
+                }}
+              >
+                {!user || user.accountType !== "free" ? "USE FREE" : "USED"}
+              </button>
             </div>
           ) : null}
 
           <div className="price-card">
             <div className="price-header">
-              <p className="pre-package-name">Tolymium</p>
+              <Space className="pre-package-name" align="center">
+                Tolymium
+                <StarFilled style={{ fontSize: "24px", color: "#FFE500" }} />
+              </Space>
               <div className="pre-package-price">
                 <h1 className="price-number">29.000đ</h1>
                 <p className="price-number-time">/months</p>
@@ -89,22 +104,20 @@ const Tolymium: React.FC = () => {
             </div>
             <div className="pre-description">
               <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Have more
+                number of map use
               </Space>
               <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Have more
+                number of chat group creation
               </Space>
               <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Can use
+                explore in your group chat
               </Space>
               <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Can do more
+                feature of your profile
               </Space>
             </div>
             {user && (
@@ -125,10 +138,18 @@ const Tolymium: React.FC = () => {
                   : "USE TOLYMIUM"}
               </button>
             )}
+            {!user && (
+              <button className="trial-btn" onClick={() => navigate("/login")}>
+                USE TOLYMIUM
+              </button>
+            )}
           </div>
           <div className="price-card">
             <div className="price-header">
-              <p className="pre-package-name">Tolymium</p>
+              <Space className="pre-package-name">
+                Tolymium{" "}
+                <CrownFilled style={{ fontSize: "24px", color: "#FFE500" }} />
+              </Space>
               <div className="pre-package-price">
                 <h1 className="price-number">290.000đ</h1>
                 <p className="price-number-time">/year</p>
@@ -136,22 +157,7 @@ const Tolymium: React.FC = () => {
             </div>
             <div className="pre-description">
               <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
-              </Space>
-              <Space align="center" size="middle">
-                <CheckOutlined /> Some description of this package
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Cost savings
               </Space>
             </div>
             {user && (
@@ -170,6 +176,11 @@ const Tolymium: React.FC = () => {
                 {user.accountType === "premium_year"
                   ? "YOUR CURRENT PLAN"
                   : "USE TOLYMIUM"}
+              </button>
+            )}
+            {!user && (
+              <button className="trial-btn" onClick={() => navigate("/login")}>
+                USE TOLYMIUM
               </button>
             )}
           </div>

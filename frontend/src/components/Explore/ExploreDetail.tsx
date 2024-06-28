@@ -56,7 +56,11 @@ const ExploreDetail: React.FC = () => {
   } else {
     ratingDescription = "Bad";
   }
-
+  const handleNavigate = () => {
+    navigate("/explore", {
+      state: { selectedExplore: explore },
+    });
+  };
   return (
     <div className="explore-detail-container">
       <div className="explore-detail-header">
@@ -76,10 +80,7 @@ const ExploreDetail: React.FC = () => {
           <h2>{explore.rating}</h2>
           <p> {ratingDescription}</p>
         </div>
-        <div
-          className="explore-detail-map"
-          onClick={() => navigate("/explore")}
-        >
+        <div className="explore-detail-map" onClick={handleNavigate}>
           <CompassOutlined style={{ fontSize: "32px", color: "#0264c8" }} />{" "}
           <p>Navigate</p>
           <RightOutlined style={{ color: "#0264c8", fontSize: "24px" }} />

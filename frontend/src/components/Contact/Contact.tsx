@@ -40,7 +40,7 @@ const Contact = () => {
               <FacebookFilled className="icon-contact-link" />
             </a>
             <a
-              href="https://www.tiktok.com"
+              href="https://www.tiktok.com/@tuiminhlatolyne"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: "unset" }}

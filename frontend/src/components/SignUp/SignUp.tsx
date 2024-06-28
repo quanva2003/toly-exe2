@@ -17,6 +17,9 @@ interface SignUpInputs {
     lat: number;
     lng: number;
   };
+  coverPic: string;
+  accountType: string;
+  premiumPlan: string;
 }
 
 const SignIn: React.FC = () => {
@@ -30,6 +33,9 @@ const SignIn: React.FC = () => {
       lat: 0,
       lng: 0,
     },
+    coverPic: "",
+    accountType: "",
+    premiumPlan: "",
   };
 
   const { loading, signup } = useSignup();
@@ -61,7 +67,7 @@ const SignIn: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <Form>
-            <div className="form-group">
+            <div className="form-group-signup">
               <Field type="text" id="name" name="name" placeholder="Name" />
               <ErrorMessage
                 name="name"
@@ -70,7 +76,7 @@ const SignIn: React.FC = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-signup">
               <Field type="email" id="email" name="email" placeholder="Email" />
               <ErrorMessage
                 name="email"
@@ -79,7 +85,7 @@ const SignIn: React.FC = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-signup">
               <Field
                 type="password"
                 id="password"
@@ -93,7 +99,7 @@ const SignIn: React.FC = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-signup">
               <Field
                 type="password"
                 id="confirmPassword"

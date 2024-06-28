@@ -1,4 +1,3 @@
-// Explore.tsx
 import React, { useEffect, useState } from "react";
 import { Col, Row, notification } from "antd";
 import ExploreList from "./ExploreList";
@@ -8,29 +7,63 @@ import DBtest from "./MapTest";
 import FriendsList from "../Profile/FriendList";
 import type { NotificationArgsProps } from "antd";
 import { ChatState } from "../../context/ChatProvider";
+import axios from "axios";
+
 type NotificationPlacement = NotificationArgsProps["placement"];
+interface ExploreData {
+  _id: string;
+  name: string;
+  area: string;
+  rating: number;
+  priceRange: string;
+  imageUrl: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
+}
 
 const Explore: React.FC = () => {
   const [center, setCenter] = useState({ lat: 10.762622, lng: 106.660172 });
   const { user } = ChatState();
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+  const [selectedLocation, setSelectedLocation] = useState<ExploreData | null>(
     null
   );
-  const [friends, setFriends] = useState([]);
+
+  const [userData, setUserData] = useState<any>({});
   const [api, contextHolder] = notification.useNotification();
   const [showNotification, setShowNotification] = useState(false);
+
+  const userId = user._id;
+
+  const getUserData = async (id: string) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setUserData(response.data);
+    } catch (error) {
+      console.log("Error: ", error.message);
+    }
+  };
 
   const openNotification = (placement: NotificationPlacement) => {
     api.error({
       message: null,
-      description: "Please update position for further feature",
+      description: "Please update position for further features",
       placement,
       duration: 5,
     });
   };
 
   const checkUserPosition = () => {
-    if (user.position.lat === 0 && user.position.lng === 0) {
+    if (
+      userData.position &&
+      userData.position.lat === 0 &&
+      userData.position.lng === 0
+    ) {
       setShowNotification(true);
     } else {
       setShowNotification(false);
@@ -38,8 +71,12 @@ const Explore: React.FC = () => {
   };
 
   useEffect(() => {
+    getUserData(userId);
+  }, [userId]);
+
+  useEffect(() => {
     checkUserPosition();
-  }, [user.position.lat, user.position.lng]);
+  }, [userData]);
 
   useEffect(() => {
     if (showNotification) {
@@ -50,18 +87,9 @@ const Explore: React.FC = () => {
   return (
     <Row>
       <Col span={18} push={6}>
-        {/* <Map
-          center={center}
-          selectedLocation={selectedLocation}
-          locations={locationDb}
-        /> */}
-        {/*THIS IS WHERE IT TELL YOU THAT YOU HAVEN'T UPDATE LOCATION*/}
-        {contextHolder}
-        <DBtest
-          center={center}
-          selectedLocation={selectedLocation}
-          // friends={friends}
-        />
+        {/* {contextHolder}
+        <DBtest center={center} selectedLocation={selectedLocation} /> */}
+        <Map selectedLocation={selectedLocation} />
       </Col>
       <Col span={6} pull={18} style={{ height: "50vh" }}>
         <ExploreList
