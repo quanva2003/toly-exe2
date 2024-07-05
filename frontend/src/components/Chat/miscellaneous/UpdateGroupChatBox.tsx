@@ -22,9 +22,15 @@ import {
   ModalFooter,
   useDisclosure,
   VStack,
+  Select,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { ChatState } from "../../../context/ChatProvider.jsx";
 import UserListItem from "../userAvatar/UserListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -45,17 +51,41 @@ import {
   faFileLines,
   faLink,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  EnvironmentOutlined,
+  StarFilled,
+  EnvironmentFilled,
+} from "@ant-design/icons";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Card, Flex } from "antd";
 
 interface UpdateGroupChatBoxProps {
   fetchMessages: () => void;
   fetchAgain: boolean;
   setFetchAgain: (fetchAgain: boolean) => void;
 }
+interface ChatGrMember {
+  _id: string;
+  name: string;
+  imageUrl: string;
+  position?: {
+    lat: number;
+    lng: number;
+  };
+}
 
+interface Location {
+  _id: string;
+  name: string;
+  area: string;
+  rating: number;
+  priceRange: string;
+  position: { lat: number; lng: number };
+  imageUrl: string;
+}
 const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
   fetchMessages,
   fetchAgain,
@@ -71,7 +101,19 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
   const [isChatMembersOpen, setIsChatMembersOpen] = useState<boolean>(false);
   const [isMediaFilesOpen, setIsMediaFilesOpen] = useState<boolean>(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState<boolean>(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [chatGrMembers, setChatGrMembers] = useState<ChatGrMember[]>([]);
+
+  const {
+    isOpen: isFirstOpen,
+    onOpen: onFirstOpen,
+    onClose: onFirstClose,
+  } = useDisclosure();
+  const {
+    isOpen: isSecondOpen,
+    onOpen: onSecondOpen,
+    onClose: onSecondClose,
+  } = useDisclosure();
+
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -184,7 +226,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setLoading(false);
-      onClose();
+      onFirstClose();
       setSearchResult([]);
     } catch (error) {
       toast({
@@ -272,6 +314,44 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
     }
     setGroupChatName("");
   };
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const location = useLocation(); // Access location object from React Router
+  const selectedExplore = location.state?.selectedExplore;
+  const [selectDistance, setSelectDistance] = useState<number>(0);
+  const [optionSelect, setOptionSelect] = useState<string | number>("");
+  const [customDistance, setCustomDistance] = useState<number | null>(null);
+  const fetchLocationData = async () => {
+    try {
+      const response = await axios.get<Location[]>(
+        "http://localhost:5000/api/explore"
+      );
+      console.log(response.data);
+
+      setLocations(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchLocationData();
+  }, []);
+
+  // Update searchTerm when selectedExplore changes
+  // useEffect(() => {
+  //   if (selectedExplore) {
+  //     setSearchTerm(selectedExplore.name);
+  //   } else {
+  //     setSearchTerm("");
+  //   }
+  // }, [selectedExplore]);
+
+  // const filteredLocations = locations.filter((location) =>
+  //   location.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  //hint
+
   const handleHintExplore = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/user", {
@@ -280,11 +360,9 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
         },
       });
 
-      // Extract all user IDs from the API response
       const allUsers = response.data;
 
-      // Filter out users who are members of the selectedChat
-      const chatMembers = selectedChat.users
+      const chatGrMembers: ChatGrMember[] = selectedChat.users
         .filter((chatUser) =>
           allUsers.some((apiUser) => apiUser._id === chatUser._id)
         )
@@ -297,14 +375,97 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
             lng: chatUser.position.lng,
           },
         }));
-      console.log(chatMembers);
 
-      navigate("/explore", { state: { chatMembers } });
+      setChatGrMembers(chatGrMembers);
+
+      // Filter locations based on selectDistance from all members
+      const filteredLocations = locations.filter((location) => {
+        // Check distance from location to each member
+        const distances = chatGrMembers.map((member) => {
+          if (member.position) {
+            return calculateDistance(
+              location.position.lat,
+              location.position.lng,
+              member.position.lat,
+              member.position.lng
+            );
+          }
+          return Infinity; // Handle if position is undefined
+        });
+
+        // Check if all distances are <= selectDistance
+        const allDistancesValid = distances.every(
+          (distance) => distance <= selectDistance
+        );
+
+        return allDistancesValid;
+      });
+
+      console.log("Filtered Locations:", filteredLocations);
+
+      // Now you can display or use filteredLocations as needed
     } catch (error) {
       console.error("Error fetching user data for explore:", error);
-      // Handle error
     }
   };
+
+  const calculateDistance = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) => {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+    return distance;
+  };
+
+  const deg2rad = (deg: number) => {
+    return deg * (Math.PI / 180);
+  };
+
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    if (value === "other") {
+      setOptionSelect("other");
+      setSelectDistance(0);
+      setCustomDistance(null);
+    }
+    if (value === null) {
+      setOptionSelect("");
+    } else {
+      setOptionSelect(value);
+
+      setSelectDistance(Number(value));
+    }
+    console.log(`selected ${value}`);
+  };
+
+  const handleNumberInputChange = (
+    valueAsString: string,
+    valueAsNumber: number
+  ) => {
+    setCustomDistance(valueAsNumber);
+    setSelectDistance(valueAsNumber);
+    console.log(`selected ${valueAsNumber}`);
+  };
+  console.log(
+    "select:",
+    selectDistance,
+    ",custom: ",
+    customDistance,
+    "option:",
+    optionSelect
+  );
 
   return (
     <Box
@@ -364,7 +525,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
               bgColor="#dff7f7"
               isRound
               aria-label="Profile"
-              onClick={handleHintExplore}
+              onClick={onSecondOpen}
             />
             <Text fontSize="sm" color="gray.500">
               Hint Explore
@@ -464,7 +625,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
               iconSpacing={4}
               bg="none"
               justifyContent="flex-start"
-              onClick={onOpen}
+              onClick={onFirstOpen}
             >
               Add Member
             </Button>
@@ -641,7 +802,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
       </Box>
 
       {/* Add User Modal */}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isFirstOpen} onClose={onFirstClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add User to Group</ModalHeader>
@@ -667,8 +828,124 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" mr={3} onClick={onFirstClose}>
               Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isSecondOpen} onClose={onSecondClose} size={"xl"}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Hint Explore Around Members</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {/* {chatGrMembers.length > 0 ? (
+              <VStack spacing={2} alignItems="stretch">
+                {chatGrMembers.map((user) => (
+                  <Box
+                    key={user._id}
+                    bg="white"
+                    p={2}
+                    borderRadius="lg"
+                    shadow="md"
+                  >
+                    <Avatar src={user.imageUrl} size="md" />
+                    <Text fontSize="md" fontWeight="bold">
+                      {user.name}
+                    </Text>
+                    <Text fontSize="md" fontWeight="bold">
+                      {user.position?.lat}
+                    </Text>
+                    <Text fontSize="md" fontWeight="bold">
+                      {user.position?.lng}
+                    </Text>
+                  </Box>
+                ))}
+              </VStack>
+            ) : (
+              <Text fontSize="md" color="gray.500">
+                No users found in this vicinity.
+              </Text>
+            )} */}
+            {/* <Input
+              placeholder="Search location..."
+              maxLength={300}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div
+              style={{ overflowY: "auto", maxHeight: "500px", marginTop: 5 }}
+            >
+              {filteredLocations.map((location, index) => (
+                <Card
+                  key={index}
+                  hoverable
+                  style={{ margin: "10px " }}
+                  onClick={() => {
+                    console.log(location);
+                  }}
+                >
+                  <Flex justify="space-between" align="center">
+                    <img
+                      src={location.imageUrl}
+                      alt={location.name}
+                      style={{
+                        width: "250px",
+                        height: "100px",
+                        objectFit: "cover",
+                        alignItems: "center",
+                        borderRadius: "10px",
+                      }}
+                    />
+                    <Flex vertical style={{ paddingLeft: 20 }}>
+                      <p className="location-name" style={{ fontWeight: 600 }}>
+                        {location.name}
+                      </p>
+                      <p className="location-address">
+                        <EnvironmentFilled style={{ marginRight: 3 }} />
+                        {location.area}
+                      </p>
+                    </Flex>
+                  </Flex>
+                </Card>
+              ))}
+            </div> */}
+            <Select placeholder="Select option" onChange={handleSelectChange}>
+              <option value="5">{"< 5km"}</option>
+              <option value="10">{"< 10km"}</option>
+              <option value="15">{"< 15km"}</option>
+              <option value="other">Other</option>
+            </Select>
+            {optionSelect === "other" && (
+              <NumberInput
+                defaultValue={15}
+                min={0}
+                max={200}
+                onChange={handleNumberInputChange}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            )}
+            <h2 style={{ fontSize: 18, fontWeight: 700 }}>Explore</h2>
+            {/* <Button>Find Explore</Button> */}
+            {/* <br /> */}
+            {optionSelect === "" ? (
+              "No distance chosen"
+            ) : optionSelect === "other" && customDistance === null ? (
+              "Wait for input distance"
+            ) : (
+              <Button onClick={handleHintExplore}>Find Explore</Button>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onSecondClose}>
+              {" "}
+              Close{" "}
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -19,6 +19,7 @@ interface UserProfileProps {
 const UserProfile: React.FC = () => {
   const { user } = ChatState();
   const { id } = useParams<{ id: string }>();
+  console.log(user);
 
   const [userProfile, setUserProfile] = useState<UserProfileProps | null>(null);
 
@@ -136,29 +137,31 @@ const UserProfile: React.FC = () => {
               style={{ display: "none" }}
               id="cover"
             />
-            <button className="editCoverPhotoBtn">
-              {user.accountType === "free" ? (
-                <>
-                  <CameraAltIcon />
-                  <b
-                    onClick={() => {
-                      toast.error("Premium Account Only");
-                    }}
-                  >
-                    Edit <span className="editPicText">Cover Photo</span>
-                  </b>
-                </>
-              ) : (
-                <>
-                  <CameraAltIcon />
-                  <label htmlFor="cover" style={{ cursor: "pointer" }}>
-                    <b>
+            {user._id === userProfile._id ? (
+              <button className="editCoverPhotoBtn">
+                {user.accountType === "free" ? (
+                  <>
+                    <CameraAltIcon />
+                    <b
+                      onClick={() => {
+                        toast.error("Premium Account Only");
+                      }}
+                    >
                       Edit <span className="editPicText">Cover Photo</span>
                     </b>
-                  </label>
-                </>
-              )}
-            </button>
+                  </>
+                ) : (
+                  <>
+                    <CameraAltIcon />
+                    <label htmlFor="cover" style={{ cursor: "pointer" }}>
+                      <b>
+                        Edit <span className="editPicText">Cover Photo</span>
+                      </b>
+                    </label>
+                  </>
+                )}
+              </button>
+            ) : null}
           </div>
           <div className="profileCenterDown">
             <div className="profileCenterDownCont">
@@ -206,7 +209,7 @@ const UserProfile: React.FC = () => {
                 )}
               </div>
               <h4 className="profileUsername">
-                {user.name}
+                {userProfile.name}
                 <p style={{ fontSize: "16px", margin: "0", opacity: "0.5" }}>
                   {userProfile.friends.length} friends
                 </p>

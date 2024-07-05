@@ -47,50 +47,6 @@ const Tolymium: React.FC = () => {
       <div className="pre">
         <h1 className="pre-header">Tolymium</h1>
         <div className="pre-detail">
-          {!user || (user && user.accountType === "free") ? (
-            <div className="price-card">
-              <div className="price-header">
-                <p className="pre-package-name">Free</p>
-                <div className="pre-package-price">
-                  <h1 className="price-number">0đ</h1>
-                  <p className="price-number-time">/month</p>
-                </div>
-              </div>
-              <div className="pre-description">
-                <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Limit the
-                  number of map use
-                </Space>
-
-                <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Limit the
-                  number of chat group creation
-                </Space>
-                <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Add friends
-                </Space>
-                <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Chat with
-                  your friends
-                </Space>
-                <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Explore
-                  location around you
-                </Space>
-              </div>
-              <button
-                className="trial-btn"
-                onClick={() => {
-                  if (!user) {
-                    navigate("/login");
-                  }
-                }}
-              >
-                {!user || user.accountType !== "free" ? "USE FREE" : "USED"}
-              </button>
-            </div>
-          ) : null}
-
           <div className="price-card">
             <div className="price-header">
               <Space className="pre-package-name" align="center">
@@ -104,12 +60,12 @@ const Tolymium: React.FC = () => {
             </div>
             <div className="pre-description">
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Have more
-                number of map use
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited fun
+                place recommendations for groups
               </Space>
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Have more
-                number of chat group creation
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited
+                personal location customization
               </Space>
               <Space align="center" size="middle">
                 <CheckCircleFilled style={{ color: "#54b4b9" }} /> Can use
@@ -157,7 +113,20 @@ const Tolymium: React.FC = () => {
             </div>
             <div className="pre-description">
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Cost savings
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited fun
+                place recommendations for groups
+              </Space>
+              <Space align="center" size="middle">
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited
+                personal location customization
+              </Space>{" "}
+              <Space align="center" size="middle">
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlock all
+                sticker and theme locks
+              </Space>{" "}
+              <Space align="center" size="middle">
+                <CheckCircleFilled style={{ color: "#54b4b9" }} /> No limit to
+                friend circle groups (max: 50 groups)
               </Space>
             </div>
             {user && (
@@ -184,6 +153,50 @@ const Tolymium: React.FC = () => {
               </button>
             )}
           </div>
+          {!user || (user && user.accountType === "free") ? (
+            <div className="price-card">
+              <div className="price-header">
+                <p className="pre-package-name">Free</p>
+                <div className="pre-package-price">
+                  <h1 className="price-number">0đ</h1>
+                  <p className="price-number-time">/month</p>
+                </div>
+              </div>
+              <div className="pre-description">
+                <Space align="center" size="middle">
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Two
+                  location recommendations per week
+                </Space>
+
+                <Space align="center" size="middle">
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Create only
+                  1 groups
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Use basic
+                  icons
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Chat with
+                  friends via mini social
+                </Space>
+                <Space align="center" size="middle">
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Personal
+                  and friend location tracking
+                </Space>
+              </div>
+              <button
+                className="trial-btn"
+                onClick={() => {
+                  if (!user) {
+                    navigate("/login");
+                  }
+                }}
+              >
+                {!user || user.accountType !== "free" ? "USE FREE" : "USED"}
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
