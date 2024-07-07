@@ -71,7 +71,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
   const [isChatMembersOpen, setIsChatMembersOpen] = useState<boolean>(false);
   const [isMediaFilesOpen, setIsMediaFilesOpen] = useState<boolean>(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState<boolean>(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isFirstOpen, onOpen: onFirstOpen, onClose: onFirstClose } = useDisclosure();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -184,7 +184,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setLoading(false);
-      onClose();
+      onFirstClose();
       setSearchResult([]);
     } catch (error) {
       toast({
@@ -464,7 +464,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
               iconSpacing={4}
               bg="none"
               justifyContent="flex-start"
-              onClick={onOpen}
+              onClick={onFirstOpen}
             >
               Add Member
             </Button>
@@ -641,7 +641,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
       </Box>
 
       {/* Add User Modal */}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isFirstOpen} onClose={onFirstClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add User to Group</ModalHeader>
@@ -667,7 +667,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" mr={3} onClick={onFirstClose}>
               Close
             </Button>
           </ModalFooter>

@@ -1,11 +1,10 @@
-import React, { useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import "./styles.css";
 import { Avatar, IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderAvatar } from "../../config/ChatLogics";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
