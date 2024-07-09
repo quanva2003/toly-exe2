@@ -27,21 +27,19 @@ interface ExploreData {
 
 const Explore: React.FC = () => {
   const [exploreData, setExploreData] = useState<ExploreData[]>([]);
-  // const navigate = useNavigate();
+  const fetchData = async () => {
+    try {
+      const response = await axios.get<ExploreData[]>(
+        "http://localhost:5000/api/explore"
+      );
+      console.log(response.data);
+
+      setExploreData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get<ExploreData[]>(
-          "http://localhost:5000/api/explore"
-        );
-        console.log(response.data);
-
-        setExploreData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, []);
   return (
