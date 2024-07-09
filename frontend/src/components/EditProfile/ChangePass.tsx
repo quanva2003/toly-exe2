@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./ChangePass.css";
+import useChangePassword from "../../hooks/useChangePassword";
 
 const ChangePass = () => {
   const initialValues = {
@@ -9,6 +10,8 @@ const ChangePass = () => {
     newPassword: "",
     confirmPassword: "",
   };
+
+  const { loading, changePassword } = useChangePassword();
 
   const validationSchema = Yup.object({
     oldPassword: Yup.string().required("Old password is required"),
@@ -20,15 +23,17 @@ const ChangePass = () => {
       .required("Confirm password is required"),
   });
 
-  const onSubmit = (values, { setSubmitting }) => {
+  const onSubmit = (values, { setSubmitting, resetForm }) => {
     console.log("Form data", values);
+    changePassword(values);
     setSubmitting(false);
+    resetForm(); // Clear the form
   };
 
   return (
     <div className="changePass">
       <div className="changePass-container">
-        <h2 className="changePass-header">CHANGE PASSWORD</h2>
+        <h2 className="changePass-header">Change Password</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

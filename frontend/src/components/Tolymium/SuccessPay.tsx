@@ -41,36 +41,37 @@ const SuccessPay: React.FC = () => {
       }
     };
 
-    getOrder();
-  });
-
-  const createOrder = async () => {
-    try {
-      if (orderCode && orders) {
-        const { data } = await axios.post(
-          `http://localhost:3000/api/order/create-order/${orderCode}`,
-          {
-            amount: orders.amount,
-            createdAt: orders.createdAt,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${user.token}`,
+    const createOrder = async () => {
+      try {
+        if (orderCode && orders) {
+          const { data } = await axios.post(
+            `http://localhost:5000/api/order/create-order/${orderCode}`,
+            {
+              amount: orders.amount,
+              createdAt: orders.createdAt,
             },
-          }
-        );
-        navigate("/home");
-        // logout();
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+          // navigate("/home");
+          // logout();
+        }
+      } catch (error) {
+        if (error.response) {
+          console.error("Fetch error:", error.response.data);
+        } else {
+          console.error("Fetch error:", error.message);
+        }
       }
-    } catch (error) {
-      if (error.response) {
-        console.error("Fetch error:", error.response.data);
-      } else {
-        console.error("Fetch error:", error.message);
-      }
-    }
-  };
+    };
+
+    getOrder();
+    createOrder();
+  }, []);
 
   return (
     <>
@@ -79,7 +80,11 @@ const SuccessPay: React.FC = () => {
         title="Successfully Purchased Cloud Server ECS!"
         subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
         extra={[
-          <Button type="primary" key="console" onClick={() => createOrder()}>
+          <Button
+            type="primary"
+            key="console"
+            onClick={() => navigate("/home")}
+          >
             Log out to use Premium
           </Button>,
           <Button onClick={() => navigate("/home")} key="buy">

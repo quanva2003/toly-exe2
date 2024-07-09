@@ -25,7 +25,7 @@ const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
-    res.json(user);
+    res.status(200).json(user);
   } else {
     res.status(404).json({ message: "User not found" });
   }
@@ -171,9 +171,12 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      friends: user.friends,
       pic: user.pic,
+      coverPic: user.coverPic,
       position: user.position,
       accountType: user.accountType,
+      premiumPlan: user.premiumPlan,
       token: generateToken(user._id),
     });
   } else {
@@ -189,6 +192,24 @@ const logoutUser = asyncHandler(async (req, res) => {
   } catch (error) {
     console.log("Error in logout controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    return res.status(404).json({ msg: "User not found" });
+  }
+
+  if (user && (await user.matchPassword(oldPassword))) {
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({ msg: "Password updated successfully" });
+  } else {
+    res.status(401).json({ error: "Wrong password" });
+    throw new Error("Invalid Password");
   }
 });
 
@@ -215,6 +236,7 @@ const updateUserPassword = asyncHandler(async (req, res) => {
     res.status(200).json({ msg: "Password updated successfully" });
   }
 });
+
 const removeUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
@@ -315,6 +337,7 @@ module.exports = {
   authUser,
   logoutUser,
   updateUserPassword,
+  changePassword,
   getUserById,
   getUserByName,
   removeUser,

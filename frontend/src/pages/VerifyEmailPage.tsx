@@ -18,9 +18,9 @@ const VerifyEmail = () => {
             },
           }
         );
-        toast.success("Success");
+        toast.success("Verify Successful", { duration: 5000, id: "Verify" });
       } catch (error) {
-        toast.error("Failed");
+        toast.error("Failed", { id: "Failed", duration: 5000 });
       }
     };
 
