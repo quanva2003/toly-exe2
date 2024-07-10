@@ -34,7 +34,7 @@ interface MemberData {
 }
 interface MapProps {
   selectedLocation: ExploreData | null;
-  chatMembers: MemberData[];
+  chatMembers: ExploreData;
 }
 
 const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
@@ -172,7 +172,7 @@ const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
   const mapContainerRef = useRef(null);
 
   useEffect(() => {
-    if (currentLocation && selectedLocation && mapContainerRef.current) {
+    if (currentLocation && mapContainerRef.current) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v11",
@@ -188,15 +188,23 @@ const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
 
       map.addControl(directions, "top-left");
 
-      directions.setOrigin([currentLocation.lng, currentLocation.lat]);
-      directions.setDestination([
-        selectedLocation.position.lng,
-        selectedLocation.position.lat,
-      ]);
+      if (chatMembers) {
+        directions.setOrigin([currentLocation.lng, currentLocation.lat]);
+        directions.setDestination([
+          chatMembers.position.lng,
+          chatMembers.position.lat,
+        ]);
+      } else if (selectedLocation) {
+        directions.setOrigin([currentLocation.lng, currentLocation.lat]);
+        directions.setDestination([
+          selectedLocation.position.lng,
+          selectedLocation.position.lat,
+        ]);
+      }
 
       // setMap(map);
     }
-  }, [currentLocation, selectedLocation]);
+  }, [currentLocation, selectedLocation, chatMembers]);
 
   return (
     <div className="map-wrapper">
@@ -225,15 +233,15 @@ const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
             </Marker>
           ))}
 
-          {chatMembers.map((friend) => (
+          {chatMembers && (
             <Marker
-              key={friend._id}
-              latitude={friend.position.lat}
-              longitude={friend.position.lng}
+              key={chatMembers._id}
+              latitude={chatMembers.position.lat}
+              longitude={chatMembers.position.lng}
               offset={[-20, -30]}
             >
               <img
-                src={friend.imageUrl}
+                src={chatMembers.imageUrl}
                 style={{
                   height: 50,
                   width: 50,
@@ -242,7 +250,7 @@ const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
                 }}
               />
             </Marker>
-          ))}
+          )}
 
           {currentLocation && (
             <Marker
