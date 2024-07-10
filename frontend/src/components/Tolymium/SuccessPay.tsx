@@ -14,15 +14,15 @@ interface OrderProps {
 const SuccessPay: React.FC = () => {
   const navigate = useNavigate();
   const { user } = ChatState();
-  const [orders, setOrders] = useState<OrderProps>();
+  const [orders, setOrders] = useState<OrderProps | null>(null);
   const urlParams = new URLSearchParams(window.location.search);
   const orderCode = urlParams.get("orderCode");
-  console.log(orderCode);
   const { loading, logout } = useLogout();
+
   useEffect(() => {
     const getOrder = async () => {
       try {
-        if (orderCode !== null) {
+        if (orderCode) {
           const { data } = await axios.get(
             `http://localhost:5000/api/order/get-payment-link-info/${orderCode}`,
             {
@@ -32,8 +32,6 @@ const SuccessPay: React.FC = () => {
               },
             }
           );
-          console.log(data);
-
           setOrders(data);
         }
       } catch (error) {
@@ -41,9 +39,13 @@ const SuccessPay: React.FC = () => {
       }
     };
 
+    getOrder();
+  }, [orderCode, user.token]);
+
+  useEffect(() => {
     const createOrder = async () => {
-      try {
-        if (orderCode && orders) {
+      if (orderCode && orders) {
+        try {
           const { data } = await axios.post(
             `http://localhost:5000/api/order/create-order/${orderCode}`,
             {
@@ -59,19 +61,18 @@ const SuccessPay: React.FC = () => {
           );
           // navigate("/home");
           // logout();
-        }
-      } catch (error) {
-        if (error.response) {
-          console.error("Fetch error:", error.response.data);
-        } else {
-          console.error("Fetch error:", error.message);
+        } catch (error) {
+          if (error.response) {
+            console.error("Fetch error:", error.response.data);
+          } else {
+            console.error("Fetch error:", error.message);
+          }
         }
       }
     };
 
-    getOrder();
     createOrder();
-  }, []);
+  }, [orderCode, orders, user.token]);
 
   return (
     <>
