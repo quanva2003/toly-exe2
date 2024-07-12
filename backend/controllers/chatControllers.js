@@ -201,6 +201,19 @@ const addToGroup = asyncHandler(async (req, res) => {
   }
 });
 
+const hintExplore = asyncHandler(async (req, res) => {
+  let createCount = req.body.count;
+  try {
+    if (createCount <= 0) {
+      return res.status(400).send("No more hint explore allowed");
+    }
+    await Premium.findOneAndUpdate({ subscriber: req.user._id }, { numOfNavigate: createCount - 1 });
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+})
+
 module.exports = {
   accessChat,
   fetchChats,
@@ -208,4 +221,5 @@ module.exports = {
   renameGroup,
   addToGroup,
   removeFromGroup,
+  hintExplore
 };

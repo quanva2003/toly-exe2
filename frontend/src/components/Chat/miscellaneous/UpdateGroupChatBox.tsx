@@ -77,6 +77,11 @@ interface ChatGrMember {
   };
 }
 
+interface PremiumCount {
+  _id: string;
+  numOfNavigate: number;
+}
+
 interface Location {
   _id: string;
   name: string;
@@ -340,6 +345,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
   const [locations, setLocations] = useState<Location[]>([]);
   const [filterLocations, setFilterLocations] = useState<Location[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [premiumCount, setPremiumCount] = useState<PremiumCount>();
   const [selectDistance, setSelectDistance] = useState<number>(0);
   const [optionSelect, setOptionSelect] = useState<string | number>("");
   const [customDistance, setCustomDistance] = useState<number | null>(null);
@@ -359,6 +365,27 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
     fetchLocationData();
   }, []);
 
+  useEffect(() => {
+    const fetchPremium = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:5000/api/order/premium-feature",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+        setPremiumCount(data[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPremium();
+  }, []);
+
   const handleHintExplore = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/user", {
@@ -372,6 +399,17 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
       console.log("here:", selectedChat.users);
 
       setChatGrMembers(selectedChat.users);
+
+      if (premiumCount && premiumCount.numOfNavigate <= 0) {
+        toast({
+          title: "You have no attempts left to hint an explore",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
+        return;
+      }
 
       // Filter locations based on selectDistance from all members
       const filteredLocations = locations.filter((location) => {
@@ -408,6 +446,28 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
       console.log("Filtered Locations:", filteredLocations);
       setFilterLocations(filteredLocations);
       // Now you can display or use filteredLocations as needed
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      try {
+        const res = await axios.post(
+          `/api/chat/hint`,
+          {
+            count: premiumCount?.numOfNavigate,
+          },
+          config
+        );
+
+        setPremiumCount((prevCount: any) => ({
+          ...prevCount,
+          numOfNavigate: res,
+        }));
+      } catch (postError) {
+        console.error("Error posting hint:", postError);
+      }
     } catch (error) {
       console.error("Error fetching user data for explore:", error);
     }
@@ -877,7 +937,12 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
             ) : optionSelect === "other" && customDistance === null ? (
               "Wait for input distance"
             ) : (
-              <Button onClick={handleHintExplore}>Find Explore</Button>
+              <>
+                <Button onClick={handleHintExplore}>Find Explore</Button>
+                <Text fontWeight="bold" color="gray.500">
+                  {premiumCount?.numOfNavigate} times left
+                </Text>
+              </>
             )}
             {filterLocations.length > 0 ? (
               <div
