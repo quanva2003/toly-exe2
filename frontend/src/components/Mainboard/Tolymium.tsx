@@ -139,6 +139,8 @@ const Tolymium: React.FC = () => {
                       "Payment for Tolymium ",
                       "premium_year"
                     );
+                  } else {
+                    navigate(`/profile/${user._id}`);
                   }
                 }}
               >

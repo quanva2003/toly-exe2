@@ -8,6 +8,7 @@ import { ChatState } from "../../context/ChatProvider";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import toast from "react-hot-toast";
 import { CameraFilled, LoadingOutlined } from "@ant-design/icons";
+import CurrentPlan from "./CurrentPlan";
 interface UserProfileProps {
   _id: string;
   name: string;
@@ -53,7 +54,7 @@ const UserProfile: React.FC = () => {
     {
       key: "2",
       label: "Your premium",
-      children: "Content of Tab Pane 2",
+      children: <CurrentPlan />,
     },
   ];
 

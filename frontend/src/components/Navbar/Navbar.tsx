@@ -119,9 +119,9 @@ const Navbar: React.FC = () => {
   ];
 
   const renderBadge = () => {
-    if (userData.accountType === "premium_month") {
+    if (user.accountType === "premium_month") {
       return <StarOutlined />;
-    } else if (userData.accountType === "premium_year") {
+    } else if (user.accountType === "premium_year") {
       return <DiamondOutlinedIcon />;
     }
     return null;

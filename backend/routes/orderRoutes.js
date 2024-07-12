@@ -7,6 +7,7 @@ const {
   getPaymentInfo,
   getPremiumInfo,
   createOrder,
+  getAllOrders,
 } = require("../controllers/orderControllers");
 
 const router = express.Router();
@@ -14,6 +15,8 @@ const router = express.Router();
 router.route("/premium-feature").get(protect, getPremiumInfo);
 
 router.route("/order-history").get(protect, getOrderList);
+
+router.route("/all-order").get(protect, getAllOrders);
 
 router.route("/create-order/:id").post(protect, createOrder);
 

@@ -9,9 +9,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  // InteractionMode,
 } from "chart.js";
-import { Card, Space, Statistic } from "antd";
+import { Card, Space, Statistic, Select } from "antd";
 import {
   UserOutlined,
   CompassOutlined,
@@ -20,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
+
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
@@ -30,6 +30,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
 interface User {
   _id: string;
   name: string;
@@ -37,26 +38,41 @@ interface User {
   email: string;
   createdAt: string;
 }
+
 interface Order {
   _id: string;
-  purchaser: User;
+  purchaser: User | null;
   type: string;
   createdAt: string;
   updatedAt: string;
 }
 
+interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    borderColor: string;
+    backgroundColor: string;
+    yAxisID: string;
+  }[];
+}
+
 const Dashboard = () => {
-  // Sample data for the statistics
+  const { user } = ChatState();
+  const [users, setUsers] = useState<User[]>([]);
+  const [orderData, setOrderData] = useState<Order[]>([]);
+  const [interval, setInterval] = useState<string>("month");
+
   const stats = {
-    newUsers: 120,
+    newUsers: users.length,
     newExplores: 45,
     premiumUpdates: 30,
-    totalUsers: 5000,
+    totalUsers: users.length,
   };
 
-  // Sample data for the chart
-  const [chartData, setChartData] = useState({
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+  const [chartData, setChartData] = useState<ChartData>({
+    labels: [],
     datasets: [
       {
         label: "Revenue in USD",
@@ -65,15 +81,9 @@ const Dashboard = () => {
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         yAxisID: "y",
       },
-      {
-        label: "Users Joined",
-        data: [150, 100, 350, 200, 50, 300, 350],
-        borderColor: "rgba(153, 102, 255, 1)",
-        backgroundColor: "rgba(153, 102, 255, 0.2)",
-        yAxisID: "y1",
-      },
     ],
   });
+  console.log("chartData: ", chartData);
 
   const chartOptions = {
     responsive: true,
@@ -83,26 +93,24 @@ const Dashboard = () => {
     },
     stacked: false,
     scales: {
+      // y: {
+      //   type: "linear" as const,
+      //   display: true,
+      //   position: "left" as const,
+      // },
       y: {
-        type: "linear",
+        type: "linear" as const,
         display: true,
-        position: "left",
-      },
-      y1: {
-        type: "linear",
-        display: true,
-        position: "right",
+        position: "right" as const,
         grid: {
           drawOnChartArea: false,
         },
+        min: 0,
+        // max: 5000000,
       },
     },
-  } as const;
-  const { user } = ChatState();
-  const [users, setUsers] = useState<User[]>([]);
-  const [usersOfWeek, setUsersOfWeek] = useState<User[]>([]);
-  // const [orders, setOrders] = useState<Order[]>([]);
-  const [orderData, setOrderData] = useState<Order[]>([]);
+  };
+
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/user", {
@@ -110,21 +118,8 @@ const Dashboard = () => {
           Authorization: `Bearer ${user.token}`,
         },
       });
-
-      const now = new Date();
-      const oneWeekAgo = new Date();
-      oneWeekAgo.setDate(now.getDate() - 7);
-
-      const usersData = response.data;
-      console.log(usersData);
-
-      const usersThisWeek = usersData.filter(
-        (user) => new Date(user.createdAt) > oneWeekAgo
-      );
-      console.log(usersThisWeek);
-
+      const usersData: User[] = response.data;
       setUsers(usersData);
-      setUsersOfWeek(usersThisWeek);
     } catch (error) {
       console.error("Error fetching data from API", error);
     }
@@ -133,97 +128,132 @@ const Dashboard = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/order/all-orders",
+        "http://localhost:5000/api/order/all-order",
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         }
       );
-
-      const ordersData = response.data;
-      console.log(ordersData);
-      // setOrders(ordersData);
-
-      // Filter orders by type and calculate revenue
-      const filteredOrders = ordersData.filter(
-        (order) =>
-          order.type === "premium_month" || order.type === "premium_year"
-      );
-
-      setOrderData(filteredOrders);
+      const ordersData: Order[] = response.data;
+      setOrderData(ordersData);
     } catch (error) {
       console.error("Error fetching orders from API", error);
     }
   };
-  useEffect(() => {
-    fetchData();
-    fetchOrders();
-  }, []);
+
   const getRevenueData = (interval: string) => {
     const now = new Date();
-    const startDate = new Date();
+    let startDate: Date;
+    let endDate: Date;
+    let labels: string[] = [];
 
     switch (interval) {
       case "week":
-        startDate.setDate(now.getDate() - 7);
+        startDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - 7
+        );
+        endDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - 1
+        );
+        labels = Array.from({ length: 7 }, (_, i) => {
+          const date = new Date();
+          date.setDate(now.getDate() - (6 - i));
+          return date.toISOString().split("T")[0];
+        });
         break;
       case "month":
-        startDate.setMonth(now.getMonth() - 1);
-        break;
-      case "half-year":
-        startDate.setMonth(now.getMonth() - 6);
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        labels = Array.from({ length: endDate.getDate() }, (_, i) => {
+          const date = new Date(now.getFullYear(), now.getMonth(), i + 1);
+          return date.toISOString().split("T")[0];
+        });
         break;
       case "year":
-        startDate.setFullYear(now.getFullYear() - 1);
+        startDate = new Date(
+          now.getFullYear() - 1,
+          now.getMonth(),
+          now.getDate()
+        );
+        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        labels = Array.from({ length: 12 }, (_, i) => {
+          const date = new Date(now.getFullYear() - 1, i, 1);
+          return date.toLocaleString("default", { month: "long" });
+        });
         break;
       default:
-        startDate.setDate(now.getDate() - 7);
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        labels = Array.from({ length: endDate.getDate() }, (_, i) => {
+          const date = new Date(now.getFullYear(), now.getMonth(), i + 1);
+          return date.toISOString().split("T")[0];
+        });
         break;
     }
 
     const filteredOrders = orderData.filter(
-      (order) => new Date(order.createdAt) > startDate
+      (order) =>
+        new Date(order.createdAt) >= startDate &&
+        new Date(order.createdAt) <= endDate
     );
 
-    // Calculate total revenue for each interval
-    const revenueData: number[] = [];
-    for (let i = 0; i < chartData.labels.length; i++) {
-      const startDateLabel = new Date(chartData.labels[i]);
-      const endDateLabel = new Date(chartData.labels[i + 1] || now);
+    const revenueData = labels.map((label, index) => {
+      const currentDate = new Date(labels[index]);
+      const nextDate = new Date(labels[index + 1] || currentDate);
 
       const revenue = filteredOrders.reduce((totalRevenue, order) => {
         const orderDate = new Date(order.createdAt);
-        if (orderDate >= startDateLabel && orderDate < endDateLabel) {
+        if (orderDate >= currentDate && orderDate < nextDate) {
           if (order.type === "premium_month") {
-            return totalRevenue + 29000; // Adjust this based on your actual revenue calculation
+            return totalRevenue + 29000;
           } else if (order.type === "premium_year") {
-            return totalRevenue + 290000; // Adjust this based on your actual revenue calculation
+            return totalRevenue + 290000;
           }
         }
         return totalRevenue;
       }, 0);
 
-      revenueData.push(revenue);
-    }
+      return revenue;
+    });
 
-    return revenueData;
+    return { labels, revenueData };
   };
 
-  // Update chart data with revenue based on selected interval
   useEffect(() => {
-    const updatedChartData = { ...chartData };
-    updatedChartData.datasets[0].data = getRevenueData("month");
-    setChartData(updatedChartData);
-  }, [orderData]);
+    fetchData();
+    fetchOrders();
+  }, [user]);
 
-  // useEffect(() => {
-  //   fetchUsersOfWeek();
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    const { labels, revenueData } = getRevenueData(interval);
+    setChartData({
+      labels,
+      datasets: [
+        {
+          ...chartData.datasets[0], // Keep existing dataset properties
+          data: revenueData,
+        },
+      ],
+    });
+  }, [orderData, interval]);
+
   return (
     <div style={{ height: "599px", boxSizing: "border-box" }}>
       <h1>Dashboard</h1>
+      <Select
+        value={interval}
+        onChange={(value: string) => setInterval(value)}
+        style={{ width: 200, marginBottom: 20 }}
+      >
+        <Select.Option value="week">Week</Select.Option>
+        <Select.Option value="month">Month</Select.Option>
+        <Select.Option value="year">Year</Select.Option>
+      </Select>
       <div style={{ display: "flex", justifyContent: "space-around" }}>
         <Card>
           <Space direction="horizontal" style={{ gap: "1rem" }}>
@@ -286,7 +316,7 @@ const Dashboard = () => {
                 padding: 8,
               }}
             />
-            <Statistic title="Total Users" value={users.length} />
+            <Statistic title="Total Users" value={stats.totalUsers} />
           </Space>
         </Card>
       </div>

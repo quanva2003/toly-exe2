@@ -35,7 +35,20 @@ const getOrderList = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+const getAllOrders = asyncHandler(async (req, res) => {
+  try {
+    const orders = await Order.find().populate("purchaser", "name email pic");
 
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 const createOrder = asyncHandler(async (req, res) => {
   const { _id: currentUser } = req.user;
   const { id: orderCode } = req.params;
@@ -164,4 +177,5 @@ module.exports = {
   buyPremium,
   cancelPremium,
   getPaymentInfo,
+  getAllOrders,
 };

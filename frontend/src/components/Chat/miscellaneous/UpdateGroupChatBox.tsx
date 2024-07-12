@@ -377,6 +377,8 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
             },
           }
         );
+        console.log(data[0]);
+
         setPremiumCount(data[0]);
       } catch (error) {
         console.error(error);

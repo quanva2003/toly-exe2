@@ -30,11 +30,6 @@ const items = [
     icon: <FireOutlined />,
     label: "Destination",
   },
-  {
-    key: "4",
-    icon: <ProfileOutlined />,
-    label: "Post",
-  },
 ];
 
 const AdmingPage: React.FC = () => {
