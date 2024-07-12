@@ -21,6 +21,7 @@ const useLogout = () => {
       }
 
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("user");
       setUser(null);
       navigation("/");
     } catch (error) {

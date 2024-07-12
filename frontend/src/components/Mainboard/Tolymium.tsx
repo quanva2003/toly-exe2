@@ -1,6 +1,6 @@
 import React from "react";
 import "./Tolymium.css";
-import { Button, Carousel, Space, Tag } from "antd";
+import { Space } from "antd";
 import { CheckCircleFilled, StarFilled, CrownFilled } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
@@ -135,7 +135,7 @@ const Tolymium: React.FC = () => {
                 onClick={() => {
                   if (user.accountType !== "premium_year") {
                     handleButtonClick(
-                      2000,
+                      4000,
                       "Payment for Tolymium ",
                       "premium_year"
                     );

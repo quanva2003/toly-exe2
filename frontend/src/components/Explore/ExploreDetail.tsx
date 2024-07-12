@@ -27,15 +27,19 @@ const ExploreDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [explore, setExplore] = useState<Explore | null>(null);
   const { user } = ChatState();
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchExplore = async () => {
       try {
-        const response = await axios.get<Explore>(`/api/explore/${id}`, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const response = await axios.get<Explore>(
+          `/api/explore/${id}`
+          // , {
+          // headers: {
+          //   Authorization: `Bearer ${user.token}`,
+          // },
+          // }
+        );
         setExplore(response.data);
       } catch (error) {
         console.error("Error fetching explore:", error);
@@ -61,6 +65,7 @@ const ExploreDetail: React.FC = () => {
       state: { selectedExplore: explore },
     });
   };
+  const handleLogin = () => {};
   return (
     <div className="explore-detail-container">
       <div className="explore-detail-header">
@@ -87,7 +92,11 @@ const ExploreDetail: React.FC = () => {
         </div>
         <div className="explore-detail-price">
           {explore.priceRange}
-          <Button>Try it!!!</Button>
+          {!user ? (
+            <Button onClick={() => navigate("/login")}>Try it</Button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

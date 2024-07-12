@@ -7,7 +7,7 @@ const User = require("../models/user.model.js");
 
 const getPremiumInfo = asyncHandler(async (req, res) => {
   const { _id: currentUser } = req.user;
-  const premiumInfo = await Premium.find({ subscriber: currentUser })
+  const premiumInfo = await Premium.find({ subscriber: currentUser });
 
   if (!premiumInfo || premiumInfo.length === 0) {
     return res.status(404).json({ message: "No orders found" });
@@ -49,22 +49,27 @@ const createOrder = asyncHandler(async (req, res) => {
   session.startTransaction();
 
   try {
-    const existOrder = await Order.findOne({ orderId: orderCode }).session(session);
+    const existOrder = await Order.findOne({ orderId: orderCode }).session(
+      session
+    );
 
     if (existOrder) {
       throw new Error("Order already existed!");
     }
 
     const order = await Order.create(
-      [{
-        purchaser: currentUser,
-        orderId: orderCode,
-        type: planType,
-      }],
+      [
+        {
+          purchaser: currentUser,
+          orderId: orderCode,
+          type: planType,
+        },
+      ],
       { session }
     );
 
-    const user = await User.findByIdAndUpdate(currentUser,
+    const user = await User.findByIdAndUpdate(
+      currentUser,
       { accountType: planType },
       { new: true, upsert: true, session }
     );
@@ -84,7 +89,9 @@ const createOrder = asyncHandler(async (req, res) => {
 
     await session.commitTransaction();
     session.endSession();
+    const updatedUser = await User.findById(currentUser);
 
+    res.status(200).json({ userInfo: updatedUser });
     res.status(200).json({ user: user, order: order, premium: premium });
   } catch (error) {
     await session.abortTransaction();

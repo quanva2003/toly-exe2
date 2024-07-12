@@ -65,10 +65,11 @@ const Banner: React.FC = () => {
       <div className="search-bar">
         <Input
           size="large"
-          placeholder="Search destinations, hotels"
+          placeholder="Search user"
           prefix={<SearchOutlined />}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-home"
         />
         <Button size="large" onClick={handleSearch}>
           Search

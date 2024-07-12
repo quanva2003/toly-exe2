@@ -110,19 +110,19 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
     {
       title: "Select Distance",
       description:
-        "Please choose distance between all members in chat to explore, if you choose other please input number",
+        "Please choose the distance between all members in the chat to explore. If you choose another distance, please input the number.",
       target: () => ref1.current,
     },
     {
       title: "Confirm Distance",
       description:
-        "When you have distance you want, click button to display list hint exlore suitalbe with distance you select",
+        "Please confirm the selected distance between all members in the chat to proceed with displaying the suggested destinations.",
       target: () => ref2.current,
     },
     {
-      title: "Navigate",
+      title: "Navigation",
       description:
-        "It will display list hint explore, click it and will navigate to this explore",
+        "Please choose the distance between all members, and then select your desired destination to navigate to that place.",
       target: () => ref3.current,
     },
   ];
@@ -844,7 +844,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
       <Modal isOpen={isSecondOpen} onClose={onSecondClose} size={"xl"}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Hint Explore Around Members</ModalHeader>
+          <ModalHeader>Explore destinations around all members</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Select
@@ -925,7 +925,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
               </div>
             ) : (
               <Text fontSize="md" color="gray.500" ref={ref3}>
-                No locations found in this vicinity.
+                No location found in this vicinity.
               </Text>
             )}
             <Tour

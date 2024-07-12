@@ -28,7 +28,7 @@ const items = [
   {
     key: "3",
     icon: <FireOutlined />,
-    label: "Explore",
+    label: "Destination",
   },
   {
     key: "4",
@@ -102,7 +102,7 @@ const AdmingPage: React.FC = () => {
             {selectedKey === "4" && <Post />}
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>Create by Toly Team</Footer>
+        <Footer style={{ textAlign: "center" }}>Created by Toly Team</Footer>
       </Layout>
     </Layout>
   );

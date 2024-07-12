@@ -21,6 +21,9 @@ const Navbar: React.FC = () => {
 
   const profileData = JSON.parse(localStorage.getItem("chat-user") || "{}");
   const profilePic = profileData.pic;
+  const userData = JSON.parse(localStorage.getItem("user") || "{}");
+  console.log("ne:", userData);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const navigate = (toUrl) => {
@@ -116,9 +119,9 @@ const Navbar: React.FC = () => {
   ];
 
   const renderBadge = () => {
-    if (user.accountType === "premium_month") {
+    if (userData.accountType === "premium_month") {
       return <StarOutlined />;
-    } else if (user.accountType === "premium_year") {
+    } else if (userData.accountType === "premium_year") {
       return <DiamondOutlinedIcon />;
     }
     return null;

@@ -52,13 +52,8 @@ const UserProfile: React.FC = () => {
     },
     {
       key: "2",
-      label: "Fav Explore",
+      label: "Your premium",
       children: "Content of Tab Pane 2",
-    },
-    {
-      key: "3",
-      label: "Contributed Explore",
-      children: "Content of Tab Pane 3",
     },
   ];
 

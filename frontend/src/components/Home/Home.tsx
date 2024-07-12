@@ -9,19 +9,19 @@ import NewExplore from "./NewExplore";
 const Home = () => {
   const slides = [
     {
-      title: "Mountain Climbing Trips & Tours",
+      title: "Discover and Share Locations with Ease",
       description:
-        "Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua.",
+        "With just a few simple steps, users can effortlessly share their current location with friends and family, ensuring a quick and accurate connection.",
     },
     {
-      title: "Explore the Wild Nature",
+      title: "Intelligent Exploration at Your Fingertips",
       description:
-        "Discover the beauty of the wilderness and experience the adventure of a lifetime.",
+        "Toly suggests nearby locations tailored to users' interests. With just a few taps, users can embark on thrilling adventures, effortlessly discovering new and captivating places along the way.",
     },
     {
-      title: "Adventurous Escapes",
+      title: "Group-Friendly Location Recommendations",
       description:
-        "Experience the thrill and excitement of adventurous escapes with our expert guides.",
+        "Our innovative feature suggests locations ensure a balanced distance for all group members. Explore together and find the perfect meeting spot effortlessly.",
     },
   ];
 
@@ -41,7 +41,7 @@ const Home = () => {
         />
         <div className="home-heading-container">
           <div className="home-heading-left">
-            <h1 className="home-heading">Unleash your journey's potential.</h1>
+            <h1 className="home-heading">Unleash your journey's potential</h1>
             <div className="search-bar-home">
               <Input
                 size="large"
@@ -49,6 +49,7 @@ const Home = () => {
                 prefix={<SearchOutlined />}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-home"
               />
               <Button size="large" onClick={handleSearch}>
                 Search
@@ -56,7 +57,7 @@ const Home = () => {
             </div>
           </div>
           <div className="home-heading-right">
-            <Carousel autoplay dotPosition="right">
+            <Carousel>
               {slides.map((slide, index) => (
                 <div key={index} className="carousel-slide">
                   <h3>{slide.title}</h3>

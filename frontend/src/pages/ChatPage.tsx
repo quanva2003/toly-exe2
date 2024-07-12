@@ -42,7 +42,7 @@ import Navbar from "../components/Navbar/Navbar.js";
 import UpdateGroupChatBox from "../components/Chat/miscellaneous/UpdateGroupChatBox";
 import UpdateUserChatBox from "../components/Chat/miscellaneous/UpdateUserChatBox.js";
 import { getSenderFull } from "../config/ChatLogics.js";
-
+import "./FixBox.css";
 const Chatpage: React.FC = () => {
   const [fetchAgain, setFetchAgain] = useState<boolean>(false);
   const { user, selectedChat } = ChatState();

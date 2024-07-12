@@ -28,24 +28,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   gap: 2rem;
 }
 .home-heading-left,
 .home-heading-right {
-  max-width: 500px;
+  max-width: 600px;
 }
 .home-heading {
   font-size: 4rem;
   color: #000;
-  margin-bottom: 20px;
+  margin-bottom: 90px;
+  text-align: center;
 }
 .search-bar-home {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 400px;
-  margin-bottom: 20px;
+  /* max-width: 400px; */
+  /* margin-bottom: 20px; */
   padding: 10px;
   border-radius: 12px;
   backdrop-filter: blur(20px);
@@ -57,26 +58,27 @@
   /* background: transparent !important; */
 }
 
-span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-dev-only-do-not-override-3rel02.ant-input-outlined {
+span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-dev-only-do-not-override-3rel02.ant-input-outlined.search-home {
+  border: none;
   background: transparent;
 }
 .search-bar-home .ant-input-affix-wrapper .ant-input::placeholder {
   color: #ccc;
 }
-.home-container .ant-carousel .slick-dots li button {
+/* .home-container .ant-carousel .slick-dots li button {
   height: 30px;
-}
-ul.slick-dots.slick-dots-right {
+} */
+/* ul.slick-dots.slick-dots-right {
   gap: 1rem;
 }
 
 ul.slick-dots.slick-dots-right li.slick-active button {
   background-color: rgba(255, 255, 255, 0.7);
 }
+
+} */
 .carousel-slide {
   text-align: left;
-  /* width: 90% !important; */
-  /* height: 100% !important; */
 }
 
 .carousel-slide h3 {
@@ -89,4 +91,5 @@ ul.slick-dots.slick-dots-right li.slick-active button {
   margin-right: 20px !important;
   color: #ffffff;
   font-size: 1rem;
+  margin-bottom: 0;
 }

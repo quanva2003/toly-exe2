@@ -5,7 +5,7 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import Navbar from "../components/Navbar/Navbar";
 import SearchFriends from "../components/Friends/SearchFriends";
 import RequestFriends from "../components/Friends/RequestFriends";
-
+import "./FixBox.css";
 const { Content, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];

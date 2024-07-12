@@ -59,6 +59,11 @@ const SuccessPay: React.FC = () => {
               },
             }
           );
+          // const updatedUser = {
+          //   ...user,
+          //   accountType: data.userInfo.accountType,
+          // };
+          // localStorage.setItem("user", JSON.stringify(updatedUser));
           // navigate("/home");
           // logout();
         } catch (error) {
