@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChatState } from "../../context/ChatProvider";
 import "./ExploreDetail.css";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import {
   ShareAltOutlined,
   EnvironmentFilled,
@@ -49,6 +49,15 @@ const ExploreDetail: React.FC = () => {
     fetchExplore();
   }, [id]);
 
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      message.success("URL copied to clipboard!");
+    } catch (error) {
+      message.error("Failed to copy URL.");
+    }
+  };
+
   if (!explore) {
     return <div>Loading...</div>;
   }
@@ -70,7 +79,11 @@ const ExploreDetail: React.FC = () => {
     <div className="explore-detail-container">
       <div className="explore-detail-header">
         <h1>{explore.name}</h1>
-        <Button icon={<ShareAltOutlined />} shape="circle" />
+        <Button
+          icon={<ShareAltOutlined />}
+          shape="circle"
+          onClick={handleShare}
+        />
       </div>
       <span className="explore-detail-location">
         <EnvironmentFilled /> {explore.area}

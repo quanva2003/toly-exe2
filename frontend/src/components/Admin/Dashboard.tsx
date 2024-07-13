@@ -75,15 +75,21 @@ const Dashboard = () => {
     labels: [],
     datasets: [
       {
-        label: "Revenue in USD",
+        label: "Revenue in VND",
         data: [],
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         yAxisID: "y",
       },
+      {
+        label: "Users Created",
+        data: [],
+        borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        yAxisID: "y1",
+      },
     ],
   });
-  console.log("chartData: ", chartData);
 
   const chartOptions = {
     responsive: true,
@@ -93,12 +99,13 @@ const Dashboard = () => {
     },
     stacked: false,
     scales: {
-      // y: {
-      //   type: "linear" as const,
-      //   display: true,
-      //   position: "left" as const,
-      // },
       y: {
+        type: "linear" as const,
+        display: true,
+        position: "left" as const,
+        min: 0,
+      },
+      y1: {
         type: "linear" as const,
         display: true,
         position: "right" as const,
@@ -106,7 +113,6 @@ const Dashboard = () => {
           drawOnChartArea: false,
         },
         min: 0,
-        // max: 5000000,
       },
     },
   };
@@ -142,7 +148,7 @@ const Dashboard = () => {
     }
   };
 
-  const getRevenueData = (interval: string) => {
+  const getChartData = (interval: string) => {
     const now = new Date();
     let startDate: Date;
     let endDate: Date;
@@ -202,6 +208,12 @@ const Dashboard = () => {
         new Date(order.createdAt) <= endDate
     );
 
+    const filteredUsers = users.filter(
+      (user) =>
+        new Date(user.createdAt) >= startDate &&
+        new Date(user.createdAt) <= endDate
+    );
+
     const revenueData = labels.map((label, index) => {
       const currentDate = new Date(labels[index]);
       const nextDate = new Date(labels[index + 1] || currentDate);
@@ -221,7 +233,22 @@ const Dashboard = () => {
       return revenue;
     });
 
-    return { labels, revenueData };
+    const usersData = labels.map((label, index) => {
+      const currentDate = new Date(labels[index]);
+      const nextDate = new Date(labels[index + 1] || currentDate);
+
+      const userCount = filteredUsers.reduce((count, user) => {
+        const userDate = new Date(user.createdAt);
+        if (userDate >= currentDate && userDate < nextDate) {
+          return count + 1;
+        }
+        return count;
+      }, 0);
+
+      return userCount;
+    });
+
+    return { labels, revenueData, usersData };
   };
 
   useEffect(() => {
@@ -230,7 +257,7 @@ const Dashboard = () => {
   }, [user]);
 
   useEffect(() => {
-    const { labels, revenueData } = getRevenueData(interval);
+    const { labels, revenueData, usersData } = getChartData(interval);
     setChartData({
       labels,
       datasets: [
@@ -238,9 +265,13 @@ const Dashboard = () => {
           ...chartData.datasets[0], // Keep existing dataset properties
           data: revenueData,
         },
+        {
+          ...chartData.datasets[1], // Keep existing dataset properties
+          data: usersData,
+        },
       ],
     });
-  }, [orderData, interval]);
+  }, [orderData, users, interval]);
 
   return (
     <div style={{ height: "599px", boxSizing: "border-box" }}>
@@ -252,73 +283,10 @@ const Dashboard = () => {
       >
         <Select.Option value="week">Week</Select.Option>
         <Select.Option value="month">Month</Select.Option>
-        <Select.Option value="year">Year</Select.Option>
+        {/* <Select.Option value="year">Year</Select.Option> */}
       </Select>
       <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <Card>
-          <Space direction="horizontal" style={{ gap: "1rem" }}>
-            <GlobalOutlined
-              style={{
-                color: "blue",
-                backgroundColor: "#ccc",
-                borderRadius: 50,
-                fontSize: 24,
-                padding: 8,
-              }}
-            />
-            <Statistic title="New Users This Week" value={stats.newUsers} />
-          </Space>
-        </Card>
-        <Card>
-          <Space direction="horizontal" style={{ gap: "1rem" }}>
-            <CompassOutlined
-              style={{
-                color: "blue",
-                backgroundColor: "#ccc",
-                borderRadius: 50,
-                fontSize: 24,
-                padding: 8,
-              }}
-            />
-            <Statistic
-              title="New Explores This Week"
-              value={stats.newExplores}
-            />
-          </Space>
-        </Card>
-
-        <Card>
-          <Space direction="horizontal" style={{ gap: "1rem" }}>
-            <StarOutlined
-              style={{
-                color: "blue",
-                backgroundColor: "#ccc",
-                borderRadius: 50,
-                fontSize: 24,
-                padding: 8,
-              }}
-            />
-            <Statistic
-              title="Premium Updates This Week"
-              value={stats.premiumUpdates}
-            />
-          </Space>
-        </Card>
-
-        <Card>
-          <Space direction="horizontal" style={{ gap: "1rem" }}>
-            <UserOutlined
-              style={{
-                color: "blue",
-                backgroundColor: "#ccc",
-                borderRadius: 50,
-                fontSize: 24,
-                padding: 8,
-              }}
-            />
-            <Statistic title="Total Users" value={stats.totalUsers} />
-          </Space>
-        </Card>
+        {/* Other cards for statistics */}
       </div>
 
       <div style={{ marginTop: "50px" }}>
