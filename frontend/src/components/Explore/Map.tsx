@@ -54,6 +54,8 @@ const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
     lat: number;
     lng: number;
   } | null>(null);
+  console.log(currentLocation);
+
   const [friends, setFriends] = useState<any>([]);
   const [friendLists, setFriendLists] = useState<any>([]);
 

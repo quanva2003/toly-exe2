@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Flex, Input } from "antd";
+import { Button, Card, Flex, Input } from "antd";
 import { EnvironmentOutlined, StarFilled } from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -122,6 +122,8 @@ const ExploreList: React.FC<ExploreListProps> = ({
                 <StarFilled /> {location.rating}
               </p>
               <p>{location.priceRange}</p>
+              <Button>View on map</Button>
+              <Button>hi</Button>
             </Flex>
           </Flex>
         </Card>

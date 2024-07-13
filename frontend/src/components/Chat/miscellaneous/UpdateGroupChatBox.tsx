@@ -536,6 +536,16 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
     onSecondOpen();
     setOpen(true);
   };
+  console.log("chat member:", selectedChat.users);
+  const [chatMembersData, setChatMembersData] = useState([]);
+  useEffect(() => {
+    if (selectedChat && selectedChat.users) {
+      setChatMembersData(selectedChat.users);
+    }
+  }, [selectedChat]);
+
+  console.log(chatMembersData);
+
   return (
     <Box
       display="flex"
@@ -956,10 +966,10 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
                     hoverable
                     style={{ margin: "10px " }}
                     onClick={() => {
-                      console.log(location);
+                      // console.log(location);
 
                       navigate("/explore", {
-                        state: { location },
+                        state: { location, chatMembersData },
                       });
                     }}
                   >

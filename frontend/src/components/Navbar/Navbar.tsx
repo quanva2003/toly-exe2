@@ -139,7 +139,7 @@ const Navbar: React.FC = () => {
           : { backgroundColor: "transparent" }
       }
     >
-      <Link onClick={() => navigate("/home")} to={""}>
+      <Link to={"/home"}>
         <div className="logo">
           <img alt="logo" src={Logo} />
         </div>
@@ -148,25 +148,19 @@ const Navbar: React.FC = () => {
         className={`menu ${menuOpen ? "active" : ""}`}
         style={!user ? { marginLeft: "125px" } : {}}
       >
-        <Link
-          to={""}
-          onClick={() => navigate("/home")}
-          style={{ textDecoration: "none", color: "unset" }}
-        >
+        <Link to={"/home"} style={{ textDecoration: "none", color: "unset" }}>
           <div className="menu-link">Home</div>
         </Link>
         <div className="divider">|</div>
         <Link
-          to={""}
-          onClick={() => navigate("/explore")}
+          to={"/explore"}
           style={{ textDecoration: "none", color: "unset" }}
         >
           <div className="menu-link">Explore</div>
         </Link>
         <div className="divider">|</div>
         <Link
-          to={""}
-          onClick={() => navigate("/contact")}
+          to={"/contact"}
           style={{ textDecoration: "none", color: "unset" }}
         >
           <div className="menu-link">Contact</div>
@@ -175,36 +169,29 @@ const Navbar: React.FC = () => {
 
       {!user ? (
         <div className={`login ${menuOpen ? "active" : ""}`}>
-          <Link
-            to={""}
-            onClick={() => navigate("/signup")}
-            className="login-link"
-          >
+          <Link to={"/signup"} className="login-link">
             SIGNIN
           </Link>
-          <Link to={""} onClick={() => navigate("/login")}>
+          <Link to={"/login"}>
             <button className="login-btn">LOGIN</button>
           </Link>
         </div>
       ) : (
         <div className="login">
           <Link
-            to={""}
-            onClick={() => navigate("/tolymium")}
+            to={"/tolymium"}
             style={{ textDecoration: "none", color: "unset" }}
           >
             <DiamondOutlinedIcon fontSize="inherit" className="mess-icon" />
           </Link>
           <Link
-            to={""}
-            onClick={() => navigate("/friends")}
+            to={"/friends"}
             style={{ textDecoration: "none", color: "unset" }}
           >
             <TeamOutlined className="mess-icon" />
           </Link>
           <Link
-            to={""}
-            onClick={() => navigate("/chats")}
+            to={"/chats"}
             style={{ textDecoration: "none", color: "unset" }}
           >
             <MessageFilled className="mess-icon" />

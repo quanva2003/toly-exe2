@@ -87,17 +87,17 @@ const Explore: React.FC = () => {
   const location = useLocation();
   const { state } = location;
   const selectedLocationFromState = state ? state.location : null;
-  console.log(selectedLocationFromState);
+  const memberChatDataFromStatte = state ? state.chatMembersData : null;
+  console.log("location prop from chat:", selectedLocationFromState);
+  console.log("member prop from chat:", memberChatDataFromStatte);
 
   return (
     <Row>
       <Col span={18} push={6}>
-        {/* {contextHolder}
-        <DBtest center={center} selectedLocation={selectedLocation} /> */}
-        <Map
+        {/* <Map
           selectedLocation={selectedLocation}
           chatMembers={selectedLocationFromState}
-        />
+        /> */}
       </Col>
       <Col span={6} pull={18} style={{ height: "50vh" }}>
         <ExploreList
