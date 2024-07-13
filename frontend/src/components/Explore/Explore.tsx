@@ -94,15 +94,17 @@ const Explore: React.FC = () => {
   return (
     <Row>
       <Col span={18} push={6}>
-        {/* <Map
+        <Map
           selectedLocation={selectedLocation}
-          chatMembers={selectedLocationFromState}
-        /> */}
+          hintLocation={selectedLocationFromState}
+          memberChatData={memberChatDataFromStatte}
+        />
       </Col>
       <Col span={6} pull={18} style={{ height: "50vh" }}>
         <ExploreList
           setCenter={setCenter}
           setSelectedLocation={setSelectedLocation}
+          // setHintLocation={selectedLocationFromState}
         />
       </Col>
     </Row>

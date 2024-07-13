@@ -3,25 +3,25 @@ import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
 import axios from "axios";
 import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
-import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 import { ChatState } from "../../context/ChatProvider";
 import mapboxgl from "mapbox-gl";
+import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
+import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 
 mapboxgl.accessToken =
   "pk.eyJ1Ijoid3VhdmFubjUwNzYiLCJhIjoiY2x4cDF5ZTMxMGQwOTJqcHV2ZXlvYzBybSJ9.S90q1YyODPdio83xGUtYAw";
 
-interface ExploreData {
+interface Location {
   _id: string;
   name: string;
   area: string;
   rating: number;
   priceRange: string;
-  imageUrl: string;
   position: {
     lat: number;
     lng: number;
   };
+  imageUrl: string;
 }
 interface MemberData {
   _id: string;
@@ -33,116 +33,34 @@ interface MemberData {
   imageUrl: string;
 }
 interface MapProps {
-  selectedLocation: ExploreData | null;
-  chatMembers: ExploreData;
+  selectedLocation: Location | null;
+  hintLocation: Location | null;
+  memberChatData: MemberData[] | null;
 }
 
-const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
-  const handleViewportChange = (newViewport) => {
-    setViewport({
-      ...viewport,
-      ...newViewport,
-    });
-  };
-  console.log("ahihi", chatMembers);
-
-  const [map, setMap] = useState(null);
-  const { user } = ChatState();
-  const userId = user._id;
-  const [exploreData, setExploreData] = useState<ExploreData[]>([]);
-  const [currentLocation, setCurrentLocation] = useState<{
+const Map: React.FC<MapProps> = ({
+  selectedLocation,
+  hintLocation,
+  memberChatData,
+}) => {
+  const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
-  console.log(currentLocation);
-
-  const [friends, setFriends] = useState<any>([]);
-  const [friendLists, setFriendLists] = useState<any>([]);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get<ExploreData[]>(
-        "http://localhost:5000/api/explore"
-      );
-      setExploreData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const fetchFriend = async (userId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/user/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      setFriends(response.data.friends);
-    } catch (error) {
-      console.log("Error: ", error.message);
-    }
-  };
-
-  const fetchFriendsDetails = async (friends) => {
-    try {
-      const friendDetails = await Promise.all(
-        friends.map(async (friendId) => {
-          const response = await axios.get(
-            `http://localhost:5000/api/user/${friendId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
-            }
-          );
-          return response.data;
-        })
-      );
-      setFriendLists(friendDetails);
-    } catch (error) {
-      console.log("Error fetching friends details: ", error.message);
-    }
-  };
-
+  const [showDirections, setShowDirections] = useState(false);
   useEffect(() => {
-    fetchData();
-    exploreData.map((address) => {
-      axios
-        .get(
-          `https://api.mapbox.com/search/geocode/v6/forward?q=${address.name}&access_token=pk.eyJ1Ijoid3VhdmFubjUwNzYiLCJhIjoiY2x4cDF5ZTMxMGQwOTJqcHV2ZXlvYzBybSJ9.S90q1YyODPdio83xGUtYAw`
-        )
-        .then(function (response) {
-          console.log("data:", response);
-        })
-        .catch(function (error) {
-          console.log(error);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
         });
-    });
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrentLocation({ lat: latitude, lng: longitude });
-          setViewport((prevViewport) => ({
-            ...prevViewport,
-            latitude,
-            longitude,
-          }));
-        },
-        (error) => {
-          console.error("Error Code = " + error.code + " - " + error.message);
-          setCurrentLocation({ lat: 10.7941, lng: 106.7216 });
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
+      },
+      (error) => {
+        console.error("Error getting user location:", error);
+      }
+    );
   }, []);
-
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100vh",
@@ -158,131 +76,95 @@ const Map: React.FC<MapProps> = ({ selectedLocation, chatMembers }) => {
         latitude: selectedLocation.position.lat,
         longitude: selectedLocation.position.lng,
       });
-    }
-  }, [selectedLocation]);
-
-  useEffect(() => {
-    fetchFriend(userId);
-  }, [userId]);
-
-  useEffect(() => {
-    if (friends.length > 0) {
-      fetchFriendsDetails(friends);
-    }
-  }, [friends]);
-
-  const mapContainerRef = useRef(null);
-
-  useEffect(() => {
-    if (currentLocation && mapContainerRef.current) {
-      const map = new mapboxgl.Map({
-        container: mapContainerRef.current,
-        style: "mapbox://styles/mapbox/streets-v11",
-        center: [currentLocation.lng, currentLocation.lat],
-        zoom: 16,
+    } else if (hintLocation) {
+      setViewport({
+        ...viewport,
+        latitude: hintLocation.position.lat,
+        longitude: hintLocation.position.lng,
       });
-
+    }
+  }, [selectedLocation, hintLocation]);
+  useEffect(() => {
+    if (showDirections && userLocation) {
       const directions = new MapboxDirections({
         accessToken: mapboxgl.accessToken,
         unit: "metric",
         profile: "mapbox/driving",
       });
 
-      map.addControl(directions, "top-left");
+      directions.setOrigin([userLocation.lng, userLocation.lat]);
 
-      if (chatMembers) {
-        directions.setOrigin([currentLocation.lng, currentLocation.lat]);
+      if (hintLocation) {
         directions.setDestination([
-          chatMembers.position.lng,
-          chatMembers.position.lat,
+          hintLocation.position.lng,
+          hintLocation.position.lat,
         ]);
-      } else if (selectedLocation) {
-        directions.setOrigin([currentLocation.lng, currentLocation.lat]);
-        directions.setDestination([
-          selectedLocation.position.lng,
-          selectedLocation.position.lat,
-        ]);
+      } else {
+        // If hintLocation is undefined, set the destination to viewport coordinates
+        directions.setDestination([viewport.longitude, viewport.latitude]);
       }
-
-      // setMap(map);
+      const map = new mapboxgl.Map({
+        container: "map",
+        center: [userLocation.lng, userLocation.lat],
+        zoom: 16,
+      });
+      map.addControl(directions, "top-left");
     }
-  }, [currentLocation, selectedLocation, chatMembers]);
+  }, [
+    hintLocation,
+    showDirections,
+    userLocation,
+    viewport.latitude,
+    viewport.longitude,
+  ]);
+
+  console.log("viewport lat", viewport.latitude);
+  console.log("viewport lng", viewport.longitude);
+  console.log("User Location:", userLocation);
+  console.log("Hint Location:", hintLocation?.position);
 
   return (
     <div className="map-wrapper">
-      <div className="map-container" ref={mapContainerRef}>
+      <button onClick={() => setShowDirections(true)}>Show Directions</button>
+
+      <div className="map-container">
         <ReactMapGL
           {...viewport}
           mapStyle="mapbox://styles/mapbox/streets-v11"
           mapboxAccessToken={mapboxgl.accessToken}
-          onMove={(evt) => handleViewportChange(evt.viewState)}
           id="map"
         >
           <NavigationControl />
 
-          {exploreData.map((item) => (
+          {selectedLocation && (
             <Marker
-              key={item._id}
-              latitude={item.position.lat}
-              longitude={item.position.lng}
-              offset={[-20, -30]}
+              latitude={selectedLocation.position.lat}
+              longitude={selectedLocation.position.lng}
+              offset={[-20, -20]}
             >
               <img
-                src={item.imageUrl}
-                alt={item.name}
+                src={selectedLocation.imageUrl}
+                alt={selectedLocation.name}
                 style={{ height: 50, width: 50, borderRadius: 50 }}
               />
             </Marker>
-          ))}
+          )}
 
-          {chatMembers && (
+          {hintLocation && (
             <Marker
-              key={chatMembers._id}
-              latitude={chatMembers.position.lat}
-              longitude={chatMembers.position.lng}
-              offset={[-20, -30]}
+              latitude={hintLocation.position.lat}
+              longitude={hintLocation.position.lng}
+              offset={[-20, -20]}
             >
               <img
-                src={chatMembers.imageUrl}
+                src={hintLocation.imageUrl}
+                alt={hintLocation.name}
                 style={{
                   height: 50,
                   width: 50,
                   borderRadius: 50,
                   border: "2px solid black",
                 }}
-              />
-            </Marker>
-          )}
-
-          {currentLocation && (
-            <Marker
-              latitude={currentLocation.lat}
-              longitude={currentLocation.lng}
-              offset={[-20, -20]}
-            >
-              <img
-                src={
-                  "https://i.pinimg.com/736x/b3/f9/5e/b3f95e89c1440a5f7652b5662e1c2002.jpg"
-                }
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50,
-                }}
-              />
-            </Marker>
-          )}
-
-          {selectedLocation && (
-            <Marker
-              latitude={selectedLocation.position.lat}
-              longitude={selectedLocation.position.lng}
-              offset={[-20, -30]}
-            >
-              <img
-                src={selectedLocation.imageUrl}
-                alt={selectedLocation.name}
-                style={{ height: 50, width: 50, borderRadius: 50 }}
               />
             </Marker>
           )}
