@@ -19,7 +19,8 @@ import {
 } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
-
+import StatisticsCard from "./StatisticsCard";
+import TotalPrice from "./TotalPrice";
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
@@ -36,6 +37,7 @@ interface User {
   name: string;
   pic: string;
   email: string;
+  accountType: string;
   createdAt: string;
 }
 
@@ -63,6 +65,7 @@ const Dashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [orderData, setOrderData] = useState<Order[]>([]);
   const [interval, setInterval] = useState<string>("month");
+  const [filteredUserData, setFilteredUsersData] = useState<User[]>([]);
 
   const stats = {
     newUsers: users.length,
@@ -159,13 +162,9 @@ const Dashboard = () => {
         startDate = new Date(
           now.getFullYear(),
           now.getMonth(),
-          now.getDate() - 7
+          now.getDate() - 6
         );
-        endDate = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 1
-        );
+        endDate = now;
         labels = Array.from({ length: 7 }, (_, i) => {
           const date = new Date();
           date.setDate(now.getDate() - (6 - i));
@@ -186,7 +185,7 @@ const Dashboard = () => {
           now.getMonth(),
           now.getDate()
         );
-        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        endDate = now;
         labels = Array.from({ length: 12 }, (_, i) => {
           const date = new Date(now.getFullYear() - 1, i, 1);
           return date.toLocaleString("default", { month: "long" });
@@ -248,7 +247,7 @@ const Dashboard = () => {
       return userCount;
     });
 
-    return { labels, revenueData, usersData };
+    return { labels, revenueData, usersData, filteredUsers };
   };
 
   useEffect(() => {
@@ -257,7 +256,8 @@ const Dashboard = () => {
   }, [user]);
 
   useEffect(() => {
-    const { labels, revenueData, usersData } = getChartData(interval);
+    const { labels, revenueData, usersData, filteredUsers } =
+      getChartData(interval);
     setChartData({
       labels,
       datasets: [
@@ -271,6 +271,7 @@ const Dashboard = () => {
         },
       ],
     });
+    setFilteredUsersData(filteredUsers); // Update filtered users data for TotalPrice
   }, [orderData, users, interval]);
 
   return (
@@ -283,10 +284,11 @@ const Dashboard = () => {
       >
         <Select.Option value="week">Week</Select.Option>
         <Select.Option value="month">Month</Select.Option>
-        {/* <Select.Option value="year">Year</Select.Option> */}
+        <Select.Option value="year">Year</Select.Option>
       </Select>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        {/* Other cards for statistics */}
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+        <TotalPrice data={filteredUserData}></TotalPrice>
+        <StatisticsCard data={filteredUserData}></StatisticsCard>
       </div>
 
       <div style={{ marginTop: "50px" }}>
