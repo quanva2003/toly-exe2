@@ -90,6 +90,7 @@ const Dashboard = () => {
       },
     ],
   });
+  console.log(chartData);
 
   const chartOptions = {
     responsive: true,
