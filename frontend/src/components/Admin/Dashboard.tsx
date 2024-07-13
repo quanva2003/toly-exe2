@@ -287,7 +287,13 @@ const Dashboard = () => {
         <Select.Option value="month">Month</Select.Option>
         <Select.Option value="year">Year</Select.Option>
       </Select>
-      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          maxHeight: "200px",
+        }}
+      >
         <TotalPrice data={filteredUserData}></TotalPrice>
         <StatisticsCard data={filteredUserData}></StatisticsCard>
       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./SignUp.css";
@@ -39,6 +39,17 @@ const SignIn: React.FC = () => {
   };
 
   const { loading, signup } = useSignup();
+  const [viewport, setViewport] = useState({
+    width: "100%",
+    height: "100vh",
+    latitude: 10.7941,
+    longitude: 106.7216,
+    zoom: 16,
+  });
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -52,9 +63,32 @@ const SignIn: React.FC = () => {
   });
 
   const handleSubmit = (values: SignUpInputs) => {
-    console.log(values);
-    signup(values);
+    console.log("hello:", values);
+    console.log("location", currentLocation);
+    signup({ ...values, position: currentLocation });
   };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation({ lat: latitude, lng: longitude });
+          setViewport((prevViewport) => ({
+            ...prevViewport,
+            latitude,
+            longitude,
+          }));
+        },
+        (error) => {
+          console.error("Error Code = " + error.code + " - " + error.message);
+          setCurrentLocation({ lat: 10, lng: 106 });
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  });
 
   return (
     <div className="login-container">
