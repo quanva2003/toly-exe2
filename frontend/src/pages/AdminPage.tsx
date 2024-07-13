@@ -41,7 +41,7 @@ const AdmingPage: React.FC = () => {
     setSelectedKey(e.key);
   };
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ height: "850px" }}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
