@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./Login.css";
@@ -9,28 +9,73 @@ import useLogin from "../../hooks/useLogin";
 interface LogInInputs {
   email: string;
   password: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
 }
 
 const Login: React.FC = () => {
   const initialValues: LogInInputs = {
     email: "",
     password: "",
+    position: {
+      lat: 0,
+      lng: 0,
+    },
   };
 
   const { loading, login } = useLogin();
+  const [viewport, setViewport] = useState({
+    width: "100%",
+    height: "100vh",
+    latitude: 10.7941,
+    longitude: 106.7216,
+    zoom: 16,
+  });
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email address").required("Required"),
     password: Yup.string().required("Required"),
   });
 
-  const handleSubmit = async (values: LogInInputs) => {
+  const handleSubmit = async (values: LogInInputs, { setFieldValue }) => {
+    if (currentLocation) {
+      values.position = currentLocation;
+    }
+
     // Your authentication logic here (e.g., API call to validate credentials)
     // If successful, redirect to the profile page
     // history.push('/profile');
-    login(values.email, values.password);
-    console.log(values.email, values.password);
+    console.log("Submitted values: ", values);
+    login(values.email, values.password, values.position);
   };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation({ lat: latitude, lng: longitude });
+          setViewport((prevViewport) => ({
+            ...prevViewport,
+            latitude,
+            longitude,
+          }));
+        },
+        (error) => {
+          console.error("Error Code = " + error.code + " - " + error.message);
+          setCurrentLocation({ lat: 10, lng: 106 });
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
   return (
     <div className="login-container">
