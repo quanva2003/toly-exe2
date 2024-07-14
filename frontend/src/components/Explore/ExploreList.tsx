@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import "./ExploreList.css";
 interface ExploreListProps {
   setCenter: (position: { lat: number; lng: number }) => void;
   setSelectedLocation: (location: Location) => void;
@@ -79,7 +79,10 @@ const ExploreList: React.FC<ExploreListProps> = ({
   );
 
   return (
-    <div style={{ height: "88vh", overflowY: "auto" }}>
+    <div
+      // style={{ height: "88vh", overflowY: "auto" }}
+      className="explore-list-container"
+    >
       <Input
         placeholder="Search location..."
         maxLength={300}

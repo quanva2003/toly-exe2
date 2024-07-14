@@ -5,31 +5,39 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 3rem 5rem;
+  padding: 3rem 2rem;
 }
+
 .footer-info {
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
-  gap: 10rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5rem;
 }
+
 .footer-about {
   max-width: 500px;
+  flex: 1;
 }
+
 .footer-logo {
   width: 100px;
   height: auto;
 }
+
 .social-icon {
   width: 60px;
   height: 60px;
   border-radius: 50px;
 }
+
 .social-info {
   display: flex;
   flex-direction: row;
-  gap: 3rem;
+  gap: 1.5rem;
 }
+
 .footer-social {
   padding-bottom: 2rem;
   display: flex;
@@ -38,47 +46,93 @@
   border-bottom: 1px #737373 solid;
   width: 100%;
 }
+
 .footer-signup {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
+
 h2.footer-signup-header {
-  font-size: 32px;
+  font-size: 24px;
   text-align: center;
   margin: 0;
   border-bottom: 1px #737373 solid;
   padding-bottom: 1rem;
 }
+
 .footer-contact {
   display: flex;
   flex-direction: column;
-  width: 30%;
   justify-content: flex-start;
+  flex: 1;
 }
+
 .footer-about-text {
   margin-top: 1rem;
 }
+
 h2.aboutUs-header {
   margin: 0;
 }
+
 .footer-signup {
-  width: 30%;
-  margin: 0;
+  width: 100%;
 }
+
 input.footer-input {
   border-radius: 50px;
   margin-top: 1rem;
   background-color: transparent;
   color: #ccc;
   border: 1px solid #fff;
+  width: 100%;
+  padding: 0.5rem;
 }
+
 .footer-btn {
-  width: 106%;
+  width: 100%;
   margin-top: 1rem;
   border-radius: 50px;
   background-color: #ffffff;
   color: #737373;
   font-weight: bold;
   font-size: 18px;
+  padding: 0.5rem;
+}
+
+/* Media Queries for Responsiveness */
+
+@media (max-width: 768px) {
+  .footer-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-about,
+  .footer-contact,
+  .footer-signup {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+
+  .footer-logo {
+    width: 80px;
+  }
+
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  h2.footer-signup-header {
+    font-size: 20px;
+  }
+
+  .footer-btn {
+    font-size: 16px;
+  }
 }

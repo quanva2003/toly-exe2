@@ -6,7 +6,6 @@ import FbLogo from "../../assets/images/fb.svg";
 import IGLogo from "../../assets/images/ig.svg";
 import TikLogo from "../../assets/images/tiktok.svg";
 import "./Footer.css";
-import classes from "./Footer.module.css";
 import {
   FacebookOutlined,
   MailOutlined,

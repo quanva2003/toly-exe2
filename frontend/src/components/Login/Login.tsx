@@ -85,7 +85,7 @@ const Login: React.FC = () => {
           If you are already a member, easily log in
         </p>
 
-        <GoogleButton
+        {/* <GoogleButton
           style={{
             background: "#ffffff",
             borderRadius: "5px",
@@ -105,9 +105,9 @@ const Login: React.FC = () => {
           }}
         >
           ádasd
-        </GoogleButton>
+        </GoogleButton> */}
 
-        <div
+        {/* <div
           style={{
             width: "108%",
             textAlign: "center",
@@ -125,7 +125,7 @@ const Login: React.FC = () => {
           >
             or
           </span>
-        </div>
+        </div> */}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

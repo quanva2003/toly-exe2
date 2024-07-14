@@ -1,8 +1,9 @@
-.location-name {
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0;
+.explore-list-container {
+  height: 88vh;
+  overflow-y: auto;
 }
-.location-rating {
-  margin: 0;
+@media (max-width: 768px) {
+  .explore-list-container {
+    display: none;
+  }
 }

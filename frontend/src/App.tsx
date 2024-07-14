@@ -66,17 +66,33 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/contact" element={<ContactForm />} />
         <Route path="/profile/:id" element={<UserProfilePage />} />
-        <Route path="/explore" element={<ExplorePage />} />
+
+        <Route
+          path="/explore"
+          element={user ? <ExplorePage /> : <Navigate to={"/login"} />}
+        />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/searchExplore" element={<SearchExplore />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/explore/:id" element={<ExploreDetailPage />} />
-        <Route path="/friends" element={<FriendsPage />} />
+        <Route
+          path="/friends"
+          element={user ? <FriendsPage /> : <Navigate to={"/login"} />}
+        />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/tolymium" element={<TolymiumPage />} />
-        <Route path="/successPay" element={<SuccessPage />} />
-        <Route path="/failPay" element={<FailPage />} />
-        <Route path="/editProfile" element={<EditProfile />} />
+        <Route
+          path="/successPay"
+          element={user ? <SuccessPage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/failPay"
+          element={user ? <FailPage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/editProfile"
+          element={user ? <EditProfile /> : <Navigate to={"/login"} />}
+        />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         {/* <Route
           path="/admin"

@@ -156,7 +156,7 @@ const SignIn: React.FC = () => {
           </Form>
         </Formik>
 
-        <div
+        {/* <div
           style={{
             width: "108%",
             textAlign: "center",
@@ -174,8 +174,8 @@ const SignIn: React.FC = () => {
           >
             or
           </span>
-        </div>
-        <GoogleButton
+        </div> */}
+        {/* <GoogleButton
           style={{
             background: "#ffffff",
             borderRadius: "5px",
@@ -193,7 +193,7 @@ const SignIn: React.FC = () => {
           onClick={() => {
             console.log("Google button clicked");
           }}
-        />
+        /> */}
 
         <div className="signin">
           Already have an account?{" "}
