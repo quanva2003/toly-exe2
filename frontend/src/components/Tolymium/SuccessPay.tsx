@@ -24,7 +24,7 @@ const SuccessPay: React.FC = () => {
       try {
         if (orderCode) {
           const { data } = await axios.get(
-            `https://backend-toly.onrender.com//api/order/get-payment-link-info/${orderCode}`,
+            `https://backend-toly.onrender.com/api/order/get-payment-link-info/${orderCode}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const SuccessPay: React.FC = () => {
       if (orderCode && orders) {
         try {
           const { data } = await axios.post(
-            `https://backend-toly.onrender.com//api/order/create-order/${orderCode}`,
+            `https://backend-toly.onrender.com/api/order/create-order/${orderCode}`,
             {
               amount: orders.amount,
               createdAt: orders.createdAt,

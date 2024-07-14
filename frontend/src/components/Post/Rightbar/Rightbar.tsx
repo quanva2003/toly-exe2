@@ -19,7 +19,7 @@ function Rightbar() {
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const result = await axios.get("https://backend-toly.onrender.com//api/friend", {
+        const result = await axios.get("https://backend-toly.onrender.com/api/friend", {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },

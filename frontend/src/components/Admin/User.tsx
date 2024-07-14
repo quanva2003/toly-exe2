@@ -16,7 +16,7 @@ const UsersList: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("https://backend-toly.onrender.com//api/user", {
+      const response = await axios.get("https://backend-toly.onrender.com/api/user", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -30,7 +30,7 @@ const UsersList: React.FC = () => {
 
   const deleteUser = async (userId: string) => {
     try {
-      await axios.delete(`https://backend-toly.onrender.com//api/user/${userId}`, {
+      await axios.delete(`https://backend-toly.onrender.com/api/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },

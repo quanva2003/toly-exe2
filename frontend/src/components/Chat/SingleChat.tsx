@@ -92,7 +92,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "/api/message",
+          "https://backend-toly.onrender.com/api/message",
           {
             content: newMessage,
             chatId: selectedChat,
@@ -127,7 +127,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
         },
       };
 
-      const { data } = await axios.post("/api/message/file", formData, config);
+      const { data } = await axios.post("https://backend-toly.onrender.com/api/message/file", formData, config);
       socket.emit("new message", data);
       setMessages([...messages, data]);
     } catch (error) {

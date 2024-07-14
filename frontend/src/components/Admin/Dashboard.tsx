@@ -123,7 +123,7 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://backend-toly.onrender.com//api/user", {
+      const response = await axios.get("https://backend-toly.onrender.com/api/user", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -138,7 +138,7 @@ const Dashboard = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        "https://backend-toly.onrender.com//api/order/all-order",
+        "https://backend-toly.onrender.com/api/order/all-order",
         {
           headers: {
             Authorization: `Bearer ${user.token}`,

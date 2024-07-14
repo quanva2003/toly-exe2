@@ -51,7 +51,7 @@ const RequestList: React.FC = () => {
     const fetchFriendRequests = async () => {
       try {
         const result = await axios.get(
-          "https://backend-toly.onrender.com//api/friend/request",
+          "https://backend-toly.onrender.com/api/friend/request",
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

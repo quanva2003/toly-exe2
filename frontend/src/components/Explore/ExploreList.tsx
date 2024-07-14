@@ -43,7 +43,7 @@ const ExploreList: React.FC<ExploreListProps> = ({
         let response;
         if (searchTerm === "") {
           response = await axios.get<Location[]>(
-            "https://backend-toly.onrender.com//api/explore"
+            "https://backend-toly.onrender.com/api/explore"
           );
           const filteredData = response.data
             .filter((destination) => destination.rating > 4.5)
@@ -52,7 +52,7 @@ const ExploreList: React.FC<ExploreListProps> = ({
           setLocations(filteredData);
         } else {
           response = await axios.get<Location[]>(
-            "https://backend-toly.onrender.com//api/explore"
+            "https://backend-toly.onrender.com/api/explore"
           );
           setLocations(response.data);
         }

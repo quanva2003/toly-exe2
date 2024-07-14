@@ -29,7 +29,7 @@
 //   useEffect(() => {
 //     const fetchFriend = async () => {
 //       try {
-//         const response = await axios.get("https://backend-toly.onrender.com//api/friend", {
+//         const response = await axios.get("https://backend-toly.onrender.com/api/friend", {
 //           headers: {
 //             Authorization: `Bearer ${user.token}`,
 //           },
@@ -45,7 +45,7 @@
 //           friendData.map(async (friend) => {
 //             try {
 //               const res = await axios.get(
-//                 `https://backend-toly.onrender.com//api/user/${friend.recipient._id}`,
+//                 `https://backend-toly.onrender.com/api/user/${friend.recipient._id}`,
 //                 {
 //                   headers: {
 //                     Authorization: `Bearer ${user.token}`,
@@ -146,7 +146,7 @@ const FriendList = () => {
     const fetchFriend = async () => {
       try {
         const response = await axios.get(
-          `https://backend-toly.onrender.com//api/friend/list/${id}`,
+          `https://backend-toly.onrender.com/api/friend/list/${id}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

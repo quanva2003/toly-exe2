@@ -352,7 +352,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
   const fetchLocationData = async () => {
     try {
       const response = await axios.get<Location[]>(
-        "https://backend-toly.onrender.com//api/explore"
+        "https://backend-toly.onrender.com/api/explore"
       );
       console.log(response.data);
 
@@ -369,7 +369,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
     const fetchPremium = async () => {
       try {
         const { data } = await axios.get(
-          "https://backend-toly.onrender.com//api/order/premium-feature",
+          "https://backend-toly.onrender.com/api/order/premium-feature",
           {
             headers: {
               "Content-Type": "application/json",
@@ -390,7 +390,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
 
   const handleHintExplore = async () => {
     try {
-      const response = await axios.get("https://backend-toly.onrender.com//api/user", {
+      const response = await axios.get("https://backend-toly.onrender.com/api/user", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },

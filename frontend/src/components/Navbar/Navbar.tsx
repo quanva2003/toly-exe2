@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
       const fetchUserProfile = async () => {
         try {
           const response = await axios.get(
-            `https://backend-toly.onrender.com//api/user/${user._id}`,
+            `https://backend-toly.onrender.com/api/user/${user._id}`,
             {
               headers: {
                 Authorization: `Bearer ${user.token}`,

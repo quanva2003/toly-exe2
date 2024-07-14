@@ -16,7 +16,7 @@ const useChangePassword = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/user/change-password", {
+      const res = await fetch("https://backend-toly.onrender.com/api/user/change-password", {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${user.token}`,

@@ -46,7 +46,7 @@ const FailPay: React.FC = () => {
       try {
         if (orderCode !== null) {
           const { data } = await axios.get(
-            `https://backend-toly.onrender.com//api/order/get-payment-link-info/${orderCode}`,
+            `https://backend-toly.onrender.com/api/order/get-payment-link-info/${orderCode}`,
             {
               headers: {
                 "Content-Type": "application/json",

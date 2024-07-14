@@ -29,7 +29,7 @@ const DBtest = ({ center, selectedLocation }) => {
   const fetchFriend = async () => {
     try {
       const response = await axios.get(
-        `https://backend-toly.onrender.com//api/user/${userId}`,
+        `https://backend-toly.onrender.com/api/user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -48,7 +48,7 @@ const DBtest = ({ center, selectedLocation }) => {
       const friendDetails = await Promise.all(
         friends.map(async (friendId) => {
           const response = await axios.get(
-            `https://backend-toly.onrender.com//api/user/${friendId}`,
+            `https://backend-toly.onrender.com/api/user/${friendId}`,
             {
               headers: {
                 Authorization: `Bearer ${user.token}`,

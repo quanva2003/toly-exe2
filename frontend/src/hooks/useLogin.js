@@ -11,7 +11,7 @@ const useLogin = () => {
     if (!success) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/user/login", {
+      const res = await fetch("https://backend-toly.onrender.com/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -37,7 +37,7 @@ const useLogin = () => {
   const updatePosition = async (token, userId, position) => {
     try {
       console.log("Updating position with:", { userId, position, token }); // Debug log
-      const res = await fetch(`/api/user/update-position/${userId}`, {
+      const res = await fetch(`https://backend-toly.onrender.com/api/user/update-position/${userId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

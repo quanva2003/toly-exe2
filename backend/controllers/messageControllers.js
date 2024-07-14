@@ -73,7 +73,7 @@ const sendFile = asyncHandler(async (req, res) => {
     }
 
     // const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-    // const fileUrl = `https://backend-toly.onrender.com//uploads/${req.file.filename}`;
+    // const fileUrl = `https://backend-toly.onrender.com/uploads/${req.file.filename}`;
 
     try {
       const result = await cloudinary.uploader.upload(req.file.path);

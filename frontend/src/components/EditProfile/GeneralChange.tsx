@@ -20,7 +20,7 @@ const GeneralChange = () => {
   const handleConfirmUpdateName = async () => {
     // Add your API call logic here to save the name
     try {
-      const response = await fetch("/api/user/update-name", {
+      const response = await fetch("https://backend-toly.onrender.com/api/user/update-name", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

@@ -39,7 +39,7 @@ const Explore: React.FC = () => {
 
   const getUserData = async (id: string) => {
     try {
-      const response = await axios.get(`https://backend-toly.onrender.com//api/user/${id}`, {
+      const response = await axios.get(`https://backend-toly.onrender.com/api/user/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },

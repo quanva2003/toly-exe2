@@ -15,7 +15,7 @@ const useResetPassword = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/user/password", {
+      const res = await fetch("https://backend-toly.onrender.com/api/user/password", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

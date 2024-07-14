@@ -44,7 +44,7 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://backend-toly.onrender.com//api/user", {
+        const response = await axios.get("https://backend-toly.onrender.com/api/user", {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -62,7 +62,7 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
     const fetchFriendRequest = async () => {
       try {
         const result = await axios.get(
-          "https://backend-toly.onrender.com//api/friend/request",
+          "https://backend-toly.onrender.com/api/friend/request",
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
