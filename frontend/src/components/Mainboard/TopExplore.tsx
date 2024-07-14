@@ -16,7 +16,7 @@ const TopExplore: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get<ExploreData[]>(
-          "http://localhost:5000/api/explore"
+          "https://backend-toly.onrender.com//api/explore"
         );
         console.log(response.data);
 

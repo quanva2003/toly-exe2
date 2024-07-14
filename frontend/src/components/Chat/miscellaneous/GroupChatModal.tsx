@@ -161,7 +161,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
     const fetchPremium = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/order/premium-feature",
+          "https://backend-toly.onrender.com//api/order/premium-feature",
           {
             headers: {
               "Content-Type": "application/json",

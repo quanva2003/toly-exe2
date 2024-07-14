@@ -28,7 +28,7 @@ const UserProfile: React.FC = () => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/user/${id}`,
+          `https://backend-toly.onrender.com//api/user/${id}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -80,7 +80,7 @@ const UserProfile: React.FC = () => {
 
     try {
       const res = await axios.patch(
-        "http://localhost:5000/api/user/upload-avatar",
+        "https://backend-toly.onrender.com//api/user/upload-avatar",
         formData,
         {
           headers: {
@@ -102,7 +102,7 @@ const UserProfile: React.FC = () => {
 
     try {
       const res = await axios.patch(
-        "http://localhost:5000/api/user/upload-cover",
+        "https://backend-toly.onrender.com//api/user/upload-cover",
         formData,
         {
           headers: {

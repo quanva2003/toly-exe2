@@ -65,7 +65,7 @@ const SearchFriends: React.FC = () => {
     const fetchFriendRequest = async () => {
       try {
         const result = await axios.get(
-          "http://localhost:5000/api/friend/request",
+          "https://backend-toly.onrender.com//api/friend/request",
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

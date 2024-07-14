@@ -11,7 +11,7 @@ const VerifyEmail = () => {
     const verifyEmail = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/user/verify-email/${token}`,
+          `https://backend-toly.onrender.com//api/user/verify-email/${token}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

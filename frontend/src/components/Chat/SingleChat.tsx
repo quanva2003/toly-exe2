@@ -22,7 +22,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 import io from "socket.io-client";
-const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+const ENDPOINT = "https://backend-toly.onrender.com/"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
