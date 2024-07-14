@@ -18,7 +18,12 @@ dotenv.config();
 connectDB();
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: 'https://toly.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/user", userRoutes);
@@ -107,7 +112,7 @@ const server = app.listen(
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://toly.vercel.app",
     // credentials: true,
   },
 });
