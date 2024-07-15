@@ -11,11 +11,11 @@ const Premium = require("../models/premium.model.js");
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
-      $or: [
-        { name: { $regex: req.query.search, $options: "i" } },
-        { email: { $regex: req.query.search, $options: "i" } },
-      ],
-    }
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -93,7 +93,7 @@ const registerUser = asyncHandler(async (req, res) => {
         user: "noplstks@gmail.com",
         pass: "zodyjdbipiwwlnwf",
       },
-    })
+    });
 
     await transporter.sendMail({
       from: "Tolynium",
@@ -102,10 +102,10 @@ const registerUser = asyncHandler(async (req, res) => {
       html: `
         <div>
         <h1>Email Verification</h1>
-          <a href=${`https://toly.vercel.app/verify-email?token=${user.token}`}>Click here to verify email</a>
+          <a href=${`https://toly.vercel.app/verify-email?token=${user.token}`}>Click here to verify your email</a>
         </div>
-      `
-    })
+      `,
+    });
 
     if (user) {
       res.status(201).json({
@@ -141,18 +141,20 @@ const verifyEmail = asyncHandler(async (req, res) => {
     const user = await User.findOne({ token: token });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found or token expired' });
+      return res
+        .status(404)
+        .json({ message: "User not found or token expired" });
     }
 
     user.isVerified = true;
     await user.save();
 
-    return res.status(200).json({ message: 'Email verified successfully' });
+    return res.status(200).json({ message: "Email verified successfully" });
   } catch (err) {
-    console.error('Error verifying email:', err);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error verifying email:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 //@description     Auth the user
 //@route           POST /api/user/login
@@ -162,8 +164,10 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user.isVerified) {
-    return res.status(401).json({ error: "You must verify email before log in" });
-  };
+    return res
+      .status(401)
+      .json({ error: "You must verify email before log in" });
+  }
 
   if (user && (await user.matchPassword(password))) {
     res.status(200).json({
