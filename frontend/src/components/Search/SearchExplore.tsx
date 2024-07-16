@@ -31,7 +31,7 @@ const SearchExploreComponent: React.FC<SearchExploreComponentProps> = ({
     const fetchExploreList = async () => {
       try {
         const response = await axios.get<Explore[]>(
-          `/api/explore/search/${initialSearchTerm}`,
+          `https://backend-toly.onrender.com/api/explore/search/${initialSearchTerm}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
