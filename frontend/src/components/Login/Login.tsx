@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./Login.css";
-import GoogleButton from "react-google-button";
 import { Link } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 
@@ -25,7 +24,8 @@ const Login: React.FC = () => {
     },
   };
 
-  const { loading, login } = useLogin();
+  const { login } = useLogin();
+  const [loading, setLoading] = useState(false);
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100vh",
@@ -44,15 +44,14 @@ const Login: React.FC = () => {
   });
 
   const handleSubmit = async (values: LogInInputs, { setFieldValue }) => {
+    setLoading(true);
     if (currentLocation) {
       values.position = currentLocation;
     }
-
-    // Your authentication logic here (e.g., API call to validate credentials)
-    // If successful, redirect to the profile page
-    // history.push('/profile');
-    console.log("Submitted values: ", values);
-    login(values.email, values.password, values.position);
+    await login(values.email, values.password, values.position);
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000); // Set loading to false after 5 seconds
   };
 
   useEffect(() => {
@@ -84,48 +83,6 @@ const Login: React.FC = () => {
         <p style={{ fontSize: "12px" }}>
           If you are already a member, easily log in
         </p>
-
-        {/* <GoogleButton
-          style={{
-            background: "#ffffff",
-            borderRadius: "5px",
-            boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-            color: "rgba(0, 0, 0, 0.54)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "none",
-            cursor: "pointer",
-            width: "100%",
-            fontSize: "16px",
-            marginLeft: "10px",
-          }}
-          onClick={() => {
-            console.log("Google button clicked");
-          }}
-        >
-          ádasd
-        </GoogleButton> */}
-
-        {/* <div
-          style={{
-            width: "108%",
-            textAlign: "center",
-            borderBottom: "1px solid #ccc",
-            lineHeight: "0.1em",
-            margin: "20px 0",
-          }}
-        >
-          <span
-            style={{
-              background: "#f5f5f5",
-              padding: "0 10px",
-              color: "#243666",
-            }}
-          >
-            or
-          </span>
-        </div> */}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -155,10 +112,14 @@ const Login: React.FC = () => {
               />
             </div>
             <Link to="/forgot" className="forgot-password">
-              <a>Forgot your password?</a>
+              Forgot your password?
             </Link>
-            <button type="submit" className="login-submit-btn">
-              Login
+            <button
+              type="submit"
+              className="login-submit-btn"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Login"}
             </button>
           </Form>
         </Formik>
