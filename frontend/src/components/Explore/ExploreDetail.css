@@ -1,13 +1,13 @@
 .explore-detail-container {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: center;
   margin: 0 auto;
   padding: 20px;
   color: #333;
   max-width: 1080px;
 }
+
 .explore-detail-header {
   display: flex;
   flex-direction: row;
@@ -15,31 +15,40 @@
   align-items: center;
   width: 100%;
 }
+
 .explore-detail-location {
   font-weight: 500;
 }
+
 .explore-image {
-  width: 1080px;
-  height: 400px;
+  width: 100%;
+  height: auto;
+  max-height: 400px;
   object-fit: cover;
   border-radius: 10px;
   margin-top: 24px;
 }
+
 .explore-detail-bottom {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 24px;
+  flex-wrap: wrap;
 }
+
 .explore-detail-rate {
-  padding: 0 20px;
+  padding: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 1rem;
   background-color: #f7f9fa;
   border-radius: 6px;
+  flex: 1;
+  min-width: 250px;
 }
+
 .explore-detail-rate h2 {
   padding: 5px;
   background: linear-gradient(
@@ -52,20 +61,14 @@
   color: #ffffff;
   border-radius: 50px;
 }
+
 .explore-detail-rate p {
   color: #0264c8;
   font-weight: 700;
   line-height: 20px;
 }
+
 .explore-detail-map {
-  /* padding: 0 20px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  background-color: #f7f9fa; */
-  align-items: stretch;
   background-image: linear-gradient(
       30deg,
       rgb(247, 249, 250) 0%,
@@ -82,13 +85,16 @@
   padding: 12px;
   align-items: center;
   gap: 1rem;
-  min-width: 450px;
+  min-width: 250px;
   cursor: pointer;
+  flex: 1;
 }
+
 .explore-detail-map p {
   color: #0264c8;
   font-weight: 700;
 }
+
 .explore-detail h1 {
   margin-top: 20px;
   font-size: 40px;
@@ -108,6 +114,7 @@
 .explore-detail .price {
   color: #333;
 }
+
 .explore-detail-price {
   background-color: #0264c8;
   color: #f7f9fa;
@@ -118,4 +125,39 @@
   flex-direction: row;
   gap: 1rem;
   border-radius: 6px;
+  flex: 1;
+  min-width: 250px;
+}
+
+@media (max-width: 768px) {
+  .explore-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .explore-detail-bottom {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .explore-detail-rate,
+  .explore-detail-map,
+  .explore-detail-price {
+    min-width: 100%;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .explore-detail h1 {
+    font-size: 32px;
+  }
+
+  .explore-detail-rate h2 {
+    font-size: 20px;
+  }
+
+  .explore-detail-price {
+    font-size: 20px;
+  }
 }
