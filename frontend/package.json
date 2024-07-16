@@ -32,6 +32,7 @@
     "antd": "^5.17.2",
     "axios": "^1.6.8",
     "chart.js": "^4.4.3",
+    "chat-app": "file:..",
     "chat-app-yt": "file:..",
     "emoji-mart": "^5.6.0",
     "formik": "^2.4.6",
