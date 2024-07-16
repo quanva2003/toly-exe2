@@ -93,7 +93,7 @@ const Dashboard = () => {
       },
     ],
   });
-  console.log(chartData);
+  // console.log(chartData);
 
   const chartOptions = {
     responsive: true,
@@ -123,11 +123,14 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://backend-toly.onrender.com/api/user", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://backend-toly.onrender.com/api/user",
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       const usersData: User[] = response.data;
       setUsers(usersData);
     } catch (error) {

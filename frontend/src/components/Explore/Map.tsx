@@ -118,10 +118,10 @@ const Map: React.FC<MapProps> = ({
     viewport.longitude,
   ]);
 
-  console.log("viewport lat", viewport.latitude);
-  console.log("viewport lng", viewport.longitude);
-  console.log("User Location:", userLocation);
-  console.log("Hint Location:", hintLocation?.position);
+  // console.log("viewport lat", viewport.latitude);
+  // console.log("viewport lng", viewport.longitude);
+  // console.log("User Location:", userLocation);
+  // console.log("Hint Location:", hintLocation?.position);
 
   return (
     <div className="map-wrapper">

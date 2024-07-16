@@ -32,7 +32,7 @@ const Explore: React.FC = () => {
       const response = await axios.get<ExploreData[]>(
         "https://backend-toly.onrender.com/api/explore"
       );
-      console.log(response.data);
+      // console.log(response.data);
 
       setExploreData(response.data);
     } catch (error) {

@@ -18,7 +18,7 @@ const ForgotPassword: React.FC = () => {
     e.preventDefault();
 
     const code = generateCode();
-    console.log(code);
+    // console.log(code);
 
     if (form.current) {
       setVerificationCode(code);

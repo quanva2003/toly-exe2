@@ -49,9 +49,9 @@ span.ant-input-affix-wrapper.ant-input-affix-wrapper-lg.css-dev-only-do-not-over
   background: none;
   border: none;
 }
-.search-bar .ant-input-affix-wrapper .ant-input {
+/* .search-bar .ant-input-affix-wrapper .ant-input {
   color: #ffffff;
-}
+} */
 
 .search-bar .ant-input-affix-wrapper .ant-input::placeholder {
   color: #ccc;

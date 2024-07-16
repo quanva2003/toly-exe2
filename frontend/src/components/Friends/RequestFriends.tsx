@@ -31,11 +31,14 @@ const RequestList: React.FC = () => {
       if (search.trim()) {
         setLoading(true);
         try {
-          const response = await axios.get(`https://backend-toly.onrender.com/api/user/name/${search}`, {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          });
+          const response = await axios.get(
+            `https://backend-toly.onrender.com/api/user/name/${search}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
           setUsers(response.data);
         } catch (error) {
           console.error("Error fetching users", error);
@@ -62,7 +65,7 @@ const RequestList: React.FC = () => {
           (req: any) => req.recipient._id === user._id
         );
         setRequests(filteredRequests);
-        console.log("Request: ", result.data);
+        // console.log("Request: ", result.data);
       } catch (error) {
         console.error("Error fetching data from API", error);
       }

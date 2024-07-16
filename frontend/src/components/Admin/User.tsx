@@ -16,13 +16,16 @@ const UsersList: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("https://backend-toly.onrender.com/api/user", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://backend-toly.onrender.com/api/user",
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       setUsers(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching data from API", error);
     }
@@ -30,11 +33,14 @@ const UsersList: React.FC = () => {
 
   const deleteUser = async (userId: string) => {
     try {
-      await axios.delete(`https://backend-toly.onrender.com/api/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      await axios.delete(
+        `https://backend-toly.onrender.com/api/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       setUsers(users.filter((user) => user._id !== userId));
     } catch (error) {
       console.error("Error deleting user", error);

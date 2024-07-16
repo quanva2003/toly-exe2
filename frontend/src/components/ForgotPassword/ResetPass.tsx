@@ -31,7 +31,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ email }) => {
   });
 
   const handleSubmit = (values: ResetPasswordInputs) => {
-    console.log(values);
+    // console.log(values);
     resetPassword({ email, ...values });
   };
 

@@ -18,7 +18,7 @@ const TopExplore: React.FC = () => {
         const response = await axios.get<ExploreData[]>(
           "https://backend-toly.onrender.com/api/explore"
         );
-        console.log(response.data);
+        // console.log(response.data);
 
         // Filter destinations with rating > 4.5 and sort them by rating in descending order
         const filteredData = response.data

@@ -24,7 +24,7 @@ const ChangePass = () => {
   });
 
   const onSubmit = (values, { setSubmitting, resetForm }) => {
-    console.log("Form data", values);
+    // console.log("Form data", values);
     changePassword(values);
     setSubmitting(false);
     resetForm(); // Clear the form

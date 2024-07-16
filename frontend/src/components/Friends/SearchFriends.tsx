@@ -9,6 +9,7 @@ interface User {
   email: string;
   pic: string;
   friends: string[];
+  isAdmin: boolean;
 }
 
 interface Request {
@@ -50,7 +51,10 @@ const SearchFriends: React.FC = () => {
               },
             }
           );
-          setUsers(response.data);
+          const nonAdminUsers = response.data.filter(
+            (user: User) => !user.isAdmin
+          );
+          setUsers(nonAdminUsers);
         } catch (error) {
           console.error("Error fetching users", error);
           // message.error("Failed to fetch users. Please try again later.");
@@ -93,7 +97,11 @@ const SearchFriends: React.FC = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`https://backend-toly.onrender.com/api/friend/${id}`, {}, config);
+      const { data } = await axios.post(
+        `https://backend-toly.onrender.com/api/friend/${id}`,
+        {},
+        config
+      );
       setRequests((prevRequests) => [
         ...prevRequests,
         {
@@ -133,7 +141,10 @@ const SearchFriends: React.FC = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.patch(`https://backend-toly.onrender.com/api/friend/accept/${id}`, config);
+      const { data } = await axios.patch(
+        `https://backend-toly.onrender.com/api/friend/accept/${id}`,
+        config
+      );
     } catch (error) {
       console.log("Error when sent friend request", error.message);
     }

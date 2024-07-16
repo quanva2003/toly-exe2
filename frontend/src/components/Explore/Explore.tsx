@@ -39,11 +39,14 @@ const Explore: React.FC = () => {
 
   const getUserData = async (id: string) => {
     try {
-      const response = await axios.get(`https://backend-toly.onrender.com/api/user/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await axios.get(
+        `https://backend-toly.onrender.com/api/user/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       setUserData(response.data);
     } catch (error) {
       console.log("Error: ", error.message);
@@ -88,8 +91,8 @@ const Explore: React.FC = () => {
   const { state } = location;
   const selectedLocationFromState = state ? state.location : null;
   const memberChatDataFromStatte = state ? state.chatMembersData : null;
-  console.log("location prop from chat:", selectedLocationFromState);
-  console.log("member prop from chat:", memberChatDataFromStatte);
+  // console.log("location prop from chat:", selectedLocationFromState);
+  // console.log("member prop from chat:", memberChatDataFromStatte);
 
   return (
     <Row>

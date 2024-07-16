@@ -34,7 +34,7 @@ const GeneralChange = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Name updated successfully", data);
+        // console.log("Name updated successfully", data);
         // Update the localStorage with the new name
         const updatedUser = { ...user, name };
         localStorage.setItem("chat-user", JSON.stringify(updatedUser));

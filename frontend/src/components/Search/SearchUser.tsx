@@ -17,6 +17,7 @@ interface User {
   name: string;
   pic: string;
   mutualFriends: number;
+  isAdmin: boolean;
 }
 
 interface Request {
@@ -44,16 +45,21 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://backend-toly.onrender.com/api/user", {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-          params: {
-            search: searchTerm,
-          },
-        });
-        setUsers(response.data);
-        console.log(response.data);
+        const response = await axios.get(
+          "https://backend-toly.onrender.com/api/user",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+            params: {
+              search: searchTerm,
+            },
+          }
+        );
+        const nonAdminUsers = response.data.filter(
+          (user: User) => !user.isAdmin
+        );
+        setUsers(nonAdminUsers);
       } catch (error) {
         console.error("Error fetching data from API", error);
       }
@@ -73,7 +79,6 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
           (req) => req.recipient._id === user._id
         );
         setRequests(filteredRequests);
-        console.log("Request: ", requests);
       } catch (error) {
         console.error("Error fetching data from API", error);
       }
@@ -82,8 +87,6 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
     fetchUsers();
     fetchFriendRequest();
   }, [searchTerm]);
-
-  console.log("REada:", requests);
 
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -96,10 +99,12 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`https://backend-toly.onrender.com/api/friend/${id}`, {}, config);
-      console.log("Friend: ", data);
+      const { data } = await axios.post(
+        `https://backend-toly.onrender.com/api/friend/${id}`,
+        {},
+        config
+      );
 
-      // Update the requests state
       setRequests((prevRequests) => [
         ...prevRequests,
         { _id: data._id, requester: user._id, recipient: id, status: 1 },
