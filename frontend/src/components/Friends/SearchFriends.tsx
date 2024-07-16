@@ -43,7 +43,7 @@ const SearchFriends: React.FC = () => {
         setLoading(true);
         try {
           const response = await axios.get(
-            `/api/user/name/${submittedSearch}`,
+            `https://backend-toly.onrender.com/api/user/name/${submittedSearch}`,
             {
               headers: {
                 Authorization: `Bearer ${user.token}`,
