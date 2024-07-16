@@ -1,10 +1,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { ChatState } from "../context/ChatProvider";
+// import { ChatState } from "../context/ChatProvider";
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
-  const { setUser } = ChatState();
+  // const { setUser } = ChatState();
 
   const signup = async ({
     email,
@@ -30,27 +30,32 @@ const useSignup = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("https://backend-toly.onrender.com/api/user/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          name,
-          password,
-          confirmPassword,
-          pic,
-          coverPic,
-          position,
-          accountType,
-          premiumPlan,
-        }),
-      });
+      const res = await fetch(
+        "https://backend-toly.onrender.com/api/user/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            name,
+            password,
+            confirmPassword,
+            pic,
+            coverPic,
+            position,
+            accountType,
+            premiumPlan,
+          }),
+        }
+      );
 
       const data = await res.json();
       if (data.error) {
         throw new Error(data.error);
       } else {
-        toast.success("Signup successful. Please verify your email before logging in.");
+        toast.success(
+          "Signup successful. Please verify your email before logging in."
+        );
       }
     } catch (error) {
       toast.error(error.message);

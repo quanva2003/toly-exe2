@@ -80,7 +80,7 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Login</h2>
+        <h2>Sign In</h2>
         <p style={{ fontSize: "12px" }}>
           If you are already a member, easily log in
         </p>
