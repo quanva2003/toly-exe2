@@ -110,7 +110,7 @@ const Tolymium: React.FC = () => {
                 onClick={() => {
                   if (user.accountType !== "premium_month") {
                     handleButtonClick(
-                      2000,
+                      29000,
                       "Payment for Tolymium ",
                       "premium_month"
                     );
@@ -191,7 +191,7 @@ const Tolymium: React.FC = () => {
                 onClick={() => {
                   if (user.accountType !== "premium_year") {
                     handleButtonClick(
-                      4000,
+                      290000,
                       "Payment for Tolymium ",
                       "premium_year"
                     );
