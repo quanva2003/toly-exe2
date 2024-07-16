@@ -170,10 +170,10 @@ const Navbar: React.FC = () => {
       {!user ? (
         <div className={`login ${menuOpen ? "active" : ""}`}>
           <Link to={"/signup"} className="login-link">
-            SIGNIN
+            SIGNUP
           </Link>
           <Link to={"/login"}>
-            <button className="login-btn">LOGIN</button>
+            <button className="login-btn">SIGNIN</button>
           </Link>
         </div>
       ) : (
