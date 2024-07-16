@@ -93,7 +93,7 @@ const SearchFriends: React.FC = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`/api/friend/${id}`, {}, config);
+      const { data } = await axios.post(`https://backend-toly.onrender.com/api/friend/${id}`, {}, config);
       setRequests((prevRequests) => [
         ...prevRequests,
         {
@@ -133,7 +133,7 @@ const SearchFriends: React.FC = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.patch(`/api/friend/accept/${id}`, config);
+      const { data } = await axios.patch(`https://backend-toly.onrender.com/api/friend/accept/${id}`, config);
     } catch (error) {
       console.log("Error when sent friend request", error.message);
     }

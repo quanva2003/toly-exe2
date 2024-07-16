@@ -160,7 +160,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`https://backend-toly.onrender.com/api/user?search=${search}`, config);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -187,7 +187,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
         },
       };
       const { data } = await axios.put(
-        `/api/chat/rename`,
+        `https://backend-toly.onrender.com/api/chat/rename`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -243,7 +243,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
         },
       };
       const { data } = await axios.put(
-        `/api/chat/groupadd`,
+        `https://backend-toly.onrender.com/api/chat/groupadd`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -279,7 +279,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`/api/chat`, { userId }, config);
+      const { data } = await axios.post(`https://backend-toly.onrender.com/api/chat`, { userId }, config);
 
       if (!chats.find((c: any) => c._id === data._id))
         setChats([data, ...chats]);
@@ -317,7 +317,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
         },
       };
       const { data } = await axios.put(
-        `/api/chat/groupremove`,
+        `https://backend-toly.onrender.com/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -456,7 +456,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
 
       try {
         const res = await axios.post(
-          `/api/chat/hint`,
+          `https://backend-toly.onrender.com/api/chat/hint`,
           {
             count: premiumCount?.numOfNavigate,
           },

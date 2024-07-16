@@ -96,7 +96,7 @@ const SearchUsers: React.FC<SearchUsersProps> = ({ initialSearchTerm }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`/api/friend/${id}`, {}, config);
+      const { data } = await axios.post(`https://backend-toly.onrender.com/api/friend/${id}`, {}, config);
       console.log("Friend: ", data);
 
       // Update the requests state

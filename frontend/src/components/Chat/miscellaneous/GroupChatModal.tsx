@@ -77,7 +77,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
         },
       };
       const { data } = await axios.get<User[]>(
-        `/api/user?search=${search}`,
+        `https://backend-toly.onrender.com/api/user?search=${search}`,
         config
       );
       setLoading(false);
@@ -128,7 +128,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
         },
       };
       const { data } = await axios.post(
-        `/api/chat/group`,
+        `https://backend-toly.onrender.com/api/chat/group`,
         {
           name: groupChatName,
           count: premiumCount?.numOfCreateGroupChat,
