@@ -31,7 +31,7 @@ const RequestList: React.FC = () => {
       if (search.trim()) {
         setLoading(true);
         try {
-          const response = await axios.get(`/api/user/name/${search}`, {
+          const response = await axios.get(`https://backend-toly.onrender.com/api/user/name/${search}`, {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
@@ -84,7 +84,7 @@ const RequestList: React.FC = () => {
         },
       };
       const { data } = await axios.patch(
-        `/api/friend/accept/${id}`,
+        `https://backend-toly.onrender.com/api/friend/accept/${id}`,
         {},
         config
       );

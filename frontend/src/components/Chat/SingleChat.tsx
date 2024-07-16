@@ -61,7 +61,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
+        `https://backend-toly.onrender.com/api/message/${selectedChat._id}`,
         config
       );
       setMessages(data);
