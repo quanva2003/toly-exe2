@@ -60,20 +60,48 @@ const Tolymium: React.FC = () => {
             </div>
             <div className="pre-description">
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited fun
-                place recommendations for groups
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  Unlimited fun place recommendations for groups
+                </span>
               </Space>
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited
-                personal location customization
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  Unlimited personal location customization
+                </span>
               </Space>
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Can use
-                explore in your group chat
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  Can use explore in your group chat
+                </span>
               </Space>
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Can do more
-                feature of your profile
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  Can do more feature of your profile
+                </span>
               </Space>
             </div>
             {user && (
@@ -113,20 +141,48 @@ const Tolymium: React.FC = () => {
             </div>
             <div className="pre-description">
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited fun
-                place recommendations for groups
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  Unlimited fun place recommendations for groups
+                </span>
               </Space>
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlimited
-                personal location customization
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  Unlimited personal location customization
+                </span>
               </Space>{" "}
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> Unlock all
-                sticker and theme locks
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  Unlock all sticker and theme locks
+                </span>
               </Space>{" "}
               <Space align="center" size="middle">
-                <CheckCircleFilled style={{ color: "#54b4b9" }} /> No limit to
-                friend circle groups (max: 50 groups)
+                <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                <span
+                  style={{
+                    textWrap: "wrap",
+                    maxWidth: "180px",
+                  }}
+                >
+                  No limit to friend circle groups (max: 50 groups)
+                </span>
               </Space>
             </div>
             {user && (
@@ -166,25 +222,60 @@ const Tolymium: React.FC = () => {
               </div>
               <div className="pre-description">
                 <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Two
-                  location recommendations per week
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                  <span
+                    style={{
+                      textWrap: "wrap",
+                      maxWidth: "180px",
+                    }}
+                  >
+                    Two location recommendations per week
+                  </span>
                 </Space>
 
                 <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Create only
-                  1 groups
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                  <span
+                    style={{
+                      textWrap: "wrap",
+                      maxWidth: "180px",
+                    }}
+                  >
+                    Create only 1 groups
+                  </span>
                 </Space>
                 <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Use basic
-                  icons
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                  <span
+                    style={{
+                      textWrap: "wrap",
+                      maxWidth: "180px",
+                    }}
+                  >
+                    Use basic icons
+                  </span>
                 </Space>
                 <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Chat with
-                  friends via mini social
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                  <span
+                    style={{
+                      textWrap: "wrap",
+                      maxWidth: "180px",
+                    }}
+                  >
+                    Chat with friends via mini social
+                  </span>
                 </Space>
                 <Space align="center" size="middle">
-                  <CheckCircleFilled style={{ color: "#54b4b9" }} /> Personal
-                  and friend location tracking
+                  <CheckCircleFilled style={{ color: "#54b4b9" }} />
+                  <span
+                    style={{
+                      textWrap: "wrap",
+                      maxWidth: "180px",
+                    }}
+                  >
+                    Personal and friend location tracking
+                  </span>
                 </Space>
               </div>
               <button
