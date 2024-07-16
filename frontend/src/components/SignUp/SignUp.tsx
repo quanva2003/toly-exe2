@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./SignUp.css";
-import GoogleButton from "react-google-button";
 import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import useSignup from "../../hooks/useSignup";
@@ -38,7 +37,8 @@ const SignIn: React.FC = () => {
     },
   };
 
-  const { loading, signup } = useSignup();
+  const { signup } = useSignup();
+  const [loading, setLoading] = useState(false);
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100vh",
@@ -63,9 +63,11 @@ const SignIn: React.FC = () => {
   });
 
   const handleSubmit = (values: SignUpInputs) => {
-    console.log("hello:", values);
-    console.log("location", currentLocation);
+    setLoading(true);
     signup({ ...values, position: currentLocation });
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000); // Set loading to false after 5 seconds
   };
 
   useEffect(() => {
@@ -88,7 +90,7 @@ const SignIn: React.FC = () => {
     } else {
       alert("Geolocation is not supported by this browser.");
     }
-  });
+  }, []);
 
   return (
     <div className="login-container">
@@ -147,53 +149,20 @@ const SignIn: React.FC = () => {
               />
             </div>
 
-            <button type="submit" className="login-submit-btn">
-              Sign Up{" "}
-              <ArrowRightOutlined
-                style={{ marginLeft: "0.5rem", fontWeight: "bold" }}
-              />
+            <button
+              type="submit"
+              className="login-submit-btn"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Sign Up"}
+              {!loading && (
+                <ArrowRightOutlined
+                  style={{ marginLeft: "0.5rem", fontWeight: "bold" }}
+                />
+              )}
             </button>
           </Form>
         </Formik>
-
-        {/* <div
-          style={{
-            width: "108%",
-            textAlign: "center",
-            borderBottom: "1px solid #ccc",
-            lineHeight: "0.1em",
-            margin: "20px 0",
-          }}
-        >
-          <span
-            style={{
-              background: "#f5f5f5",
-              padding: "0 10px",
-              color: "#243666",
-            }}
-          >
-            or
-          </span>
-        </div> */}
-        {/* <GoogleButton
-          style={{
-            background: "#ffffff",
-            borderRadius: "5px",
-            boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-            color: "rgba(0, 0, 0, 0.54)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "none",
-            cursor: "pointer",
-            width: "100%",
-            fontSize: "16px",
-            marginLeft: "10px",
-          }}
-          onClick={() => {
-            console.log("Google button clicked");
-          }}
-        /> */}
 
         <div className="signin">
           Already have an account?{" "}
