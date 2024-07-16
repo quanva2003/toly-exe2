@@ -20,14 +20,17 @@ const GeneralChange = () => {
   const handleConfirmUpdateName = async () => {
     // Add your API call logic here to save the name
     try {
-      const response = await fetch("https://backend-toly.onrender.com/api/user/update-name", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ name }),
-      });
+      const response = await fetch(
+        "https://backend-toly.onrender.com/api/user/update-name",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ name }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -82,7 +85,7 @@ const GeneralChange = () => {
             )}
           </Col>
         </Row>
-        <Row className="row-style">
+        {/* <Row className="row-style">
           <Col span={8}>Email</Col>
           <Col span={8}>
             {isEditingEmail ? (
@@ -102,7 +105,7 @@ const GeneralChange = () => {
               <button onClick={() => setIsEditingEmail(true)}>Edit</button>
             )}
           </Col>
-        </Row>
+        </Row> */}
       </div>
 
       <Modal
