@@ -1,30 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import "./Login.css";
+import "./SignUp.css";
 import { Link } from "react-router-dom";
-import useLogin from "../../hooks/useLogin";
+import { ArrowRightOutlined } from "@ant-design/icons";
+import useSignup from "../../hooks/useSignup";
 
-interface LogInInputs {
+interface SignUpInputs {
   email: string;
+  name: string;
   password: string;
+  confirmPassword: string;
+  pic: string;
+  coverPic: string;
+  accountType: string;
+  premiumPlan: string;
   position: {
     lat: number;
     lng: number;
   };
 }
 
-const Login: React.FC = () => {
-  const initialValues: LogInInputs = {
+const SignIn: React.FC = () => {
+  const initialValues: SignUpInputs = {
     email: "",
+    name: "",
     password: "",
+    confirmPassword: "",
+    pic: "https://i.pinimg.com/564x/fc/ee/20/fcee204260921b296a0ee2549ccb4e18.jpg",
+    coverPic: "",
+    accountType: "",
+    premiumPlan: "",
     position: {
       lat: 0,
       lng: 0,
     },
   };
 
-  const { login } = useLogin();
+  const { signup } = useSignup();
   const [loading, setLoading] = useState(false);
   const [viewport, setViewport] = useState({
     width: "100%",
@@ -39,16 +52,19 @@ const Login: React.FC = () => {
   } | null>(null);
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email address").required("Required"),
-    password: Yup.string().required("Required"),
+    name: Yup.string().required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password")], "Passwords must match")
+      .required("Confirm Password is required"),
   });
 
-  const handleSubmit = async (values: LogInInputs, { setFieldValue }) => {
+  const handleSubmit = (values: SignUpInputs) => {
     setLoading(true);
-    if (currentLocation) {
-      values.position = currentLocation;
-    }
-    await login(values.email, values.password, values.position);
+    signup({ ...values, position: currentLocation });
     setTimeout(() => {
       setLoading(false);
     }, 5000); // Set loading to false after 5 seconds
@@ -79,17 +95,24 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Sign In</h2>
-        <p style={{ fontSize: "12px" }}>
-          If you are already a member, easily log in
-        </p>
+        <h2>Create an account</h2>
+        <p style={{ fontSize: "12px" }}>Welcome to Toly ^^</p>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           <Form>
-            <div className="form-group-login">
+            <div className="form-group-signup">
+              <Field type="text" id="name" name="name" placeholder="Name" />
+              <ErrorMessage
+                name="name"
+                component="div"
+                className="error-message"
+              />
+            </div>
+
+            <div className="form-group-signup">
               <Field type="email" id="email" name="email" placeholder="Email" />
               <ErrorMessage
                 name="email"
@@ -98,7 +121,7 @@ const Login: React.FC = () => {
               />
             </div>
 
-            <div className="form-group-login">
+            <div className="form-group-signup">
               <Field
                 type="password"
                 id="password"
@@ -111,23 +134,44 @@ const Login: React.FC = () => {
                 className="error-message"
               />
             </div>
-            <Link to="/forgot" className="forgot-password">
-              Forgot your password?
-            </Link>
+
+            <div className="form-group-signup">
+              <Field
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+              />
+              <ErrorMessage
+                name="confirmPassword"
+                component="div"
+                className="error-message"
+              />
+            </div>
+
             <button
               type="submit"
               className="login-submit-btn"
               disabled={loading}
             >
-              {loading ? "Loading..." : "Login"}
+              {loading ? "Loading..." : "Sign Up"}
+              {!loading && (
+                <ArrowRightOutlined
+                  style={{ marginLeft: "0.5rem", fontWeight: "bold" }}
+                />
+              )}
             </button>
           </Form>
         </Formik>
 
         <div className="signin">
-          Don't have an account?{" "}
-          <Link className="signin-link" to="/signup">
-            Register
+          Already have an account?{" "}
+          <Link
+            className="signin-link"
+            to={""}
+            onClick={() => (window.location.href = "/login")}
+          >
+            Log In
           </Link>
         </div>
       </div>
@@ -142,4 +186,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignIn;

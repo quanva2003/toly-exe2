@@ -110,9 +110,9 @@ const Navbar: React.FC = () => {
     },
     {
       label: (
-        // <Space>
-        <LogoutButton />
-        // </Space>
+        <Space>
+          <LogoutButton />
+        </Space>
       ),
       key: "2",
     },
