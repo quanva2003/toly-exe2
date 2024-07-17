@@ -23,11 +23,11 @@
 .avatar-group-custom .avatar-top-right {
   top: 0;
   right: 0;
-  z-index: 1;
+  z-index: 0;
 }
 
 .avatar-group-custom .avatar-bottom-left {
   bottom: 0;
   left: 0;
-  z-index: 2;
+  z-index: 0;
 }

@@ -127,7 +127,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
         },
       };
 
-      const { data } = await axios.post("https://backend-toly.onrender.com/api/message/file", formData, config);
+      const { data } = await axios.post(
+        "https://backend-toly.onrender.com/api/message/file",
+        formData,
+        config
+      );
       socket.emit("new message", data);
       setMessages([...messages, data]);
     } catch (error) {
@@ -279,7 +283,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
                         src={userItem.pic}
                       />
                     ))}
-                    <span style={{ marginLeft: "60px" }}>
+                    <span style={{ marginLeft: "60px", whiteSpace: "pre" }}>
                       {selectedChat.chatName}
                     </span>
                   </Box>
