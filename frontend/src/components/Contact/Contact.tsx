@@ -21,10 +21,10 @@ const Contact = () => {
               <MailFilled />
               <p>tolyinc.exe2@gmail.com</p>
             </Space>
-            <Space className="contact-detail">
+            {/* <Space className="contact-detail">
               <PhoneFilled />
               <p>094 135 86 57</p>
-            </Space>
+            </Space> */}
             <Space className="contact-detail">
               <HomeFilled />
               <p>FPT University HCM</p>

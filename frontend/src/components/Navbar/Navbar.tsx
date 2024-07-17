@@ -9,6 +9,7 @@ import {
   TeamOutlined,
   StarOutlined,
   SettingOutlined,
+  RubyOutlined,
 } from "@ant-design/icons";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "axios";
@@ -169,20 +170,20 @@ const Navbar: React.FC = () => {
 
       {!user ? (
         <div className={`login ${menuOpen ? "active" : ""}`}>
-          <Link to={"/signup"} className="login-link">
-            SIGNUP
+          <Link to={"/signup"}>
+            <button className="login-btn">SIGN UP</button>
           </Link>
-          <Link to={"/login"}>
-            <button className="login-btn">SIGNIN</button>
+          <Link to={"/login"} className="login-link">
+            SIGN IN
           </Link>
         </div>
       ) : (
-        <div className="login">
+        <div className="account-action">
           <Link
             to={"/tolymium"}
             style={{ textDecoration: "none", color: "unset" }}
           >
-            <DiamondOutlinedIcon fontSize="inherit" className="mess-icon" />
+            <RubyOutlined className="mess-icon" />
           </Link>
           <Link
             to={"/friends"}

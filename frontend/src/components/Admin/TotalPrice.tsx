@@ -72,7 +72,7 @@ const Trophy = ({ data }) => {
       <CardContent>
         <Typography variant="h6">Summary! 🥳</Typography>
         <Typography variant="body2" sx={{ letterSpacing: "0.25px" }}>
-          Total Price of all Account
+          Total Revenue of all Accounts
         </Typography>
         <Typography variant="h5" sx={{ my: 4, color: "primary.main" }}>
           {countFree * 0 + countMonth * 29000 + countYear * 290000} VND
