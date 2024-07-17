@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import { styled, useTheme } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
+import CurrencySplitter from "../assistants/spliter";
 
 interface User {
   _id: string;
@@ -75,7 +76,10 @@ const Trophy = ({ data }) => {
           Total Revenue of all Accounts
         </Typography>
         <Typography variant="h5" sx={{ my: 4, color: "primary.main" }}>
-          {countFree * 0 + countMonth * 29000 + countYear * 290000} VND
+          {CurrencySplitter(
+            countFree * 0 + countMonth * 29000 + countYear * 290000
+          )}
+          VND
         </Typography>
       </CardContent>
     </Card>
