@@ -117,7 +117,7 @@ const UpdateUserChatBox: React.FC<ProfileBoxProps> = ({ user, children }) => {
             </Text>
           </VStack>
         </Box>
-        <Button
+        {/* <Button
           onClick={toggleMediaFiles}
           width="100%"
           bg="none"
@@ -202,7 +202,7 @@ const UpdateUserChatBox: React.FC<ProfileBoxProps> = ({ user, children }) => {
               Delete chat
             </Button>
           </Box>
-        </Collapse>
+        </Collapse> */}
       </Box>
     </Box>
   );

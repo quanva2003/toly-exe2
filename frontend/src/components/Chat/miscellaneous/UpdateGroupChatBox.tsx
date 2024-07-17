@@ -160,7 +160,10 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`https://backend-toly.onrender.com/api/user?search=${search}`, config);
+      const { data } = await axios.get(
+        `https://backend-toly.onrender.com/api/user?search=${search}`,
+        config
+      );
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -279,7 +282,11 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`https://backend-toly.onrender.com/api/chat`, { userId }, config);
+      const { data } = await axios.post(
+        `https://backend-toly.onrender.com/api/chat`,
+        { userId },
+        config
+      );
 
       if (!chats.find((c: any) => c._id === data._id))
         setChats([data, ...chats]);
@@ -390,11 +397,14 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
 
   const handleHintExplore = async () => {
     try {
-      const response = await axios.get("https://backend-toly.onrender.com/api/user", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://backend-toly.onrender.com/api/user",
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       const allUsers = response.data;
 
@@ -783,7 +793,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
           </Box>
         </Collapse>
 
-        <Button
+        {/* <Button
           onClick={() => setIsMediaFilesOpen(!isMediaFilesOpen)}
           width="100%"
           bg="none"
@@ -819,7 +829,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
               Links
             </Button>
           </Box>
-        </Collapse>
+        </Collapse> */}
 
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Button
@@ -834,7 +844,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
         </Box>
         <Collapse in={isPrivacyOpen}>
           <Box display="flex" flexDir="column" width="100%">
-            <Button
+            {/* <Button
               leftIcon={<FontAwesomeIcon icon={faBell} />}
               iconSpacing={4}
               bg="none"
@@ -857,7 +867,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
               justifyContent="flex-start"
             >
               Report
-            </Button>
+            </Button> */}
             <Button
               leftIcon={<FontAwesomeIcon icon={faArrowRightFromBracket} />}
               iconSpacing={4}
@@ -867,7 +877,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
             >
               Leave group
             </Button>
-            <Button
+            {/* <Button
               leftIcon={<FontAwesomeIcon icon={faTrash} />}
               iconSpacing={4}
               bg="none"
@@ -875,7 +885,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
               color="red"
             >
               Delete chat
-            </Button>
+            </Button> */}
           </Box>
         </Collapse>
       </Box>

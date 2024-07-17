@@ -29,7 +29,10 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get("https://backend-toly.onrender.com/api/chat", config);
+      const { data } = await axios.get(
+        "https://backend-toly.onrender.com/api/chat",
+        config
+      );
       setChats(data);
     } catch (error) {
       toast({
