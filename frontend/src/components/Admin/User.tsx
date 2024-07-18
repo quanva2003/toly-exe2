@@ -8,7 +8,8 @@ interface User {
   name: string;
   pic: string;
   email: string;
-  isVerify: boolean;
+  isVerified: boolean;
+  accountType: string;
 }
 
 const UsersList: React.FC = () => {
@@ -27,7 +28,9 @@ const UsersList: React.FC = () => {
           },
         }
       );
-      const verifiedUsers = response.data.filter((user: User) => user.isVerify);
+      const verifiedUsers = response.data.filter(
+        (user: User) => user.isVerified
+      );
       setUsers(verifiedUsers);
       setFilteredUsers(verifiedUsers);
     } catch (error) {
@@ -82,6 +85,7 @@ const UsersList: React.FC = () => {
         renderItem={(item) => (
           <List.Item
             actions={[
+              <a>Account Type: {item.accountType}</a>,
               <Popconfirm
                 title="Delete the user"
                 description="Are you sure to delete this user?"
