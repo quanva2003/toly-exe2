@@ -43,7 +43,7 @@ const Trophy = ({ data }) => {
 
   useEffect(() => {
     setUsers(data);
-    console.log("data nè:", data);
+    // console.log("data nè:", data);
     let yearCount = 0;
     let monthCount = 0;
     let freeCount = 0;
