@@ -39,6 +39,7 @@ interface User {
   email: string;
   accountType: string;
   createdAt: string;
+  isVerified: boolean;
 }
 
 interface Order {
@@ -131,8 +132,10 @@ const Dashboard = () => {
           },
         }
       );
-      const usersData: User[] = response.data;
-      setUsers(usersData);
+      const verifiedUsers = response.data.filter(
+        (user: User) => user.isVerified
+      );
+      setUsers(verifiedUsers);
     } catch (error) {
       console.error("Error fetching data from API", error);
     }
