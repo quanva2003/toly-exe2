@@ -117,6 +117,7 @@ const Map: React.FC<MapProps> = ({
     viewport.latitude,
     viewport.longitude,
   ]);
+  console.log("memdata: ", memberChatData);
 
   // console.log("viewport lat", viewport.latitude);
   // console.log("viewport lng", viewport.longitude);
@@ -168,6 +169,21 @@ const Map: React.FC<MapProps> = ({
               />
             </Marker>
           )}
+          {memberChatData &&
+            memberChatData.map((member) => (
+              <Marker
+                key={member._id}
+                latitude={member.position.lat}
+                longitude={member.position.lng}
+                offset={[-20, -20]}
+              >
+                <img
+                  src={member.imageUrl}
+                  alt={member.name}
+                  style={{ height: 50, width: 50, borderRadius: 50 }}
+                />
+              </Marker>
+            ))}
         </ReactMapGL>
       </div>
     </div>
