@@ -40,7 +40,7 @@ const NewExplore: React.FC = () => {
 
   return (
     <div className="top-explore">
-      <h1>New Destinations</h1>
+      <h1>Explore Destinations</h1>
       <div className="destinations">
         {exploreData.map((destination) => (
           <div
