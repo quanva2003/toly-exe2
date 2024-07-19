@@ -289,7 +289,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
                     </span>
                   </Box>
                   <IconButton
-                    display={{base: "flex" }}
+                    display={{ base: "flex" }}
                     icon={<FontAwesomeIcon icon={faEllipsis} />}
                     onClick={onOpenUpdateBox}
                     aria-label={""}
@@ -355,17 +355,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
                 )}
               </div>
               <Flex display="flex">
-                <IconButton
-                  aria-label="Emoji Picker"
-                  icon={<InsertEmoticonIcon />}
-                  variant="ghost"
-                  onClick={toggleEmojiPicker}
-                />
-                <IconButton
+                {user.accountType !== "free" ? (
+                  <IconButton
+                    aria-label="Emoji Picker"
+                    icon={<InsertEmoticonIcon />}
+                    variant="ghost"
+                    onClick={toggleEmojiPicker}
+                  />
+                ) : (
+                  ""
+                )}
+
+                {/* <IconButton
                   aria-label="Sticker Picker"
                   icon={<FontAwesomeIcon icon={faNoteSticky} fontSize={20} />}
                   variant="ghost"
-                />
+                /> */}
                 <input
                   type="file"
                   style={{ display: "none" }}
@@ -373,13 +378,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
                   onChange={handleFileChange}
                 />
                 <label htmlFor="file-input">
-                  <IconButton
-                    aria-label="Attach Image"
-                    icon={<InsertPhotoIcon />}
-                    variant="ghost"
-                    as="span"
-                    mr={2}
-                  />
+                  {user.accountType !== "free" ? (
+                    <IconButton
+                      aria-label="Attach Image"
+                      icon={<InsertPhotoIcon />}
+                      variant="ghost"
+                      as="span"
+                      mr={2}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </label>
                 <Input
                   variant="filled"
