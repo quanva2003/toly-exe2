@@ -22,7 +22,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 import io from "socket.io-client";
-const ENDPOINT = "https://backend-toly.onrender.com/"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+const ENDPOINT = "https://backend-toly.onrender.com/";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
@@ -262,6 +262,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
                     {getSender(user, selectedChat.users)}
                   </div>
                   <IconButton
+                    // display={{ base: "flex" }}
                     display={{ base: "flex" }}
                     icon={<FontAwesomeIcon icon={faEllipsis} />}
                     onClick={onOpenUpdateBox}
@@ -288,7 +289,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, onOpenUpdateBox }) => {
                     </span>
                   </Box>
                   <IconButton
-                    display={{ base: "flex" }}
+                    display={{base: "flex" }}
                     icon={<FontAwesomeIcon icon={faEllipsis} />}
                     onClick={onOpenUpdateBox}
                     aria-label={""}

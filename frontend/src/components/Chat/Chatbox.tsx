@@ -14,7 +14,7 @@ const Chatbox = ({
 
   return (
     <Box
-      display={{ base: selectedChat ? "flex" : "none", md: "flex" }}
+      display={{ base: (selectedChat && !isUpdateBoxOpen) ? "flex" : "none", md: "flex" }}
       alignItems="center"
       flexDir="column"
       p={3}

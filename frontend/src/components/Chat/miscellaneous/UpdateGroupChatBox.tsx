@@ -57,7 +57,7 @@ import {
   EnvironmentFilled,
 } from "@ant-design/icons";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Flex, Tour, TourProps } from "antd";
@@ -66,6 +66,7 @@ interface UpdateGroupChatBoxProps {
   fetchMessages: () => void;
   fetchAgain: boolean;
   setFetchAgain: (fetchAgain: boolean) => void;
+  onOpenUpdateBox: any;
 }
 interface ChatGrMember {
   _id: string;
@@ -95,6 +96,7 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
   fetchMessages,
   fetchAgain,
   setFetchAgain,
+  onOpenUpdateBox,
 }) => {
   const [groupChatName, setGroupChatName] = useState<string>("");
   const [search, setSearch] = useState<string>("");
@@ -397,14 +399,11 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
 
   const handleHintExplore = async () => {
     try {
-      const response = await axios.get(
-        "https://backend-toly.onrender.com/api/user",
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await axios.get("https://backend-toly.onrender.com/api/user", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
       const allUsers = response.data;
 
@@ -577,6 +576,12 @@ const UpdateGroupChatBox: React.FC<UpdateGroupChatBoxProps> = ({
         width="100%"
         mb={4}
       >
+        <IconButton
+          display={{ base: "flex", md: "none" }}
+          icon={<ArrowBackIcon />}
+          onClick={onOpenUpdateBox}
+          aria-label={""}
+        />
         <Box
           display="flex"
           position="relative"

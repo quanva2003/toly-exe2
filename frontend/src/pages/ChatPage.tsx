@@ -78,11 +78,13 @@ const Chatpage: React.FC = () => {
                     fetchMessages={() => {}}
                     fetchAgain={fetchAgain}
                     setFetchAgain={setFetchAgain}
+                    onOpenUpdateBox={toggleUpdateBox}
                   />
                 ) : (
                   <UpdateUserChatBox
                     user={getSenderFull(user, selectedChat.users)}
                     children={undefined}
+                    onOpenUpdateBox={toggleUpdateBox}
                   />
                 )}
               </>

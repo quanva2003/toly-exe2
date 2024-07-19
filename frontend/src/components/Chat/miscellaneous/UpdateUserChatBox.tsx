@@ -21,7 +21,11 @@ import {
   faLink,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import {
+  ArrowBackIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@chakra-ui/icons";
 
 interface User {
   _id: string;
@@ -37,9 +41,14 @@ interface User {
 interface ProfileBoxProps {
   user: User;
   children?: React.ReactNode;
+  onOpenUpdateBox: any;
 }
 
-const UpdateUserChatBox: React.FC<ProfileBoxProps> = ({ user, children }) => {
+const UpdateUserChatBox: React.FC<ProfileBoxProps> = ({
+  user,
+  children,
+  onOpenUpdateBox,
+}) => {
   const navigate = useNavigate();
   const [mediaFilesOpen, setMediaFilesOpen] = useState(false);
   const [privacySupportOpen, setPrivacySupportOpen] = useState(false);
@@ -51,7 +60,7 @@ const UpdateUserChatBox: React.FC<ProfileBoxProps> = ({ user, children }) => {
     <Box
       display="flex"
       flexDir="column"
-      alignItems="center"
+      alignItems="start"
       background="white"
       padding="20px"
       boxShadow="lg"
@@ -60,6 +69,12 @@ const UpdateUserChatBox: React.FC<ProfileBoxProps> = ({ user, children }) => {
       borderWidth="1px"
       overflowY="scroll"
     >
+      <IconButton
+        display={{ base: "flex", md: "none" }}
+        icon={<ArrowBackIcon />}
+        onClick={onOpenUpdateBox}
+        aria-label={""}
+      />
       <Box
         display="flex"
         flexDirection="column"

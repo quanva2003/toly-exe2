@@ -18,14 +18,11 @@ dotenv.config();
 connectDB();
 const app = express();
 
-// app.use(cors());
-app.use(
-  cors({
-    origin: "https://backend-toly.onrender.com/",
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: 'https://toly.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/user", userRoutes);
