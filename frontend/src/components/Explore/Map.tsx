@@ -30,7 +30,7 @@ interface MemberData {
     lat: number;
     lng: number;
   };
-  imageUrl: string;
+  pic: string;
 }
 interface MapProps {
   selectedLocation: Location | null;
@@ -178,7 +178,7 @@ const Map: React.FC<MapProps> = ({
                 offset={[-20, -20]}
               >
                 <img
-                  src={member.imageUrl}
+                  src={member.pic}
                   alt={member.name}
                   style={{ height: 50, width: 50, borderRadius: 50 }}
                 />
